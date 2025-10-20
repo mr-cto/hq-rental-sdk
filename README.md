@@ -298,6 +298,89 @@ Tests are organized by module and cover:
 - ✅ HTTP client behavior
 - ✅ Model validation and utilities
 
+## Development
+
+### 🔧 Pre-commit Hooks
+
+This project uses **husky** and **lint-staged** to maintain code quality with automated pre-commit hooks:
+
+#### **Pre-commit** (`git commit`)
+
+- 🔍 **ESLint**: Lints and auto-fixes TypeScript/JavaScript files
+- 🎨 **Prettier**: Formats code for consistent style
+- 🔧 **Type Check**: Ensures TypeScript compilation
+- 📝 **Commit Message**: Validates conventional commit format
+
+#### **Pre-push** (`git push`)
+
+- 🧪 **Tests**: Runs full test suite with coverage
+- 🔒 **Security Audit**: Checks for vulnerabilities
+- 🏗️ **Build**: Verifies production build works
+
+#### **Commit Message Format**
+
+We enforce [Conventional Commits](https://conventionalcommits.org/):
+
+```
+type(scope): description
+
+# Valid types:
+feat     # New feature
+fix      # Bug fix
+docs     # Documentation
+style    # Formatting (no code change)
+refactor # Code restructure (no feature change)
+test     # Adding tests
+chore    # Maintenance
+ci       # CI/CD changes
+build    # Build system changes
+perf     # Performance improvements
+revert   # Reverting changes
+```
+
+**Examples:**
+
+- `feat: add vehicle search endpoint`
+- `fix(auth): resolve token refresh issue`
+- `docs: update API examples`
+
+### 🛠️ Development Scripts
+
+```bash
+# Install dependencies with hooks
+npm install
+
+# Development type checking (includes tests/examples)
+npm run build:dev
+
+# Production build (src only)
+npm run build
+
+# Run tests
+npm test                    # Basic test run
+npm run test:watch         # Watch mode
+npm run test:coverage      # With coverage
+npm run test:ci            # CI mode with coverage
+
+# Code quality
+npm run lint              # Check linting
+npm run lint:fix          # Auto-fix linting issues
+npm run format            # Format all files
+npm run format:check      # Check formatting
+npm run check             # Run both lint and format check
+
+# Package validation
+npm run release:check     # Full package validation
+npm run clean             # Remove build artifacts
+```
+
+### 🔄 Workflow
+
+1. **Clone & Install**: `git clone` → `npm install` (hooks auto-setup)
+2. **Develop**: Make changes with automatic formatting on save
+3. **Commit**: Pre-commit hooks ensure quality (`git commit`)
+4. **Push**: Pre-push hooks run full validation (`git push`)
+
 ## Contributing
 
 We welcome contributions to the HQ Rental SDK! This project maintains high quality standards with 100% test coverage, and we'd love your help in keeping it that way.
