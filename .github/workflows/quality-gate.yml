@@ -156,7 +156,7 @@ jobs:
         fi
         
     - name: Generate quality report
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           const fs = require('fs');

@@ -100,7 +100,7 @@ jobs:
     
     steps:
     - name: Report stale activity
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           // Get recently closed stale issues/PRs for reporting

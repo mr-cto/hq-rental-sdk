@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Auto-assign good first issues
       if: contains(github.event.issue.labels.*.name, 'good first issue')
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           // Add helpful comment for first-time contributors
@@ -45,7 +45,7 @@ jobs:
           
     - name: Prioritize security issues
       if: contains(github.event.issue.labels.*.name, 'security')
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           // Add security priority labels and assign
@@ -77,7 +77,7 @@ jobs:
           
     - name: Track breaking changes
       if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'breaking-change')
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           // Add warning for breaking changes
@@ -113,7 +113,7 @@ jobs:
     
     steps:
     - name: Auto-assign to current milestone
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           // Get current milestones
@@ -149,7 +149,7 @@ jobs:
     
     steps:
     - name: Update project statistics
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           // This could be expanded to update project statistics
