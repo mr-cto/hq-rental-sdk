@@ -1,0 +1,264 @@
+# HQ Rental SDK - LLM Integration Guide
+
+This file provides structured information about the HQ Rental SDK to help Large Language Models (LLMs) understand, integrate with, and extend this TypeScript SDK effectively.
+
+## Repository Overview
+
+**Repository**: hq-rental-sdk
+**Language**: TypeScript
+**Purpose**: Comprehensive SDK for HQ Rental Software API
+**Architecture**: Modular, promise-based API client with full TypeScript support
+**Test Coverage**: 100% across all metrics (functions, statements, branches, lines)
+
+## Project Structure
+
+```
+hq-rental-sdk/
+├── src/
+│   ├── client.ts          # HTTP client (HQRentalClient class)
+│   ├── config.ts          # Configuration constants and types
+│   ├── index.ts           # Main entry point and exports
+│   ├── apis/              # API endpoint modules
+│   │   ├── car-rental/    # Car rental specific APIs (23 modules)
+│   │   ├── contacts/      # Contact management APIs
+│   │   ├── files/         # File management APIs  
+│   │   ├── fleets/        # Fleet management APIs (14 modules)
+│   │   ├── payment-gateways/ # Payment processing APIs
+│   │   ├── sheets/        # Spreadsheet-like data APIs
+│   │   ├── filters.ts     # Data filtering utilities
+│   │   └── preferences.ts # User preference management
+│   ├── auth/              # Authentication utilities
+│   ├── models/            # Data models and validation
+│   ├── types/             # TypeScript type definitions
+│   └── utils/             # HTTP utilities and helpers
+├── tests/                 # Comprehensive test suite (728+ tests)
+├── examples/              # Usage examples
+└── package.json           # Dependencies and scripts
+```
+
+## Core Architecture Patterns
+
+### 1. HTTP Client Pattern
+- **Base Class**: `HQRentalClient` in `src/client.ts`
+- **Pattern**: Singleton HTTP client with method chaining
+- **Authentication**: Token-based via Authorization header
+- **Error Handling**: Promise rejection with detailed error context
+
+### 2. Module Organization Pattern
+```typescript
+// Each API module follows this pattern:
+export const functionName = (params) => client.get/post/put/delete(url, data);
+export default { functionName, ... }; // Default export object
+```
+
+### 3. Authentication Pattern
+```typescript
+// Authentication is centralized in src/auth/index.ts
+import { setToken, useApiKey } from 'hq-rental-sdk/auth';
+setToken('your-api-token');
+```
+
+### 4. Type Safety Pattern
+- Full TypeScript definitions for all API responses
+- Interface exports alongside function exports
+- Generic typing for HTTP client methods
+
+## API Module Categories
+
+### Car Rental APIs (src/apis/car-rental/)
+**Core Business Logic** - 23 modules covering:
+- `addresses` - Address management (CRUD)
+- `adjustments` - Reservation adjustments
+- `blocked-days` - Blocked day management
+- `comments` - Item and reservation comments
+- `currencies` - Currency management
+- `customer-credits` - Customer credit operations
+- `daily-manifest` - Daily operations manifest
+- `emails` - Email templates and delivery
+- `extensions` - Reservation extensions
+- `external-charges` - External charge management
+- `fields` - Custom field definitions
+- `financial` - Credits, fines, packages, quotes
+- `payments` - Payment processing
+- `pricing` - Rate types, rates, seasons, security deposits
+- `refunds` - Refund processing
+- `reservation-agents` - Agent assignments
+- `reservation-attempts` - Reservation attempt tracking
+- `reservations` - Core reservation management
+- `seasons` - Seasonal pricing
+- `security-deposits` - Security deposit management
+- `system` - System utilities (backward compatibility)
+- `vehicle-replacements` - Vehicle replacement management
+- `webhooks` - Webhook management
+
+### Fleet Management APIs (src/apis/fleets/)
+**Vehicle Operations** - 14 modules covering:
+- `fleet` - Core fleet operations
+- `fleet-management` - Additional charges, features, locations
+- `vehicles` - Vehicle CRUD operations
+- `damages` - Vehicle damage tracking
+- `blocked-periods` - Vehicle blocked periods
+- `relocations` - Vehicle relocations
+- `telematics` - Telematics data and devices
+- `brands` - Vehicle brands
+- `vehicle-models` - Vehicle model management
+- `vehicle-types` - Vehicle type management
+- `additional-charges` - Fleet additional charges
+- `features` - Fleet features
+- `locations` - Fleet locations
+
+### Supporting APIs
+- **Contacts** (`src/apis/contacts/`) - Contact and category management
+- **Files** (`src/apis/files/`) - File upload/download operations
+- **Payment Gateways** (`src/apis/payment-gateways/`) - Payment processing integration
+- **Sheets** (`src/apis/sheets/`) - Spreadsheet-like data management
+
+## Testing Patterns
+
+### Test Structure
+- **Location**: `tests/` directory mirrors `src/` structure
+- **Naming**: `*.test.ts` files for each source module
+- **Coverage**: 100% across all metrics (728+ tests)
+
+### Common Test Patterns
+```typescript
+// Mock pattern for HTTP client
+jest.mock('../../src/client', () => ({
+  get: jest.fn(),
+  post: jest.fn(),
+  put: jest.fn(),
+  delete: jest.fn(),
+}));
+
+// Function testing pattern
+describe('API Function', () => {
+  it('should call client.method with correct parameters', () => {
+    // Test implementation
+  });
+});
+```
+
+### Test Categories
+1. **Function Coverage** - Every exported function tested
+2. **Parameter Validation** - Input parameter handling
+3. **Error Handling** - Error propagation and handling
+4. **Edge Cases** - Special characters, empty inputs, boundary conditions
+5. **Type Safety** - TypeScript interface compliance
+
+## Development Guidelines for LLMs
+
+### When Adding New API Modules
+1. **File Structure**: Follow existing module pattern in appropriate `apis/` subdirectory
+2. **Export Pattern**: Named exports + default object export
+3. **HTTP Methods**: Use appropriate HTTP verbs (GET, POST, PUT, DELETE)
+4. **URL Construction**: Use template literals for dynamic URLs
+5. **Type Definitions**: Export TypeScript interfaces alongside functions
+6. **Test Coverage**: Create corresponding test file with 100% coverage
+
+### When Adding Tests
+1. **Mirror Structure**: Test files should mirror source file structure
+2. **Mock Client**: Always mock the HTTP client for unit tests
+3. **Test Categories**: Cover function calls, parameters, errors, edge cases
+4. **Naming**: Use descriptive test names following existing patterns
+5. **Coverage**: Ensure all functions, branches, and statements are covered
+
+### When Modifying Existing Code
+1. **Backward Compatibility**: Maintain existing API signatures
+2. **Test Updates**: Update corresponding tests when modifying functions
+3. **Type Safety**: Ensure TypeScript definitions remain accurate
+4. **Documentation**: Update JSDoc comments and README if needed
+
+## Key Dependencies
+
+```json
+{
+  "axios": "HTTP client library",
+  "typescript": "TypeScript compiler and types", 
+  "jest": "Testing framework",
+  "@types/*": "TypeScript definitions"
+}
+```
+
+## Common Integration Patterns
+
+### Basic Usage
+```typescript
+import client, { auth, customers, rentals } from 'hq-rental-sdk';
+
+// 1. Authentication
+auth.setToken('your-api-token');
+
+// 2. API Calls
+const customers = await customers.listCustomers();
+const reservation = await rentals.findReservation('id');
+```
+
+### Error Handling
+```typescript
+try {
+  const result = await api.function();
+} catch (error) {
+  // Error contains axios error structure
+  console.log(error.response?.status);
+  console.log(error.response?.data);
+}
+```
+
+### TypeScript Usage
+```typescript
+import { Customer, Vehicle } from 'hq-rental-sdk/types';
+
+const customer: Customer = {
+  id: '1',
+  name: 'John Doe',
+  email: 'john@example.com'
+};
+```
+
+## Extension Points
+
+### Adding New APIs
+1. Create module in appropriate `src/apis/` subdirectory
+2. Follow existing function export pattern
+3. Add TypeScript interfaces
+4. Create comprehensive test file
+5. Update main index.ts exports
+
+### Custom HTTP Configuration
+- Extend `HQRentalClient` class in `src/client.ts`
+- Modify default headers in `src/config.ts`
+- Override base URL via environment variables
+
+### Authentication Extensions
+- Extend `src/auth/index.ts` for new auth methods
+- Maintain token management patterns
+- Update HTTP client integration
+
+## Quality Standards
+
+- **Test Coverage**: Maintain 100% coverage across all metrics
+- **TypeScript**: Strict typing enabled, no `any` types
+- **Code Style**: Consistent formatting and naming conventions
+- **Documentation**: JSDoc comments for public APIs
+- **Error Handling**: Comprehensive error propagation
+- **Backward Compatibility**: Maintain existing API signatures
+
+## LLM-Specific Notes
+
+This SDK is designed for **high reliability and maintainability**. When working with this codebase:
+
+1. **Always run tests** after modifications (`npm test`)
+2. **Maintain patterns** established in existing code
+3. **Update documentation** when adding features
+4. **Consider backward compatibility** for public APIs
+5. **Follow TypeScript best practices** throughout
+
+The codebase follows **strict conventions** and has **comprehensive test coverage** - maintain these standards when contributing or extending the SDK.
+
+## Version Information
+
+- **Current Coverage**: 100% (339/339 functions, 1140/1140 statements)
+- **Test Count**: 728+ comprehensive unit tests
+- **TypeScript**: Strict mode enabled
+- **Node.js**: Compatible with modern Node.js versions
+- **License**: MIT License
