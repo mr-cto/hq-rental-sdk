@@ -90,15 +90,12 @@ jobs:
         echo "- **Security**: No known vulnerabilities" >> RELEASE_NOTES.md
         
     - name: Create GitHub Release
-      uses: actions/create-release@v1
+      run: |
+        gh release create ${{ github.ref_name }} \
+          --title "Release ${{ steps.extract-release-notes.outputs.version }}" \
+          --notes-file RELEASE_NOTES.md
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ steps.extract-release-notes.outputs.version }}
-        body_path: RELEASE_NOTES.md
-        draft: false
-        prerelease: false
         
     - name: Publish to npm
       run: npm publish

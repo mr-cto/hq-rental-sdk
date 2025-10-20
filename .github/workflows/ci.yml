@@ -141,8 +141,3 @@ jobs:
       
     - name: Run security audit
       run: npm audit --audit-level=moderate
-      
-    - name: Run npm package vulnerability check
-      uses: actions/security-audit@v1
-      with:
-        audit-level: 'moderate'
