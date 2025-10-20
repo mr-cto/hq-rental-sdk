@@ -20,7 +20,7 @@ describe('Currencies API', () => {
     it('should call client.get with correct URL', async () => {
       const mockCurrencies = [
         { id: '1', code: 'USD', name: 'US Dollar', symbol: '$', exchange_rate: 1.0 },
-        { id: '2', code: 'EUR', name: 'Euro', symbol: '€', exchange_rate: 0.85 }
+        { id: '2', code: 'EUR', name: 'Euro', symbol: '€', exchange_rate: 0.85 },
       ];
       mockClient.get.mockResolvedValue(mockCurrencies);
 
@@ -43,7 +43,7 @@ describe('Currencies API', () => {
     it('should handle response with optional fields missing', async () => {
       const mockCurrencies = [
         { id: '1', code: 'USD', name: 'US Dollar', symbol: '$' },
-        { id: '2', code: 'EUR', name: 'Euro', symbol: '€' }
+        { id: '2', code: 'EUR', name: 'Euro', symbol: '€' },
       ];
       mockClient.get.mockResolvedValue(mockCurrencies);
 

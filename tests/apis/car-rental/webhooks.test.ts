@@ -16,7 +16,7 @@ describe('Webhooks API', () => {
       const payload = {
         url: 'https://example.com/webhook',
         events: ['reservation.created', 'payment.completed'],
-        secret: 'secret123'
+        secret: 'secret123',
       };
       mockClient.post.mockResolvedValue({});
 
@@ -33,6 +33,37 @@ describe('Webhooks API', () => {
       await webhooks.listWebhooks();
 
       expect(mockClient.get).toHaveBeenCalledWith('/car-rental/webhooks');
+    });
+  });
+
+  describe('getWebhook', () => {
+    it('should call client.get with correct URL', async () => {
+      mockClient.get.mockResolvedValue({});
+
+      await webhooks.getWebhook('webhook-1');
+
+      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/webhooks/webhook-1');
+    });
+  });
+
+  describe('updateWebhook', () => {
+    it('should call client.put with correct URL and payload', async () => {
+      const payload = { active: false };
+      mockClient.put.mockResolvedValue({});
+
+      await webhooks.updateWebhook('webhook-1', payload);
+
+      expect(mockClient.put).toHaveBeenCalledWith('/car-rental/webhooks/webhook-1', payload);
+    });
+  });
+
+  describe('deleteWebhook', () => {
+    it('should call client.delete with correct URL', async () => {
+      mockClient.delete.mockResolvedValue(undefined);
+
+      await webhooks.deleteWebhook('webhook-1');
+
+      expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/webhooks/webhook-1');
     });
   });
 

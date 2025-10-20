@@ -26,10 +26,16 @@ export const deleteItemComment = async (commentId: string): Promise<void> =>
 export const getReservationComments = async (reservationId: string): Promise<Comment[]> =>
   client.get<Comment[]>(`/car-rental/reservations/${reservationId}/comments`);
 
-export const updateReservationComments = async (reservationId: string, comments: string): Promise<Comment> =>
+export const updateReservationComments = async (
+  reservationId: string,
+  comments: string,
+): Promise<Comment> =>
   client.put<Comment>(`/car-rental/reservations/${reservationId}/comments`, { comments });
 
-export const deleteReservationComment = async (reservationId: string, commentId: string): Promise<void> =>
+export const deleteReservationComment = async (
+  reservationId: string,
+  commentId: string,
+): Promise<void> =>
   client.delete<void>(`/car-rental/reservations/${reservationId}/comments/${commentId}`);
 
 export default {

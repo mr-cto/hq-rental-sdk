@@ -9,7 +9,7 @@ describe('Rental Models', () => {
         vehicleId: 'vehicle-1',
         startDate: new Date('2024-01-01'),
         endDate: new Date('2024-01-07'),
-        totalAmount: 350.00
+        totalAmount: 350.0,
       };
 
       expect(rental.id).toBe('1');
@@ -17,7 +17,7 @@ describe('Rental Models', () => {
       expect(rental.vehicleId).toBe('vehicle-1');
       expect(rental.startDate).toEqual(new Date('2024-01-01'));
       expect(rental.endDate).toEqual(new Date('2024-01-07'));
-      expect(rental.totalAmount).toBe(350.00);
+      expect(rental.totalAmount).toBe(350.0);
     });
 
     it('should handle different date formats', () => {
@@ -27,7 +27,7 @@ describe('Rental Models', () => {
         vehicleId: 'vehicle-2',
         startDate: new Date('2024-06-15T10:00:00Z'),
         endDate: new Date('2024-06-20T18:00:00Z'),
-        totalAmount: 500.00
+        totalAmount: 500.0,
       };
 
       expect(rental.startDate.getFullYear()).toBe(2024);
@@ -41,23 +41,37 @@ describe('Rental Models', () => {
       it('should create instance with all properties', () => {
         const startDate = new Date('2024-01-01');
         const endDate = new Date('2024-01-07');
-        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.00);
+        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.0);
 
         expect(rental.id).toBe('1');
         expect(rental.customerId).toBe('customer-1');
         expect(rental.vehicleId).toBe('vehicle-1');
         expect(rental.startDate).toBe(startDate);
         expect(rental.endDate).toBe(endDate);
-        expect(rental.totalAmount).toBe(350.00);
+        expect(rental.totalAmount).toBe(350.0);
       });
 
       it('should handle different ID formats', () => {
         const startDate = new Date('2024-01-01');
         const endDate = new Date('2024-01-07');
-        
-        const rental1 = new RentalModel('rental-123', 'customer-456', 'vehicle-789', startDate, endDate, 100.00);
-        const rental2 = new RentalModel('1', '2', '3', startDate, endDate, 200.00);
-        const rental3 = new RentalModel('uuid-1234-5678', 'cust_abc', 'veh_xyz', startDate, endDate, 300.00);
+
+        const rental1 = new RentalModel(
+          'rental-123',
+          'customer-456',
+          'vehicle-789',
+          startDate,
+          endDate,
+          100.0,
+        );
+        const rental2 = new RentalModel('1', '2', '3', startDate, endDate, 200.0);
+        const rental3 = new RentalModel(
+          'uuid-1234-5678',
+          'cust_abc',
+          'veh_xyz',
+          startDate,
+          endDate,
+          300.0,
+        );
 
         expect(rental1.id).toBe('rental-123');
         expect(rental2.customerId).toBe('2');
@@ -69,10 +83,10 @@ describe('Rental Models', () => {
         const endDate = new Date('2024-01-07');
 
         const rental1 = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 0);
-        const rental2 = new RentalModel('2', 'customer-2', 'vehicle-2', startDate, endDate, -50.00);
+        const rental2 = new RentalModel('2', 'customer-2', 'vehicle-2', startDate, endDate, -50.0);
 
         expect(rental1.totalAmount).toBe(0);
-        expect(rental2.totalAmount).toBe(-50.00);
+        expect(rental2.totalAmount).toBe(-50.0);
       });
 
       it('should handle decimal amounts correctly', () => {
@@ -88,7 +102,7 @@ describe('Rental Models', () => {
       it('should return true for valid rental', () => {
         const startDate = new Date('2024-01-01');
         const endDate = new Date('2024-01-07');
-        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.00);
+        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.0);
 
         expect(rental.validate()).toBe(true);
       });
@@ -101,7 +115,7 @@ describe('Rental Models', () => {
             vehicleId: 'vehicle-1',
             startDate: new Date('2024-01-01'),
             endDate: new Date('2024-01-01'), // Same day
-            totalAmount: 50.00
+            totalAmount: 50.0,
           },
           {
             id: 'long-rental',
@@ -109,7 +123,7 @@ describe('Rental Models', () => {
             vehicleId: 'vehicle-2',
             startDate: new Date('2024-01-01'),
             endDate: new Date('2024-12-31'), // Full year
-            totalAmount: 10000.00
+            totalAmount: 10000.0,
           },
           {
             id: 'minimal-rental',
@@ -117,8 +131,8 @@ describe('Rental Models', () => {
             vehicleId: '1',
             startDate: new Date('2024-01-01'),
             endDate: new Date('2024-01-02'),
-            totalAmount: 1.00
-          }
+            totalAmount: 1.0,
+          },
         ];
 
         configurations.forEach(config => {
@@ -128,7 +142,7 @@ describe('Rental Models', () => {
             config.vehicleId,
             config.startDate,
             config.endDate,
-            config.totalAmount
+            config.totalAmount,
           );
           expect(rental.validate()).toBe(true);
         });
@@ -138,17 +152,38 @@ describe('Rental Models', () => {
         // Future dates
         const futureStart = new Date('2030-01-01');
         const futureEnd = new Date('2030-01-07');
-        const futureRental = new RentalModel('1', 'customer-1', 'vehicle-1', futureStart, futureEnd, 350.00);
+        const futureRental = new RentalModel(
+          '1',
+          'customer-1',
+          'vehicle-1',
+          futureStart,
+          futureEnd,
+          350.0,
+        );
         expect(futureRental.validate()).toBe(true);
 
         // Past dates
         const pastStart = new Date('2020-01-01');
         const pastEnd = new Date('2020-01-07');
-        const pastRental = new RentalModel('2', 'customer-2', 'vehicle-2', pastStart, pastEnd, 350.00);
+        const pastRental = new RentalModel(
+          '2',
+          'customer-2',
+          'vehicle-2',
+          pastStart,
+          pastEnd,
+          350.0,
+        );
         expect(pastRental.validate()).toBe(true);
 
         // Large amounts
-        const largeAmountRental = new RentalModel('3', 'customer-3', 'vehicle-3', pastStart, pastEnd, 999999.99);
+        const largeAmountRental = new RentalModel(
+          '3',
+          'customer-3',
+          'vehicle-3',
+          pastStart,
+          pastEnd,
+          999999.99,
+        );
         expect(largeAmountRental.validate()).toBe(true);
       });
     });
@@ -157,13 +192,13 @@ describe('Rental Models', () => {
       it('should allow property updates', () => {
         const startDate = new Date('2024-01-01');
         const endDate = new Date('2024-01-07');
-        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.00);
+        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.0);
 
         // Update properties
         rental.id = 'updated-id';
         rental.customerId = 'new-customer';
         rental.vehicleId = 'new-vehicle';
-        rental.totalAmount = 400.00;
+        rental.totalAmount = 400.0;
 
         const newStartDate = new Date('2024-02-01');
         const newEndDate = new Date('2024-02-07');
@@ -173,7 +208,7 @@ describe('Rental Models', () => {
         expect(rental.id).toBe('updated-id');
         expect(rental.customerId).toBe('new-customer');
         expect(rental.vehicleId).toBe('new-vehicle');
-        expect(rental.totalAmount).toBe(400.00);
+        expect(rental.totalAmount).toBe(400.0);
         expect(rental.startDate).toBe(newStartDate);
         expect(rental.endDate).toBe(newEndDate);
       });
@@ -181,7 +216,7 @@ describe('Rental Models', () => {
       it('should maintain validation after updates', () => {
         const startDate = new Date('2024-01-01');
         const endDate = new Date('2024-01-07');
-        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.00);
+        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.0);
 
         expect(rental.validate()).toBe(true);
 
@@ -201,11 +236,18 @@ describe('Rental Models', () => {
           new Date('2024-01-01T23:59:59Z'),
           new Date('2024-12-31'),
           new Date(2024, 0, 1), // January 1, 2024
-          new Date(Date.now() + 86400000) // Tomorrow
+          new Date(Date.now() + 86400000), // Tomorrow
         ];
 
         dates.forEach((date, index) => {
-          const rental = new RentalModel(`rental-${index}`, 'customer-1', 'vehicle-1', date, date, 100.00);
+          const rental = new RentalModel(
+            `rental-${index}`,
+            'customer-1',
+            'vehicle-1',
+            date,
+            date,
+            100.0,
+          );
           expect(rental.startDate).toBe(date);
           expect(rental.endDate).toBe(date);
         });
@@ -214,7 +256,7 @@ describe('Rental Models', () => {
       it('should handle start date after end date', () => {
         const startDate = new Date('2024-01-07');
         const endDate = new Date('2024-01-01'); // Earlier than start
-        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.00);
+        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', startDate, endDate, 350.0);
 
         expect(rental.startDate).toBe(startDate);
         expect(rental.endDate).toBe(endDate);
@@ -225,14 +267,28 @@ describe('Rental Models', () => {
 
     describe('Multiple Instances', () => {
       it('should handle multiple instances independently', () => {
-        const rental1 = new RentalModel('1', 'customer-1', 'vehicle-1', new Date('2024-01-01'), new Date('2024-01-07'), 350.00);
-        const rental2 = new RentalModel('2', 'customer-2', 'vehicle-2', new Date('2024-02-01'), new Date('2024-02-07'), 400.00);
+        const rental1 = new RentalModel(
+          '1',
+          'customer-1',
+          'vehicle-1',
+          new Date('2024-01-01'),
+          new Date('2024-01-07'),
+          350.0,
+        );
+        const rental2 = new RentalModel(
+          '2',
+          'customer-2',
+          'vehicle-2',
+          new Date('2024-02-01'),
+          new Date('2024-02-07'),
+          400.0,
+        );
 
-        rental1.totalAmount = 500.00;
-        rental2.totalAmount = 600.00;
+        rental1.totalAmount = 500.0;
+        rental2.totalAmount = 600.0;
 
-        expect(rental1.totalAmount).toBe(500.00);
-        expect(rental2.totalAmount).toBe(600.00);
+        expect(rental1.totalAmount).toBe(500.0);
+        expect(rental2.totalAmount).toBe(600.0);
         expect(rental1.id).not.toBe(rental2.id);
         expect(rental1.customerId).not.toBe(rental2.customerId);
       });
@@ -240,7 +296,14 @@ describe('Rental Models', () => {
 
     describe('Type Safety', () => {
       it('should maintain type safety for all properties', () => {
-        const rental = new RentalModel('1', 'customer-1', 'vehicle-1', new Date('2024-01-01'), new Date('2024-01-07'), 350.00);
+        const rental = new RentalModel(
+          '1',
+          'customer-1',
+          'vehicle-1',
+          new Date('2024-01-01'),
+          new Date('2024-01-07'),
+          350.0,
+        );
 
         expect(typeof rental.id).toBe('string');
         expect(typeof rental.customerId).toBe('string');
@@ -262,7 +325,14 @@ describe('Rental Models', () => {
     });
 
     it('should handle special characters in IDs', () => {
-      const rental = new RentalModel('rental-123!@#$%', 'customer_456^&*()', 'vehicle+789=[]{}', new Date(), new Date(), 100);
+      const rental = new RentalModel(
+        'rental-123!@#$%',
+        'customer_456^&*()',
+        'vehicle+789=[]{}',
+        new Date(),
+        new Date(),
+        100,
+      );
       expect(rental.id).toBe('rental-123!@#$%');
       expect(rental.customerId).toBe('customer_456^&*()');
       expect(rental.vehicleId).toBe('vehicle+789=[]{}');
@@ -270,8 +340,8 @@ describe('Rental Models', () => {
 
     it('should handle extreme date values', () => {
       const minDate = new Date(-8640000000000000); // Min safe date
-      const maxDate = new Date(8640000000000000);  // Max safe date
-      
+      const maxDate = new Date(8640000000000000); // Max safe date
+
       const rental = new RentalModel('1', 'customer-1', 'vehicle-1', minDate, maxDate, 100);
       expect(rental.startDate).toBe(minDate);
       expect(rental.endDate).toBe(maxDate);
@@ -279,7 +349,14 @@ describe('Rental Models', () => {
 
     it('should handle very large amounts', () => {
       const largeAmount = Number.MAX_SAFE_INTEGER;
-      const rental = new RentalModel('1', 'customer-1', 'vehicle-1', new Date(), new Date(), largeAmount);
+      const rental = new RentalModel(
+        '1',
+        'customer-1',
+        'vehicle-1',
+        new Date(),
+        new Date(),
+        largeAmount,
+      );
       expect(rental.totalAmount).toBe(largeAmount);
     });
   });

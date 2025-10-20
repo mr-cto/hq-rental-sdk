@@ -14,10 +14,16 @@ export interface Adjustment {
 export const listReservationAdjustments = async (reservationId: string): Promise<Adjustment[]> =>
   client.get<Adjustment[]>(`/car-rental/reservations/${reservationId}/adjustments`);
 
-export const createReservationAdjustment = async (reservationId: string, payload: Partial<Adjustment>): Promise<Adjustment> =>
+export const createReservationAdjustment = async (
+  reservationId: string,
+  payload: Partial<Adjustment>,
+): Promise<Adjustment> =>
   client.post<Adjustment>(`/car-rental/reservations/${reservationId}/adjustments`, payload);
 
-export const deleteReservationAdjustment = async (reservationId: string, adjustmentId: string): Promise<void> =>
+export const deleteReservationAdjustment = async (
+  reservationId: string,
+  adjustmentId: string,
+): Promise<void> =>
   client.delete(`/car-rental/reservations/${reservationId}/adjustments/${adjustmentId}`);
 
 export default {

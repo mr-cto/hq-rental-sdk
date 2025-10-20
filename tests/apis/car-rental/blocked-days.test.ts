@@ -19,7 +19,7 @@ describe('Blocked Days API', () => {
   describe('listBlockedDays', () => {
     it('should call client.get with correct URL without params', async () => {
       const mockBlockedDays = [
-        { id: '1', date: '2024-01-01', reason: 'Holiday', location_id: 'loc1' }
+        { id: '1', date: '2024-01-01', reason: 'Holiday', location_id: 'loc1' },
       ];
       mockClient.get.mockResolvedValue(mockBlockedDays);
 
@@ -31,21 +31,21 @@ describe('Blocked Days API', () => {
 
     it('should call client.get with correct URL with params', async () => {
       const mockBlockedDays = [
-        { id: '1', date: '2024-01-01', reason: 'Holiday', location_id: 'loc1' }
+        { id: '1', date: '2024-01-01', reason: 'Holiday', location_id: 'loc1' },
       ];
       const params = { location_id: 'loc1', date: '2024-01-01' };
       mockClient.get.mockResolvedValue(mockBlockedDays);
 
       const result = await blockedDaysAPI.listBlockedDays(params);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/blocked-days?location_id=loc1&date=2024-01-01');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/blocked-days?location_id=loc1&date=2024-01-01',
+      );
       expect(result).toEqual(mockBlockedDays);
     });
 
     it('should handle empty params object', async () => {
-      const mockBlockedDays = [
-        { id: '1', date: '2024-01-01', reason: 'Holiday' }
-      ];
+      const mockBlockedDays = [{ id: '1', date: '2024-01-01', reason: 'Holiday' }];
       mockClient.get.mockResolvedValue(mockBlockedDays);
 
       const result = await blockedDaysAPI.listBlockedDays({});
@@ -55,15 +55,15 @@ describe('Blocked Days API', () => {
     });
 
     it('should handle complex params with encoding', async () => {
-      const mockBlockedDays = [
-        { id: '1', date: '2024-01-01', reason: 'Special Event' }
-      ];
+      const mockBlockedDays = [{ id: '1', date: '2024-01-01', reason: 'Special Event' }];
       const params = { reason: 'Special Event', active: true };
       mockClient.get.mockResolvedValue(mockBlockedDays);
 
       const result = await blockedDaysAPI.listBlockedDays(params);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/blocked-days?reason=Special+Event&active=true');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/blocked-days?reason=Special+Event&active=true',
+      );
       expect(result).toEqual(mockBlockedDays);
     });
   });
@@ -90,7 +90,9 @@ describe('Blocked Days API', () => {
       const error = new Error('Server error');
       mockClient.get.mockRejectedValue(error);
 
-      await expect(blockedDaysAPI.listBlockedDays({ location_id: 'test' })).rejects.toThrow('Server error');
+      await expect(blockedDaysAPI.listBlockedDays({ location_id: 'test' })).rejects.toThrow(
+        'Server error',
+      );
     });
   });
 });

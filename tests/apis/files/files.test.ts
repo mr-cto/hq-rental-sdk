@@ -31,18 +31,18 @@ describe('Files API', () => {
             description: 'Rental agreement document',
             uploaded_by: 'user-1',
             uploaded_at: '2024-01-01T00:00:00Z',
-            metadata: { pages: 5, signed: false }
+            metadata: { pages: 5, signed: false },
           },
           {
-            id: 'file-2', 
+            id: 'file-2',
             filename: 'img_def456.jpg',
             original_name: 'vehicle_damage.jpg',
             mime_type: 'image/jpeg',
             size: 1048576,
             url: 'https://storage.example.com/files/img_def456.jpg',
             category: 'vehicle_photos',
-            uploaded_at: '2024-01-01T00:00:00Z'
-          }
+            uploaded_at: '2024-01-01T00:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockFiles);
 
@@ -58,7 +58,9 @@ describe('Files API', () => {
 
         await filesAPI.listFiles(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/files?category=agreements&mime_type=application%2Fpdf');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/files?category=agreements&mime_type=application%2Fpdf',
+        );
       });
 
       it('should handle empty params object', async () => {
@@ -70,17 +72,19 @@ describe('Files API', () => {
       });
 
       it('should handle complex query parameters', async () => {
-        const params = { 
+        const params = {
           category: 'vehicle_photos',
           uploaded_after: '2024-01-01',
           size_min: '1000',
-          size_max: '5000000'
+          size_max: '5000000',
         };
         mockClient.get.mockResolvedValue([]);
 
         await filesAPI.listFiles(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/files?category=vehicle_photos&uploaded_after=2024-01-01&size_min=1000&size_max=5000000');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/files?category=vehicle_photos&uploaded_after=2024-01-01&size_min=1000&size_max=5000000',
+        );
       });
     });
 
@@ -88,13 +92,13 @@ describe('Files API', () => {
       it('should call client.post with FormData and all fields', async () => {
         const fileContent = new Blob(['test content'], { type: 'text/plain' });
         const file = new File([fileContent], 'test.txt', { type: 'text/plain' });
-        
+
         const payload: UploadFilePayload = {
           file,
           filename: 'custom_name.txt',
           category: 'documents',
           description: 'Test document',
-          metadata: { version: '1.0', author: 'test user' }
+          metadata: { version: '1.0', author: 'test user' },
         };
 
         const mockResult: FileItem = {
@@ -107,9 +111,9 @@ describe('Files API', () => {
           category: 'documents',
           description: 'Test document',
           uploaded_at: '2024-01-01T00:00:00Z',
-          metadata: { version: '1.0', author: 'test user' }
+          metadata: { version: '1.0', author: 'test user' },
         };
-        
+
         mockClient.post.mockResolvedValue(mockResult);
 
         const result = await filesAPI.uploadFile(payload);
@@ -125,7 +129,7 @@ describe('Files API', () => {
       it('should handle minimal upload payload with just file', async () => {
         const fileContent = new Blob(['minimal content'], { type: 'text/plain' });
         const file = new File([fileContent], 'minimal.txt', { type: 'text/plain' });
-        
+
         const payload: UploadFilePayload = { file };
 
         const mockResult: FileItem = {
@@ -135,9 +139,9 @@ describe('Files API', () => {
           mime_type: 'text/plain',
           size: 15,
           url: 'https://storage.example.com/files/minimal.txt',
-          uploaded_at: '2024-01-01T00:00:00Z'
+          uploaded_at: '2024-01-01T00:00:00Z',
         };
-        
+
         mockClient.post.mockResolvedValue(mockResult);
 
         const result = await filesAPI.uploadFile(payload);
@@ -148,11 +152,11 @@ describe('Files API', () => {
 
       it('should handle Blob instead of File', async () => {
         const blob = new Blob(['blob content'], { type: 'application/octet-stream' });
-        
+
         const payload: UploadFilePayload = {
           file: blob,
           filename: 'blob_file.bin',
-          category: 'binary'
+          category: 'binary',
         };
 
         const mockResult: FileItem = {
@@ -163,9 +167,9 @@ describe('Files API', () => {
           size: 12,
           url: 'https://storage.example.com/files/blob_file.bin',
           category: 'binary',
-          uploaded_at: '2024-01-01T00:00:00Z'
+          uploaded_at: '2024-01-01T00:00:00Z',
         };
-        
+
         mockClient.post.mockResolvedValue(mockResult);
 
         const result = await filesAPI.uploadFile(payload);
@@ -176,15 +180,15 @@ describe('Files API', () => {
 
       it('should handle complex metadata objects', async () => {
         const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-        
+
         const payload: UploadFilePayload = {
           file,
           metadata: {
             tags: ['important', 'rental'],
             version: 2.1,
             settings: { public: false, expires: '2024-12-31' },
-            nested: { deeply: { nested: { value: true } } }
-          }
+            nested: { deeply: { nested: { value: true } } },
+          },
         };
 
         mockClient.post.mockResolvedValue({ id: 'file-complex' });
@@ -264,10 +268,10 @@ describe('Files API', () => {
       const file = new File(['content'], 'README', { type: 'text/plain' });
       const payload: UploadFilePayload = { file };
 
-      mockClient.post.mockResolvedValue({ 
+      mockClient.post.mockResolvedValue({
         id: 'file-no-ext',
         filename: 'README',
-        original_name: 'README'
+        original_name: 'README',
       });
 
       const result = await filesAPI.uploadFile(payload);
@@ -281,10 +285,10 @@ describe('Files API', () => {
       const file = new File(['content'], longName, { type: 'text/plain' });
       const payload: UploadFilePayload = { file };
 
-      mockClient.post.mockResolvedValue({ 
+      mockClient.post.mockResolvedValue({
         id: 'file-long',
         filename: 'truncated_filename.txt',
-        original_name: longName
+        original_name: longName,
       });
 
       const result = await filesAPI.uploadFile(payload);
@@ -295,7 +299,7 @@ describe('Files API', () => {
 
     it('should handle undefined parameters gracefully', async () => {
       mockClient.get.mockResolvedValue([]);
-      
+
       await filesAPI.listFiles(undefined);
       expect(mockClient.get).toHaveBeenCalledWith('/files');
     });
@@ -305,16 +309,16 @@ describe('Files API', () => {
         { type: 'image/jpeg', extension: '.jpg' },
         { type: 'application/pdf', extension: '.pdf' },
         { type: 'video/mp4', extension: '.mp4' },
-        { type: 'application/json', extension: '.json' }
+        { type: 'application/json', extension: '.json' },
       ];
 
       for (const testCase of testCases) {
         const file = new File(['content'], `test${testCase.extension}`, { type: testCase.type });
         const payload: UploadFilePayload = { file };
 
-        mockClient.post.mockResolvedValue({ 
+        mockClient.post.mockResolvedValue({
           id: `file-${testCase.extension.slice(1)}`,
-          mime_type: testCase.type
+          mime_type: testCase.type,
         });
 
         const result = await filesAPI.uploadFile(payload);

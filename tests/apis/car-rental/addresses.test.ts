@@ -55,7 +55,9 @@ describe('Addresses API', () => {
 
       const result = await addressesAPI.listAddresses(params);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/addresses?city=Test+City&country=US&active=true');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/addresses?city=Test+City&country=US&active=true',
+      );
       expect(result).toEqual(mockAddresses);
     });
   });
@@ -85,7 +87,12 @@ describe('Addresses API', () => {
 
     it('should handle partial payload', async () => {
       const payload = { street: '456 Partial St' };
-      const mockAddress = { id: '4', street: '456 Partial St', city: 'Default City', country: 'US' };
+      const mockAddress = {
+        id: '4',
+        street: '456 Partial St',
+        city: 'Default City',
+        country: 'US',
+      };
       mockClient.post.mockResolvedValue(mockAddress);
 
       const result = await addressesAPI.createAddress(payload);
@@ -109,12 +116,19 @@ describe('Addresses API', () => {
 
     it('should handle special characters in addressId', async () => {
       const addressId = 'addr-with-special/chars%20test';
-      const mockAddress = { id: addressId, street: '789 Special St', city: 'Special City', country: 'US' };
+      const mockAddress = {
+        id: addressId,
+        street: '789 Special St',
+        city: 'Special City',
+        country: 'US',
+      };
       mockClient.get.mockResolvedValue(mockAddress);
 
       const result = await addressesAPI.getAddress(addressId);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/addresses/addr-with-special/chars%20test');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/addresses/addr-with-special/chars%20test',
+      );
       expect(result).toEqual(mockAddress);
     });
   });
@@ -135,7 +149,12 @@ describe('Addresses API', () => {
     it('should handle empty payload', async () => {
       const addressId = 'addr-789';
       const payload = {};
-      const mockAddress = { id: addressId, street: 'Original St', city: 'Original City', country: 'US' };
+      const mockAddress = {
+        id: addressId,
+        street: 'Original St',
+        city: 'Original City',
+        country: 'US',
+      };
       mockClient.put.mockResolvedValue(mockAddress);
 
       const result = await addressesAPI.updateAddress(addressId, payload);
@@ -147,7 +166,13 @@ describe('Addresses API', () => {
     it('should handle partial payload update', async () => {
       const addressId = 'addr-partial';
       const payload = { postal_code: '12345' };
-      const mockAddress = { id: addressId, street: 'Original St', city: 'Original City', country: 'US', postal_code: '12345' };
+      const mockAddress = {
+        id: addressId,
+        street: 'Original St',
+        city: 'Original City',
+        country: 'US',
+        postal_code: '12345',
+      };
       mockClient.put.mockResolvedValue(mockAddress);
 
       const result = await addressesAPI.updateAddress(addressId, payload);
@@ -174,7 +199,9 @@ describe('Addresses API', () => {
 
       const result = await addressesAPI.deleteAddress(addressId);
 
-      expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/addresses/addr-delete/special%20chars');
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        '/car-rental/addresses/addr-delete/special%20chars',
+      );
       expect(result).toBeUndefined();
     });
   });

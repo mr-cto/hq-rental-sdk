@@ -13,7 +13,9 @@ export interface SecurityDeposit {
 }
 
 // Security Deposits
-export const listSecurityDeposits = async (params?: Record<string, any>): Promise<SecurityDeposit[]> => {
+export const listSecurityDeposits = async (
+  params?: Record<string, any>,
+): Promise<SecurityDeposit[]> => {
   const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
   return client.get<SecurityDeposit[]>(`/car-rental/security-deposits${queryString}`);
 };

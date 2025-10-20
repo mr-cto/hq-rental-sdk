@@ -173,7 +173,7 @@
 - Payment Gateways [Returns a connection token for a given location](https://api-docs.hqrentalsoftware.com/api-14010591.md): 
 - Payment Gateways [Returns a connection token for stripe terminal](https://api-docs.hqrentalsoftware.com/api-14010592.md): 
 - Sheets [Show a list of all items for specific sheet](https://api-docs.hqrentalsoftware.com/api-14959273.md): Get a JSON representation of items for specific sheet
-- Sheets [Show details of sheet item](https://api-docs.hqrentalsoftware.com/api-14959274.md): Get a JSON representation of one sheet item
+- Sheets [Show details of sheet item](https://api-docs.hqxoftware.com/api-14959274.md): Get a JSON representation of one sheet item
 - Sheets [Update sheet item in the application](https://api-docs.hqrentalsoftware.com/api-14959275.md): 
 - Sheets [Create a new sheet item in the application](https://api-docs.hqrentalsoftware.com/api-14959276.md): 
 - Sheets [Show a list of all sheets](https://api-docs.hqrentalsoftware.com/api-14959277.md): Get a JSON representation of all sheets

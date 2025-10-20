@@ -14,10 +14,16 @@ export interface ReservationAgent {
 export const listReservationAgents = async (): Promise<ReservationAgent[]> =>
   client.get<ReservationAgent[]>('/car-rental/reservation-agents');
 
-export const assignPrimaryAgent = async (reservationId: string, payload: { agent_id: string }): Promise<void> =>
+export const assignPrimaryAgent = async (
+  reservationId: string,
+  payload: { agent_id: string },
+): Promise<void> =>
   client.post(`/car-rental/reservations/${reservationId}/assign-primary-agent`, payload);
 
-export const assignReturnAgent = async (reservationId: string, payload: { agent_id: string }): Promise<void> =>
+export const assignReturnAgent = async (
+  reservationId: string,
+  payload: { agent_id: string },
+): Promise<void> =>
   client.post(`/car-rental/reservations/${reservationId}/assign-return-agent`, payload);
 
 export default {

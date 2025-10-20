@@ -1,13 +1,15 @@
-import client from '../../client';
+import client from '../client';
 
 export interface FilterExample {
   field: string;
   operators: string[];
-  description: string;
-  example: string;
+  example_values?: (string | number | boolean)[];
+  description?: string;
 }
 
-// Filters
+/**
+ * Returns an example of the allowed filters to the API
+ */
 export const getFilterExamples = async (): Promise<FilterExample[]> =>
   client.get<FilterExample[]>('/filters');
 

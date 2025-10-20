@@ -14,10 +14,16 @@ export interface Extension {
 export const listReservationExtensions = async (reservationId: string): Promise<Extension[]> =>
   client.get<Extension[]>(`/car-rental/reservations/${reservationId}/extensions`);
 
-export const createReservationExtension = async (reservationId: string, payload: Partial<Extension>): Promise<Extension> =>
+export const createReservationExtension = async (
+  reservationId: string,
+  payload: Partial<Extension>,
+): Promise<Extension> =>
   client.post<Extension>(`/car-rental/reservations/${reservationId}/extensions`, payload);
 
-export const deleteReservationExtension = async (reservationId: string, extensionId: string): Promise<void> =>
+export const deleteReservationExtension = async (
+  reservationId: string,
+  extensionId: string,
+): Promise<void> =>
   client.delete(`/car-rental/reservations/${reservationId}/extensions/${extensionId}`);
 
 export default {

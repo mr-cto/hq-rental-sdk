@@ -5,7 +5,7 @@ import http from '../utils/http';
  * Call `auth.setToken(null)` to clear the token.
  */
 export const setToken = (token: string | null) => {
-    http.setToken(token);
+  http.setToken(token);
 };
 
 /**
@@ -14,6 +14,6 @@ export const setToken = (token: string | null) => {
 export const useApiKey = (apiKey: string) => setToken(apiKey);
 
 export default {
-    setToken,
-    useApiKey,
+  setToken,
+  useApiKey,
 };

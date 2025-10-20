@@ -1,5 +1,10 @@
 import * as sheetsAPI from '../../../src/apis/sheets';
-import type { Sheet, SheetItem, CreateSheetItemPayload, UpdateSheetItemPayload } from '../../../src/apis/sheets';
+import type {
+  Sheet,
+  SheetItem,
+  CreateSheetItemPayload,
+  UpdateSheetItemPayload,
+} from '../../../src/apis/sheets';
 
 // Mock the client module
 jest.mock('../../../src/client', () => ({
@@ -26,15 +31,15 @@ describe('Sheets API', () => {
             description: 'Main pricing configuration',
             created_at: '2024-01-01T00:00:00Z',
             updated_at: '2024-01-01T00:00:00Z',
-            item_count: 10
+            item_count: 10,
           },
           {
             id: 'sheet-2',
             name: 'Additional Services',
             created_at: '2024-01-01T00:00:00Z',
             updated_at: '2024-01-01T00:00:00Z',
-            item_count: 5
-          }
+            item_count: 5,
+          },
         ];
         mockClient.get.mockResolvedValue(mockSheets);
 
@@ -73,12 +78,12 @@ describe('Sheets API', () => {
             name: 'Basic Rate',
             description: 'Daily base rate',
             category: 'rates',
-            price: 50.00,
+            price: 50.0,
             quantity: 1,
             unit: 'day',
             active: true,
             created_at: '2024-01-01T00:00:00Z',
-            updated_at: '2024-01-01T00:00:00Z'
+            updated_at: '2024-01-01T00:00:00Z',
           },
           {
             id: 'item-2',
@@ -86,13 +91,13 @@ describe('Sheets API', () => {
             name: 'GPS Navigation',
             description: 'GPS device rental',
             category: 'equipment',
-            price: 10.00,
+            price: 10.0,
             quantity: 1,
             unit: 'day',
             active: true,
             created_at: '2024-01-01T00:00:00Z',
-            updated_at: '2024-01-01T00:00:00Z'
-          }
+            updated_at: '2024-01-01T00:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockItems);
 
@@ -108,7 +113,9 @@ describe('Sheets API', () => {
 
         await sheetsAPI.listSheetItems('sheet-1', params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/sheets/sheet-1/items?active=true&category=equipment');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/sheets/sheet-1/items?active=true&category=equipment',
+        );
       });
 
       it('should handle special characters in sheet ID', async () => {
@@ -128,12 +135,12 @@ describe('Sheets API', () => {
           name: 'Basic Rate',
           description: 'Daily base rate',
           category: 'rates',
-          price: 50.00,
+          price: 50.0,
           quantity: 1,
           unit: 'day',
           active: true,
           created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
+          updated_at: '2024-01-01T00:00:00Z',
         };
         mockClient.get.mockResolvedValue(mockItem);
 
@@ -158,11 +165,11 @@ describe('Sheets API', () => {
           name: 'New Item',
           description: 'A new sheet item',
           category: 'equipment',
-          price: 25.00,
+          price: 25.0,
           quantity: 1,
           unit: 'day',
           active: true,
-          custom_fields: { color: 'blue', size: 'medium' }
+          custom_fields: { color: 'blue', size: 'medium' },
         };
         const mockItem: SheetItem = {
           id: 'item-new',
@@ -170,13 +177,13 @@ describe('Sheets API', () => {
           name: 'New Item',
           description: 'A new sheet item',
           category: 'equipment',
-          price: 25.00,
+          price: 25.0,
           quantity: 1,
           unit: 'day',
           active: true,
           custom_fields: { color: 'blue', size: 'medium' },
           created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
+          updated_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockItem);
 
@@ -188,7 +195,7 @@ describe('Sheets API', () => {
 
       it('should handle minimal payload', async () => {
         const payload: CreateSheetItemPayload = {
-          name: 'Minimal Item'
+          name: 'Minimal Item',
         };
         const mockItem: SheetItem = {
           id: 'item-minimal',
@@ -196,7 +203,7 @@ describe('Sheets API', () => {
           name: 'Minimal Item',
           active: true,
           created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-01T00:00:00Z'
+          updated_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockItem);
 
@@ -210,8 +217,8 @@ describe('Sheets API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: UpdateSheetItemPayload = {
           name: 'Updated Item',
-          price: 30.00,
-          active: false
+          price: 30.0,
+          active: false,
         };
         const mockItem: SheetItem = {
           id: 'item-1',
@@ -219,12 +226,12 @@ describe('Sheets API', () => {
           name: 'Updated Item',
           description: 'Original description',
           category: 'equipment',
-          price: 30.00,
+          price: 30.0,
           quantity: 1,
           unit: 'day',
           active: false,
           created_at: '2024-01-01T00:00:00Z',
-          updated_at: '2024-01-02T00:00:00Z'
+          updated_at: '2024-01-02T00:00:00Z',
         };
         mockClient.put.mockResolvedValue(mockItem);
 
@@ -259,20 +266,28 @@ describe('Sheets API', () => {
       mockClient.post.mockRejectedValue(error);
       mockClient.put.mockRejectedValue(error);
 
-      await expect(sheetsAPI.listSheetItems('sheet-1')).rejects.toThrow('Sheet item operation failed');
-      await expect(sheetsAPI.getSheetItem('sheet-1', 'item-1')).rejects.toThrow('Sheet item operation failed');
-      await expect(sheetsAPI.createSheetItem('sheet-1', { name: 'Test' })).rejects.toThrow('Sheet item operation failed');
-      await expect(sheetsAPI.updateSheetItem('sheet-1', 'item-1', {})).rejects.toThrow('Sheet item operation failed');
+      await expect(sheetsAPI.listSheetItems('sheet-1')).rejects.toThrow(
+        'Sheet item operation failed',
+      );
+      await expect(sheetsAPI.getSheetItem('sheet-1', 'item-1')).rejects.toThrow(
+        'Sheet item operation failed',
+      );
+      await expect(sheetsAPI.createSheetItem('sheet-1', { name: 'Test' })).rejects.toThrow(
+        'Sheet item operation failed',
+      );
+      await expect(sheetsAPI.updateSheetItem('sheet-1', 'item-1', {})).rejects.toThrow(
+        'Sheet item operation failed',
+      );
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle undefined or null parameters gracefully', async () => {
       mockClient.get.mockResolvedValue([]);
-      
+
       await sheetsAPI.listSheets(undefined);
       expect(mockClient.get).toHaveBeenCalledWith('/sheets');
-      
+
       await sheetsAPI.listSheetItems('sheet-1', undefined);
       expect(mockClient.get).toHaveBeenCalledWith('/sheets/sheet-1/items');
     });
@@ -291,8 +306,8 @@ describe('Sheets API', () => {
         custom_fields: {
           metadata: { version: '1.0' },
           tags: ['important', 'featured'],
-          settings: { visible: true, sortOrder: 10 }
-        }
+          settings: { visible: true, sortOrder: 10 },
+        },
       };
       mockClient.post.mockResolvedValue({ id: 'item-custom' });
 
@@ -303,14 +318,17 @@ describe('Sheets API', () => {
       const updatePayload: UpdateSheetItemPayload = {
         custom_fields: {
           metadata: { version: '2.0' },
-          newField: 'new value'
-        }
+          newField: 'new value',
+        },
       };
       mockClient.put.mockResolvedValue({ id: 'item-custom' });
 
       await sheetsAPI.updateSheetItem('sheet-1', 'item-custom', updatePayload);
 
-      expect(mockClient.put).toHaveBeenCalledWith('/sheets/sheet-1/items/item-custom', updatePayload);
+      expect(mockClient.put).toHaveBeenCalledWith(
+        '/sheets/sheet-1/items/item-custom',
+        updatePayload,
+      );
     });
   });
 });

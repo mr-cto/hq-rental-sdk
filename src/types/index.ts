@@ -27,7 +27,7 @@ export type InventoryItem = {
 export type Comment = {
   id: string;
   item_id?: string;
-  reservation_id?: string;  
+  reservation_id?: string;
   content: string;
   author: string;
   created_at: string;

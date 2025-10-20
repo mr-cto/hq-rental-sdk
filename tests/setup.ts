@@ -6,7 +6,7 @@ beforeEach(() => {
   // Clear any environment variables
   delete process.env.HQ_API_TOKEN;
   delete process.env.HQ_API_BASE_URL;
-  
+
   // Reset all mocks
   jest.clearAllMocks();
 });

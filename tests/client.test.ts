@@ -27,7 +27,7 @@ describe('HQRentalClient', () => {
         status: 200,
         statusText: 'OK',
         headers: {},
-        config: {} as any
+        config: {} as any,
       };
       mockHttp.get.mockResolvedValue(mockResponse);
 
@@ -43,7 +43,7 @@ describe('HQRentalClient', () => {
         status: 201,
         statusText: 'Created',
         headers: {},
-        config: {} as any
+        config: {} as any,
       };
       const requestData = { name: 'test' };
       mockHttp.post.mockResolvedValue(mockResponse);
@@ -60,7 +60,7 @@ describe('HQRentalClient', () => {
         status: 200,
         statusText: 'OK',
         headers: {},
-        config: {} as any
+        config: {} as any,
       };
       const requestData = { name: 'updated' };
       mockHttp.put.mockResolvedValue(mockResponse);
@@ -77,7 +77,7 @@ describe('HQRentalClient', () => {
         status: 204,
         statusText: 'No Content',
         headers: {},
-        config: {} as any
+        config: {} as any,
       };
       mockHttp.del.mockResolvedValue(mockResponse);
 
@@ -88,18 +88,16 @@ describe('HQRentalClient', () => {
     });
 
     it('should throw error for unsupported method', async () => {
-      await expect(
-        clientInstance.request('patch' as any, '/test')
-      ).rejects.toThrow('Unsupported method');
+      await expect(clientInstance.request('patch' as any, '/test')).rejects.toThrow(
+        'Unsupported method',
+      );
     });
 
     it('should handle request errors', async () => {
       const error = new Error('Network error');
       mockHttp.get.mockRejectedValue(error);
 
-      await expect(
-        clientInstance.request('get', '/test')
-      ).rejects.toThrow('Network error');
+      await expect(clientInstance.request('get', '/test')).rejects.toThrow('Network error');
     });
   });
 
@@ -125,7 +123,7 @@ describe('HQRentalClient', () => {
           id: number;
           name: string;
         }
-        
+
         const mockResult: TestResponse = { id: 1, name: 'test' };
         (clientInstance.request as jest.Mock).mockResolvedValue(mockResult);
 
@@ -163,12 +161,12 @@ describe('HQRentalClient', () => {
         interface CreateRequest {
           name: string;
         }
-        
+
         interface CreateResponse {
           id: number;
           name: string;
         }
-        
+
         const requestData: CreateRequest = { name: 'test' };
         const mockResult: CreateResponse = { id: 1, name: 'test' };
         (clientInstance.request as jest.Mock).mockResolvedValue(mockResult);
@@ -218,7 +216,7 @@ describe('HQRentalClient', () => {
         interface DeleteResponse {
           deleted: boolean;
         }
-        
+
         const mockResult: DeleteResponse = { deleted: true };
         (clientInstance.request as jest.Mock).mockResolvedValue(mockResult);
 
@@ -262,7 +260,7 @@ describe('client export', () => {
   it('should be a singleton instance', async () => {
     const module1 = await import('../src/client');
     const module2 = await import('../src/client');
-    
+
     expect(module1.client).toBe(module2.client);
   });
 });
@@ -271,7 +269,7 @@ describe('integration with http module', () => {
   it('should use actual http module methods', () => {
     // This test ensures the client correctly delegates to http module
     const realClient = new HQRentalClient();
-    
+
     // Check that methods exist and are functions
     expect(typeof realClient.get).toBe('function');
     expect(typeof realClient.post).toBe('function');

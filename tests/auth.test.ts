@@ -13,23 +13,23 @@ describe('Authentication Module', () => {
   describe('setToken', () => {
     it('should call http.setToken with the provided token', () => {
       const token = 'test-api-token-123';
-      
+
       setToken(token);
-      
+
       expect(mockHttp.setToken).toHaveBeenCalledWith(token);
       expect(mockHttp.setToken).toHaveBeenCalledTimes(1);
     });
 
     it('should call http.setToken with null to clear token', () => {
       setToken(null);
-      
+
       expect(mockHttp.setToken).toHaveBeenCalledWith(null);
       expect(mockHttp.setToken).toHaveBeenCalledTimes(1);
     });
 
     it('should handle empty string token', () => {
       setToken('');
-      
+
       expect(mockHttp.setToken).toHaveBeenCalledWith('');
       expect(mockHttp.setToken).toHaveBeenCalledTimes(1);
     });
@@ -37,10 +37,10 @@ describe('Authentication Module', () => {
     it('should handle multiple consecutive calls', () => {
       const token1 = 'token1';
       const token2 = 'token2';
-      
+
       setToken(token1);
       setToken(token2);
-      
+
       expect(mockHttp.setToken).toHaveBeenCalledTimes(2);
       expect(mockHttp.setToken).toHaveBeenNthCalledWith(1, token1);
       expect(mockHttp.setToken).toHaveBeenNthCalledWith(2, token2);
@@ -50,9 +50,9 @@ describe('Authentication Module', () => {
   describe('useApiKey', () => {
     it('should call setToken with the provided API key', () => {
       const apiKey = 'api-key-123';
-      
+
       useApiKey(apiKey);
-      
+
       expect(mockHttp.setToken).toHaveBeenCalledWith(apiKey);
       expect(mockHttp.setToken).toHaveBeenCalledTimes(1);
     });
@@ -62,7 +62,7 @@ describe('Authentication Module', () => {
         'sk_test_123456',
         'Bearer token123',
         'simple-api-key',
-        'very-long-api-key-with-lots-of-characters-1234567890'
+        'very-long-api-key-with-lots-of-characters-1234567890',
       ];
 
       formats.forEach((key, index) => {
@@ -75,9 +75,9 @@ describe('Authentication Module', () => {
 
     it('should handle special characters in API key', () => {
       const specialKey = 'key-with-special-chars!@#$%^&*()';
-      
+
       useApiKey(specialKey);
-      
+
       expect(mockHttp.setToken).toHaveBeenCalledWith(specialKey);
     });
   });
@@ -116,7 +116,7 @@ describe('Authentication Module', () => {
       mockHttp.setToken.mockClear();
 
       const testToken = 'integration-test-token';
-      
+
       // Test setToken
       setToken(testToken);
       expect(mockHttp.setToken).toHaveBeenCalledWith(testToken);
@@ -139,7 +139,7 @@ describe('Authentication Module', () => {
 
       expect(() => setToken('test-token')).toThrow('HTTP module error');
       expect(() => useApiKey('test-key')).toThrow('HTTP module error');
-      
+
       // Reset the mock for other tests
       mockHttp.setToken.mockReset();
     });
@@ -147,7 +147,7 @@ describe('Authentication Module', () => {
     it('should handle undefined input gracefully', () => {
       // Reset the mock to not throw errors
       mockHttp.setToken.mockImplementation(() => {});
-      
+
       // TypeScript would catch this, but testing runtime behavior
       expect(() => setToken(undefined as any)).not.toThrow();
       expect(() => useApiKey(undefined as any)).not.toThrow();

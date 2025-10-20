@@ -57,10 +57,14 @@ export interface Quote {
 export const listCustomerCredits = async (customerId: string): Promise<CustomerCredit[]> =>
   client.get<CustomerCredit[]>(`/car-rental/customer-credits?customer_id=${customerId}`);
 
-export const createCustomerCredit = async (payload: Partial<CustomerCredit>): Promise<CustomerCredit> =>
-  client.post<CustomerCredit>('/car-rental/customer-credits', payload);
+export const createCustomerCredit = async (
+  payload: Partial<CustomerCredit>,
+): Promise<CustomerCredit> => client.post<CustomerCredit>('/car-rental/customer-credits', payload);
 
-export const updateCustomerCredit = async (creditId: string, payload: Partial<CustomerCredit>): Promise<CustomerCredit> =>
+export const updateCustomerCredit = async (
+  creditId: string,
+  payload: Partial<CustomerCredit>,
+): Promise<CustomerCredit> =>
   client.put<CustomerCredit>(`/car-rental/customer-credits/${creditId}`, payload);
 
 export const deleteCustomerCredit = async (creditId: string): Promise<void> =>
@@ -112,20 +116,20 @@ export default {
   createCustomerCredit,
   updateCustomerCredit,
   deleteCustomerCredit,
-  
+
   // Fines
   listFines,
   createFine,
   getFine,
   updateFine,
   deleteFine,
-  
+
   // Packages
   listPackageItems,
   getPackageItem,
   listPackages,
   getPackage,
-  
+
   // Quotes
   listQuotes,
   getQuote,

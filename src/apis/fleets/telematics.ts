@@ -34,8 +34,13 @@ export interface TelematicsDevice {
 }
 
 // Telematics Data
-export const listTelematicsData = async (vehicleId: string, params?: { start_date?: string; end_date?: string; limit?: number }): Promise<TelematicsData[]> => {
-  const query = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : '';
+export const listTelematicsData = async (
+  vehicleId: string,
+  params?: { start_date?: string; end_date?: string; limit?: number },
+): Promise<TelematicsData[]> => {
+  const query = params
+    ? `?${new URLSearchParams(params as Record<string, string>).toString()}`
+    : '';
   return client.get<TelematicsData[]>(`/fleets/vehicles/${vehicleId}/telematics${query}`);
 };
 
@@ -46,13 +51,18 @@ export const getLatestTelematicsData = async (vehicleId: string): Promise<Telema
 export const listTelematicsDevices = async (): Promise<TelematicsDevice[]> =>
   client.get<TelematicsDevice[]>('/fleets/telematics/devices');
 
-export const createTelematicsDevice = async (payload: Partial<TelematicsDevice>): Promise<TelematicsDevice> =>
+export const createTelematicsDevice = async (
+  payload: Partial<TelematicsDevice>,
+): Promise<TelematicsDevice> =>
   client.post<TelematicsDevice>('/fleets/telematics/devices', payload);
 
 export const getTelematicsDevice = async (deviceId: string): Promise<TelematicsDevice> =>
   client.get<TelematicsDevice>(`/fleets/telematics/devices/${deviceId}`);
 
-export const updateTelematicsDevice = async (deviceId: string, payload: Partial<TelematicsDevice>): Promise<TelematicsDevice> =>
+export const updateTelematicsDevice = async (
+  deviceId: string,
+  payload: Partial<TelematicsDevice>,
+): Promise<TelematicsDevice> =>
   client.put<TelematicsDevice>(`/fleets/telematics/devices/${deviceId}`, payload);
 
 export const deleteTelematicsDevice = async (deviceId: string): Promise<void> =>

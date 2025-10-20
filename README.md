@@ -29,7 +29,7 @@ auth.setToken('your-api-token');
 const customer = await customers.createCustomer({
   name: 'John Doe',
   email: 'john@example.com',
-  phone: '+1234567890'
+  phone: '+1234567890',
 });
 
 // List reservations
@@ -44,25 +44,30 @@ const vehicles = await fleet.listVehicles({ status: 'available' });
 The SDK is organized into the following modules:
 
 ### Core APIs
+
 - **`customers`** - Customer management (CRUD operations)
 - **`rentals`** - Reservation management and status updates
 - **`inventory`** - Inventory item management
 
 ### Fleet Management
+
 - **`fleet`** - Vehicles, models, types, damages, maintenance
 - **`fleetManagement`** - Additional charges, features, locations
 
 ### Financial & Pricing
+
 - **`financial`** - Customer credits, fines, packages, quotes
 - **`pricing`** - Rate types, rates, seasons, security deposits
 - **`reservations`** - Payments, refunds, adjustments, extensions
 
 ### Communication & Content
+
 - **`emails`** - Email templates and delivery
 - **`comments`** - Comments for items and reservations
 - **`addresses`** - Address management
 
 ### System & Configuration
+
 - **`system`** - Webhooks, preferences, contacts, payment gateways
 - **`currencies`** - Currency management
 - **`fields`** - Custom field definitions
@@ -101,9 +106,9 @@ export HQ_API_BASE_URL=https://your-instance.hqrentalsoftware.com
 import { customers } from 'hq-rental-sdk';
 
 // List customers with pagination
-const customerList = await customers.listCustomers({ 
-  page: '1', 
-  limit: '20' 
+const customerList = await customers.listCustomers({
+  page: '1',
+  limit: '20',
 });
 
 // Get a specific customer
@@ -113,12 +118,12 @@ const customer = await customers.getCustomer('customer-id');
 const newCustomer = await customers.createCustomer({
   name: 'Jane Smith',
   email: 'jane@example.com',
-  phone: '+1987654321'
+  phone: '+1987654321',
 });
 
 // Update customer
 const updatedCustomer = await customers.updateCustomer('customer-id', {
-  phone: '+1555000000'
+  phone: '+1555000000',
 });
 
 // Delete customer
@@ -141,7 +146,7 @@ const newReservation = await rentals.createReservation({
   customerId: 'customer-id',
   vehicleId: 'vehicle-id',
   startDate: '2024-01-01',
-  endDate: '2024-01-07'
+  endDate: '2024-01-07',
 });
 
 // Update reservation status
@@ -156,9 +161,9 @@ await rentals.setReservationPending('reservation-id');
 import { fleet } from 'hq-rental-sdk';
 
 // List vehicles
-const vehicles = await fleet.listVehicles({ 
+const vehicles = await fleet.listVehicles({
   status: 'available',
-  location_id: 'location-1' 
+  location_id: 'location-1',
 });
 
 // Get vehicle details
@@ -172,7 +177,7 @@ const blockedPeriod = await fleet.createBlockedPeriod({
   vehicle_id: 'vehicle-id',
   start_date: '2024-01-01',
   end_date: '2024-01-07',
-  reason: 'Maintenance'
+  reason: 'Maintenance',
 });
 ```
 
@@ -186,15 +191,15 @@ const payments = await reservations.listReservationPayments('reservation-id');
 
 // Create payment
 const payment = await reservations.createReservationPayment('reservation-id', {
-  amount: 100.00,
+  amount: 100.0,
   payment_method: 'credit_card',
-  transaction_id: 'txn-123'
+  transaction_id: 'txn-123',
 });
 
 // Create refund
 const refund = await reservations.createReservationRefund('reservation-id', {
-  amount: 50.00,
-  reason: 'Customer cancellation'
+  amount: 50.0,
+  reason: 'Customer cancellation',
 });
 
 // List customer fines
@@ -233,7 +238,7 @@ import { Customer, Vehicle, Payment } from 'hq-rental-sdk/types';
 const customer: Customer = {
   id: '1',
   name: 'John Doe',
-  email: 'john@example.com'
+  email: 'john@example.com',
 };
 
 const vehicle: Vehicle = {
@@ -242,7 +247,7 @@ const vehicle: Vehicle = {
   model: 'Camry',
   year: 2023,
   license_plate: 'ABC123',
-  status: 'available'
+  status: 'available',
 };
 ```
 

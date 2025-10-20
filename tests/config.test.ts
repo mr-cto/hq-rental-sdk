@@ -16,7 +16,7 @@ describe('Config Module', () => {
 
     it('should have correct default headers structure', () => {
       expect(DEFAULT_HEADERS).toEqual({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       });
     });
   });
@@ -27,8 +27,8 @@ describe('Config Module', () => {
       const config: Config = {
         baseUrl: 'https://test.com',
         headers: {
-          'Custom-Header': 'value'
-        }
+          'Custom-Header': 'value',
+        },
       };
 
       expect(config.baseUrl).toBe('https://test.com');
@@ -71,7 +71,7 @@ describe('Config Module', () => {
 
     it('should use hardcoded API_BASE_URL when no environment variable is set', () => {
       delete process.env.HQ_API_BASE_URL;
-      
+
       // Re-require the module to get fresh constants
       const { API_BASE_URL: freshApiUrl } = require('../src/config');
       expect(freshApiUrl).toBe('https://api.hqrentalsoftware.com');
@@ -81,7 +81,7 @@ describe('Config Module', () => {
   describe('Object Immutability', () => {
     it('should not allow modification of DEFAULT_HEADERS from outside', () => {
       const originalHeaders = { ...DEFAULT_HEADERS };
-      
+
       // Try to modify the exported object
       try {
         (DEFAULT_HEADERS as any)['New-Header'] = 'should-not-work';
@@ -102,8 +102,8 @@ describe('Config Module', () => {
     it('should validate DEFAULT_HEADERS structure', () => {
       expect(DEFAULT_HEADERS).toEqual(
         expect.objectContaining({
-          'Content-Type': expect.any(String)
-        })
+          'Content-Type': expect.any(String),
+        }),
       );
     });
   });

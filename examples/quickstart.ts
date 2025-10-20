@@ -1,58 +1,45 @@
-import client, { auth, customers, rentals, fleet, currencies } from '../src';
+import { auth, carRental, fleets } from '../src';
 
-async function main() {
+async function main(): Promise<void> {
   try {
     // Set up authentication
-    auth.setToken(process.env.HQ_API_TOKEN || 'your-api-token-here');
-    
-    console.log('🚀 HQ Rental SDK Quickstart Example');
-    
-    // 1. List customers
-    console.log('\n📋 Fetching customers...');
-    const customerList = await customers.listCustomers({ limit: '5' });
-    console.log(`Found ${customerList.length} customers`);
-    
-    // 2. List reservations
-    console.log('\n🚗 Fetching reservations...');
-    const reservationList = await rentals.listReservations({ limit: '5' });
+    auth.useApiKey('your-api-key-here');
+
+    // Example: Get a list of addresses
+    const addressList = await carRental.addresses.listAddresses();
+    console.log(`Found ${addressList.length} addresses`);
+
+    // Example: Get a list of reservations
+    const reservationList = await carRental.reservations.listReservations();
     console.log(`Found ${reservationList.length} reservations`);
-    
-    // 3. List vehicles
-    console.log('\n🚙 Fetching fleet vehicles...');
-    const vehicleList = await fleet.listVehicles({ limit: '5' });
+
+    // Example: Get a list of vehicles from fleet
+    const vehicleList = await fleets.fleet.listVehicles({ limit: 5 });
     console.log(`Found ${vehicleList.length} vehicles`);
-    
-    // 4. Create a new customer (example)
-    console.log('\n👤 Creating a test customer...');
-    const newCustomer = await customers.createCustomer({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '+1234567890'
-    });
-    console.log(`Created customer: ${newCustomer.name} (${newCustomer.id})`);
-    
-    // 5. List currencies
-    console.log('\n💱 Available currencies...');
-    const currencyList = await currencies.listCurrencies();
-    console.log(`Available currencies: ${currencyList.map(c => c.code).join(', ')}`);
-    
-    console.log('\n✅ Quickstart completed successfully!');
-    
-  } catch (error) {
-    console.error('❌ Error occurred:', error);
-    
-    if (error.response) {
-      console.error('Response status:', error.response.status);
-      console.error('Response data:', error.response.data);
-    } else if (error.request) {
-      console.error('No response received:', error.request);
-    } else {
+
+    // Example: Get list of currencies
+    const currencyList = await carRental.currencies.listCurrencies();
+    console.log(`Available currencies: ${currencyList.map((c: any) => c.code).join(', ')}`);
+
+    console.log('HQ Rental SDK Demo completed successfully!');
+  } catch (error: unknown) {
+    console.error('An error occurred:', error);
+
+    // Handle specific API errors
+    if (error && typeof error === 'object' && 'response' in error) {
+      const apiError = error as any;
+      console.error('Response status:', apiError.response?.status);
+      console.error('Response data:', apiError.response?.data);
+    } else if (error && typeof error === 'object' && 'request' in error) {
+      const requestError = error as any;
+      console.error('No response received:', requestError.request);
+    } else if (error instanceof Error) {
       console.error('Error message:', error.message);
     }
+
+    process.exit(1);
   }
 }
 
-// Run the example
-if (require.main === module) {
-  main();
-}
+// Run the demo
+main().catch(console.error);

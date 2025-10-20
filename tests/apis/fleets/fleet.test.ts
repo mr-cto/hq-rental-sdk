@@ -36,7 +36,7 @@ import fleetAPI, {
   MaintenanceRecord,
   TelematicsData,
   VehicleAlert,
-  VehicleTrip
+  VehicleTrip,
 } from '../../../src/apis/fleets/fleet';
 import client from '../../../src/client';
 
@@ -68,7 +68,7 @@ describe('Fleet API', () => {
             vin: '1HGBH41JXMN109186',
             status: 'available',
             location_id: 'loc-1',
-            mileage: 15000
+            mileage: 15000,
           },
           {
             id: 'veh-2',
@@ -77,8 +77,8 @@ describe('Fleet API', () => {
             year: 2021,
             license_plate: 'DEF-456',
             status: 'rented',
-            location_id: 'loc-2'
-          }
+            location_id: 'loc-2',
+          },
         ];
         mockClient.get.mockResolvedValue(mockVehicles);
 
@@ -92,14 +92,16 @@ describe('Fleet API', () => {
         const params = {
           status: 'available',
           location_id: 'loc-1',
-          make: 'Toyota'
+          make: 'Toyota',
         };
         const mockVehicles: Vehicle[] = [];
         mockClient.get.mockResolvedValue(mockVehicles);
 
         const result = await listVehicles(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/fleets/vehicles?status=available&location_id=loc-1&make=Toyota');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/fleets/vehicles?status=available&location_id=loc-1&make=Toyota',
+        );
         expect(result).toEqual(mockVehicles);
       });
 
@@ -129,7 +131,7 @@ describe('Fleet API', () => {
           model: 'X3',
           year: 2023,
           license_plate: 'BMW-789',
-          status: 'maintenance'
+          status: 'maintenance',
         };
         mockClient.get.mockResolvedValue(mockVehicle);
 
@@ -147,7 +149,7 @@ describe('Fleet API', () => {
           model: 'Focus',
           year: 2020,
           license_plate: 'FORD-123',
-          status: 'available'
+          status: 'available',
         };
         mockClient.get.mockResolvedValue(mockVehicle);
 
@@ -169,7 +171,7 @@ describe('Fleet API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<Vehicle> = {
           status: 'maintenance',
-          mileage: 25000
+          mileage: 25000,
         };
         const mockVehicle: Vehicle = {
           id: 'veh-1',
@@ -178,7 +180,7 @@ describe('Fleet API', () => {
           year: 2022,
           license_plate: 'ABC-123',
           status: 'maintenance',
-          mileage: 25000
+          mileage: 25000,
         };
         mockClient.put.mockResolvedValue(mockVehicle);
 
@@ -201,7 +203,7 @@ describe('Fleet API', () => {
         const payload = {
           customer_id: 'cust-1',
           start_date: '2024-04-10',
-          end_date: '2024-04-15'
+          end_date: '2024-04-15',
         };
         const mockResponse = { success: true, reservation_id: 'res-1' };
         mockClient.post.mockResolvedValue(mockResponse);
@@ -246,9 +248,9 @@ describe('Fleet API', () => {
             type: 'oil_change',
             description: 'Regular oil change',
             date: '2024-03-15',
-            cost: 75.00,
-            mileage: 20000
-          }
+            cost: 75.0,
+            mileage: 20000,
+          },
         ];
         mockClient.get.mockResolvedValue(mockHistory);
 
@@ -276,8 +278,8 @@ describe('Fleet API', () => {
             name: 'Camry',
             brand_id: 'brand-toyota',
             vehicle_type_id: 'type-sedan',
-            features: ['bluetooth', 'ac', 'gps']
-          }
+            features: ['bluetooth', 'ac', 'gps'],
+          },
         ];
         mockClient.get.mockResolvedValue(mockModels);
 
@@ -301,7 +303,7 @@ describe('Fleet API', () => {
           id: 'model-1',
           name: 'X5',
           brand_id: 'brand-bmw',
-          vehicle_type_id: 'type-suv'
+          vehicle_type_id: 'type-suv',
         };
         mockClient.get.mockResolvedValue(mockModel);
 
@@ -328,14 +330,14 @@ describe('Fleet API', () => {
             id: 'type-1',
             name: 'Sedan',
             description: '4-door passenger car',
-            capacity: 5
+            capacity: 5,
           },
           {
             id: 'type-2',
             name: 'SUV',
             description: 'Sport Utility Vehicle',
-            capacity: 7
-          }
+            capacity: 7,
+          },
         ];
         mockClient.get.mockResolvedValue(mockTypes);
 
@@ -359,7 +361,7 @@ describe('Fleet API', () => {
           id: 'type-1',
           name: 'Convertible',
           description: 'Open-top vehicle',
-          capacity: 2
+          capacity: 2,
         };
         mockClient.get.mockResolvedValue(mockType);
 
@@ -385,12 +387,12 @@ describe('Fleet API', () => {
           {
             id: 'brand-1',
             name: 'Toyota',
-            logo_url: 'https://example.com/toyota-logo.png'
+            logo_url: 'https://example.com/toyota-logo.png',
           },
           {
             id: 'brand-2',
-            name: 'Honda'
-          }
+            name: 'Honda',
+          },
         ];
         mockClient.get.mockResolvedValue(mockBrands);
 
@@ -413,7 +415,7 @@ describe('Fleet API', () => {
         const mockBrand: VehicleBrand = {
           id: 'brand-1',
           name: 'Mercedes-Benz',
-          logo_url: 'https://example.com/mb-logo.png'
+          logo_url: 'https://example.com/mb-logo.png',
         };
         mockClient.get.mockResolvedValue(mockBrand);
 
@@ -443,8 +445,8 @@ describe('Fleet API', () => {
             severity: 'minor',
             location: 'front',
             reported_at: '2024-04-01T10:00:00Z',
-            cost: 250.00
-          }
+            cost: 250.0,
+          },
         ];
         mockClient.get.mockResolvedValue(mockDamages);
 
@@ -469,12 +471,12 @@ describe('Fleet API', () => {
           description: 'Dent on side door',
           severity: 'major',
           location: 'left side',
-          cost: 500.00
+          cost: 500.0,
         };
         const mockDamage: VehicleDamage = {
-          ...payload as VehicleDamage,
+          ...(payload as VehicleDamage),
           id: 'damage-new',
-          reported_at: '2024-04-02T14:30:00Z'
+          reported_at: '2024-04-02T14:30:00Z',
         };
         mockClient.post.mockResolvedValue(mockDamage);
 
@@ -500,7 +502,7 @@ describe('Fleet API', () => {
           description: 'Broken headlight',
           severity: 'critical',
           location: 'front left',
-          reported_at: '2024-04-01T08:00:00Z'
+          reported_at: '2024-04-01T08:00:00Z',
         };
         mockClient.get.mockResolvedValue(mockDamage);
 
@@ -522,7 +524,7 @@ describe('Fleet API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<VehicleDamage> = {
           severity: 'minor',
-          cost: 150.00
+          cost: 150.0,
         };
         const mockDamage: VehicleDamage = {
           id: 'damage-1',
@@ -531,7 +533,7 @@ describe('Fleet API', () => {
           severity: 'minor',
           location: 'rear',
           reported_at: '2024-04-01T08:00:00Z',
-          cost: 150.00
+          cost: 150.0,
         };
         mockClient.put.mockResolvedValue(mockDamage);
 
@@ -560,8 +562,8 @@ describe('Fleet API', () => {
             start_date: '2024-04-10',
             end_date: '2024-04-12',
             reason: 'Maintenance scheduled',
-            created_at: '2024-04-01T09:00:00Z'
-          }
+            created_at: '2024-04-01T09:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockPeriods);
 
@@ -585,12 +587,12 @@ describe('Fleet API', () => {
           vehicle_id: 'veh-1',
           start_date: '2024-04-15',
           end_date: '2024-04-17',
-          reason: 'Deep cleaning'
+          reason: 'Deep cleaning',
         };
         const mockPeriod: BlockedPeriod = {
-          ...payload as BlockedPeriod,
+          ...(payload as BlockedPeriod),
           id: 'block-new',
-          created_at: '2024-04-05T10:00:00Z'
+          created_at: '2024-04-05T10:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockPeriod);
 
@@ -612,14 +614,14 @@ describe('Fleet API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<BlockedPeriod> = {
           end_date: '2024-04-18',
-          reason: 'Extended maintenance'
+          reason: 'Extended maintenance',
         };
         const mockPeriod: BlockedPeriod = {
           id: 'block-1',
           vehicle_id: 'veh-1',
           start_date: '2024-04-15',
           end_date: '2024-04-18',
-          reason: 'Extended maintenance'
+          reason: 'Extended maintenance',
         };
         mockClient.put.mockResolvedValue(mockPeriod);
 
@@ -665,8 +667,8 @@ describe('Fleet API', () => {
             from_location_id: 'loc-1',
             to_location_id: 'loc-2',
             scheduled_date: '2024-04-20',
-            status: 'pending'
-          }
+            status: 'pending',
+          },
         ];
         mockClient.get.mockResolvedValue(mockRelocations);
 
@@ -690,12 +692,12 @@ describe('Fleet API', () => {
           vehicle_id: 'veh-2',
           from_location_id: 'loc-2',
           to_location_id: 'loc-3',
-          scheduled_date: '2024-04-25'
+          scheduled_date: '2024-04-25',
         };
         const mockRelocation: VehicleRelocation = {
-          ...payload as VehicleRelocation,
+          ...(payload as VehicleRelocation),
           id: 'reloc-new',
-          status: 'pending'
+          status: 'pending',
         };
         mockClient.post.mockResolvedValue(mockRelocation);
 
@@ -740,11 +742,11 @@ describe('Fleet API', () => {
             vehicle_id: 'veh-1',
             timestamp: '2024-04-01T12:00:00Z',
             latitude: 40.7128,
-            longitude: -74.0060,
+            longitude: -74.006,
             speed: 35,
             fuel_level: 75,
-            data: { temperature: 20 }
-          }
+            data: { temperature: 20 },
+          },
         ];
         mockClient.get.mockResolvedValue(mockData);
 
@@ -758,14 +760,16 @@ describe('Fleet API', () => {
         const params = {
           start_date: '2024-04-01',
           end_date: '2024-04-07',
-          limit: '100'
+          limit: '100',
         };
         const mockData: TelematicsData[] = [];
         mockClient.get.mockResolvedValue(mockData);
 
         const result = await getVehicleOBDHistory('veh-1', params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/fleets/telematics/vehicles/veh-1/obd?start_date=2024-04-01&end_date=2024-04-07&limit=100');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/fleets/telematics/vehicles/veh-1/obd?start_date=2024-04-01&end_date=2024-04-07&limit=100',
+        );
         expect(result).toEqual(mockData);
       });
 
@@ -783,7 +787,9 @@ describe('Fleet API', () => {
         const error = new Error('Telematics service unavailable');
         mockClient.get.mockRejectedValue(error);
 
-        await expect(getVehicleOBDHistory('veh-1')).rejects.toThrow('Telematics service unavailable');
+        await expect(getVehicleOBDHistory('veh-1')).rejects.toThrow(
+          'Telematics service unavailable',
+        );
       });
     });
 
@@ -794,8 +800,8 @@ describe('Fleet API', () => {
             id: 'tel-1',
             vehicle_id: 'veh-1',
             timestamp: '2024-04-01T12:00:00Z',
-            data: { rpm: 2000 }
-          }
+            data: { rpm: 2000 },
+          },
         ];
         mockClient.get.mockResolvedValue(mockData);
 
@@ -808,14 +814,16 @@ describe('Fleet API', () => {
       it('should call client.get with correct URL with params', async () => {
         const params = {
           vehicle_id: 'veh-1',
-          date: '2024-04-01'
+          date: '2024-04-01',
         };
         const mockData: TelematicsData[] = [];
         mockClient.get.mockResolvedValue(mockData);
 
         const result = await getAllOBDHistory(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/fleets/telematics/obd?vehicle_id=veh-1&date=2024-04-01');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/fleets/telematics/obd?vehicle_id=veh-1&date=2024-04-01',
+        );
         expect(result).toEqual(mockData);
       });
 
@@ -837,8 +845,8 @@ describe('Fleet API', () => {
             severity: 'warning',
             message: 'Engine temperature high',
             timestamp: '2024-04-01T15:30:00Z',
-            resolved: false
-          }
+            resolved: false,
+          },
         ];
         mockClient.get.mockResolvedValue(mockAlerts);
 
@@ -868,8 +876,8 @@ describe('Fleet API', () => {
             end_location: 'Airport',
             distance: 25.5,
             duration: 480,
-            reservation_id: 'res-1'
-          }
+            reservation_id: 'res-1',
+          },
         ];
         mockClient.get.mockResolvedValue(mockTrips);
 
@@ -882,14 +890,16 @@ describe('Fleet API', () => {
       it('should call client.get with correct URL with params', async () => {
         const params = {
           start_date: '2024-04-01',
-          end_date: '2024-04-30'
+          end_date: '2024-04-30',
         };
         const mockTrips: VehicleTrip[] = [];
         mockClient.get.mockResolvedValue(mockTrips);
 
         const result = await getVehicleTrips('veh-1', params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/fleets/telematics/vehicles/veh-1/trips?start_date=2024-04-01&end_date=2024-04-30');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/fleets/telematics/vehicles/veh-1/trips?start_date=2024-04-01&end_date=2024-04-30',
+        );
         expect(result).toEqual(mockTrips);
       });
 
@@ -911,7 +921,7 @@ describe('Fleet API', () => {
       expect(fleetAPI).toHaveProperty('reserveVehicle');
       expect(fleetAPI).toHaveProperty('cancelReservation');
       expect(fleetAPI).toHaveProperty('getMaintenanceHistory');
-      
+
       // Models & Types
       expect(fleetAPI).toHaveProperty('listVehicleModels');
       expect(fleetAPI).toHaveProperty('getVehicleModel');
@@ -919,24 +929,24 @@ describe('Fleet API', () => {
       expect(fleetAPI).toHaveProperty('getVehicleType');
       expect(fleetAPI).toHaveProperty('listVehicleBrands');
       expect(fleetAPI).toHaveProperty('getVehicleBrand');
-      
+
       // Damages
       expect(fleetAPI).toHaveProperty('listVehicleDamages');
       expect(fleetAPI).toHaveProperty('createVehicleDamage');
       expect(fleetAPI).toHaveProperty('getVehicleDamage');
       expect(fleetAPI).toHaveProperty('updateVehicleDamage');
-      
+
       // Blocked Periods
       expect(fleetAPI).toHaveProperty('listBlockedPeriods');
       expect(fleetAPI).toHaveProperty('createBlockedPeriod');
       expect(fleetAPI).toHaveProperty('updateBlockedPeriod');
       expect(fleetAPI).toHaveProperty('deleteBlockedPeriod');
-      
+
       // Relocations
       expect(fleetAPI).toHaveProperty('listRelocations');
       expect(fleetAPI).toHaveProperty('createRelocation');
       expect(fleetAPI).toHaveProperty('deleteRelocation');
-      
+
       // Telematics
       expect(fleetAPI).toHaveProperty('getVehicleOBDHistory');
       expect(fleetAPI).toHaveProperty('getAllOBDHistory');
@@ -952,7 +962,7 @@ describe('Fleet API', () => {
       expect(fleetAPI.reserveVehicle).toBe(reserveVehicle);
       expect(fleetAPI.cancelReservation).toBe(cancelReservation);
       expect(fleetAPI.getMaintenanceHistory).toBe(getMaintenanceHistory);
-      
+
       // Models & Types
       expect(fleetAPI.listVehicleModels).toBe(listVehicleModels);
       expect(fleetAPI.getVehicleModel).toBe(getVehicleModel);
@@ -960,24 +970,24 @@ describe('Fleet API', () => {
       expect(fleetAPI.getVehicleType).toBe(getVehicleType);
       expect(fleetAPI.listVehicleBrands).toBe(listVehicleBrands);
       expect(fleetAPI.getVehicleBrand).toBe(getVehicleBrand);
-      
+
       // Damages
       expect(fleetAPI.listVehicleDamages).toBe(listVehicleDamages);
       expect(fleetAPI.createVehicleDamage).toBe(createVehicleDamage);
       expect(fleetAPI.getVehicleDamage).toBe(getVehicleDamage);
       expect(fleetAPI.updateVehicleDamage).toBe(updateVehicleDamage);
-      
+
       // Blocked Periods
       expect(fleetAPI.listBlockedPeriods).toBe(listBlockedPeriods);
       expect(fleetAPI.createBlockedPeriod).toBe(createBlockedPeriod);
       expect(fleetAPI.updateBlockedPeriod).toBe(updateBlockedPeriod);
       expect(fleetAPI.deleteBlockedPeriod).toBe(deleteBlockedPeriod);
-      
+
       // Relocations
       expect(fleetAPI.listRelocations).toBe(listRelocations);
       expect(fleetAPI.createRelocation).toBe(createRelocation);
       expect(fleetAPI.deleteRelocation).toBe(deleteRelocation);
-      
+
       // Telematics
       expect(fleetAPI.getVehicleOBDHistory).toBe(getVehicleOBDHistory);
       expect(fleetAPI.getAllOBDHistory).toBe(getAllOBDHistory);

@@ -16,10 +16,17 @@ export interface CustomerCredit {
 export const listCustomerCredits = async (customerId: string): Promise<CustomerCredit[]> =>
   client.get<CustomerCredit[]>(`/car-rental/customers/${customerId}/credits`);
 
-export const createCustomerCredit = async (customerId: string, payload: Partial<CustomerCredit>): Promise<CustomerCredit> =>
+export const createCustomerCredit = async (
+  customerId: string,
+  payload: Partial<CustomerCredit>,
+): Promise<CustomerCredit> =>
   client.post<CustomerCredit>(`/car-rental/customers/${customerId}/credits`, payload);
 
-export const updateCustomerCredit = async (customerId: string, creditId: string, payload: Partial<CustomerCredit>): Promise<CustomerCredit> =>
+export const updateCustomerCredit = async (
+  customerId: string,
+  creditId: string,
+  payload: Partial<CustomerCredit>,
+): Promise<CustomerCredit> =>
   client.put<CustomerCredit>(`/car-rental/customers/${customerId}/credits/${creditId}`, payload);
 
 export const deleteCustomerCredit = async (customerId: string, creditId: string): Promise<void> =>

@@ -24,13 +24,13 @@ describe('Contacts API', () => {
             id: 'cat-1',
             name: 'Vendors',
             description: 'Vendor contacts',
-            fields: ['name', 'email', 'phone']
+            fields: ['name', 'email', 'phone'],
           },
           {
             id: 'cat-2',
             name: 'Partners',
-            description: 'Partner contacts'
-          }
+            description: 'Partner contacts',
+          },
         ];
         mockClient.get.mockResolvedValue(mockCategories);
 
@@ -55,7 +55,7 @@ describe('Contacts API', () => {
           id: 'cat-1',
           name: 'Vendors',
           description: 'Vendor contacts',
-          fields: ['name', 'email', 'phone']
+          fields: ['name', 'email', 'phone'],
         };
         mockClient.get.mockResolvedValue(mockCategory);
 
@@ -84,8 +84,8 @@ describe('Contacts API', () => {
             email: 'john@example.com',
             phone: '+1234567890',
             company: 'Acme Corp',
-            created_at: '2024-01-01T00:00:00Z'
-          }
+            created_at: '2024-01-01T00:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockContacts);
 
@@ -113,12 +113,12 @@ describe('Contacts API', () => {
           email: 'jane@example.com',
           phone: '+1987654321',
           company: 'Smith LLC',
-          category_id: 'cat-2'
+          category_id: 'cat-2',
         };
         const mockContact: Contact = {
           ...payload,
           id: 'contact-new',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockContact);
 
@@ -138,7 +138,7 @@ describe('Contacts API', () => {
           email: 'john@example.com',
           phone: '+1234567890',
           company: 'Acme Corp',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.get.mockResolvedValue(mockContact);
 
@@ -164,12 +164,12 @@ describe('Contacts API', () => {
           email: 'updated.john@example.com',
           phone: '+1111111111',
           company: 'Updated Acme Corp',
-          category_id: 'cat-2'
+          category_id: 'cat-2',
         };
         const mockContact: Contact = {
           ...payload,
           id: 'contact-1',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.put.mockResolvedValue(mockContact);
 
@@ -189,13 +189,15 @@ describe('Contacts API', () => {
           email: 'merged@example.com',
           phone: '+1234567890',
           company: 'Merged Corp',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockContact);
 
         const result = await contactsAPI.mergeContacts('contact-1', 'contact-2');
 
-        expect(mockClient.post).toHaveBeenCalledWith('/contacts/contact-1/merge', { secondary_contact_id: 'contact-2' });
+        expect(mockClient.post).toHaveBeenCalledWith('/contacts/contact-1/merge', {
+          secondary_contact_id: 'contact-2',
+        });
         expect(result).toEqual(mockContact);
       });
     });
@@ -204,7 +206,7 @@ describe('Contacts API', () => {
   describe('Default Export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/contacts').default;
-      
+
       expect(defaultExport).toHaveProperty('listContactCategories');
       expect(defaultExport).toHaveProperty('getContactCategory');
       expect(defaultExport).toHaveProperty('listContactsInCategory');
@@ -223,12 +225,20 @@ describe('Contacts API', () => {
       mockClient.put.mockRejectedValue(error);
 
       await expect(contactsAPI.listContactCategories()).rejects.toThrow('Contact operation failed');
-      await expect(contactsAPI.getContactCategory('cat-1')).rejects.toThrow('Contact operation failed');
-      await expect(contactsAPI.listContactsInCategory('cat-1')).rejects.toThrow('Contact operation failed');
+      await expect(contactsAPI.getContactCategory('cat-1')).rejects.toThrow(
+        'Contact operation failed',
+      );
+      await expect(contactsAPI.listContactsInCategory('cat-1')).rejects.toThrow(
+        'Contact operation failed',
+      );
       await expect(contactsAPI.createContact({})).rejects.toThrow('Contact operation failed');
       await expect(contactsAPI.getContact('contact-1')).rejects.toThrow('Contact operation failed');
-      await expect(contactsAPI.updateContact('contact-1', {})).rejects.toThrow('Contact operation failed');
-      await expect(contactsAPI.mergeContacts('contact-1', 'contact-2')).rejects.toThrow('Contact operation failed');
+      await expect(contactsAPI.updateContact('contact-1', {})).rejects.toThrow(
+        'Contact operation failed',
+      );
+      await expect(contactsAPI.mergeContacts('contact-1', 'contact-2')).rejects.toThrow(
+        'Contact operation failed',
+      );
     });
   });
 });

@@ -22,8 +22,10 @@ export const createAddress = async (payload: Partial<Address>): Promise<Address>
 export const getAddress = async (addressId: string): Promise<Address> =>
   client.get<Address>(`/car-rental/addresses/${addressId}`);
 
-export const updateAddress = async (addressId: string, payload: Partial<Address>): Promise<Address> =>
-  client.put<Address>(`/car-rental/addresses/${addressId}`, payload);
+export const updateAddress = async (
+  addressId: string,
+  payload: Partial<Address>,
+): Promise<Address> => client.put<Address>(`/car-rental/addresses/${addressId}`, payload);
 
 export const deleteAddress = async (addressId: string): Promise<void> =>
   client.delete<void>(`/car-rental/addresses/${addressId}`);

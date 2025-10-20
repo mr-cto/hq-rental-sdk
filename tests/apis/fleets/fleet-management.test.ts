@@ -8,7 +8,7 @@ import fleetManagementAPI, {
   AdditionalCharge,
   Feature,
   Location,
-  RepairOrder
+  RepairOrder,
 } from '../../../src/apis/fleets/fleet-management';
 import client from '../../../src/client';
 
@@ -35,16 +35,16 @@ describe('Fleet Management API', () => {
             id: 'charge-1',
             name: 'GPS Unit',
             description: 'Daily GPS rental',
-            amount: 10.00,
+            amount: 10.0,
             type: 'per_day',
-            applicable_to: ['economy', 'standard']
+            applicable_to: ['economy', 'standard'],
           },
           {
             id: 'charge-2',
             name: 'Insurance Premium',
-            amount: 25.00,
-            type: 'percentage'
-          }
+            amount: 25.0,
+            type: 'percentage',
+          },
         ];
         mockClient.get.mockResolvedValue(mockCharges);
 
@@ -68,9 +68,9 @@ describe('Fleet Management API', () => {
           id: 'charge-1',
           name: 'Child Seat',
           description: 'Infant/toddler car seat',
-          amount: 15.00,
+          amount: 15.0,
           type: 'fixed',
-          applicable_to: ['all']
+          applicable_to: ['all'],
         };
         mockClient.get.mockResolvedValue(mockCharge);
 
@@ -85,8 +85,8 @@ describe('Fleet Management API', () => {
         const mockCharge: AdditionalCharge = {
           id: chargeId,
           name: 'Special Charge',
-          amount: 5.00,
-          type: 'fixed'
+          amount: 5.0,
+          type: 'fixed',
         };
         mockClient.get.mockResolvedValue(mockCharge);
 
@@ -114,14 +114,14 @@ describe('Fleet Management API', () => {
             name: 'Bluetooth',
             description: 'Wireless audio connectivity',
             icon: 'bluetooth-icon',
-            category: 'connectivity'
+            category: 'connectivity',
           },
           {
             id: 'feature-2',
             name: 'Air Conditioning',
             description: 'Climate control system',
-            category: 'comfort'
-          }
+            category: 'comfort',
+          },
         ];
         mockClient.get.mockResolvedValue(mockFeatures);
 
@@ -146,7 +146,7 @@ describe('Fleet Management API', () => {
           name: 'Navigation System',
           description: 'Built-in GPS navigation',
           icon: 'nav-icon',
-          category: 'navigation'
+          category: 'navigation',
         };
         mockClient.get.mockResolvedValue(mockFeature);
 
@@ -161,7 +161,7 @@ describe('Fleet Management API', () => {
         const mockFeature: Feature = {
           id: featureId,
           name: 'Special Feature',
-          description: 'A feature with special characters'
+          description: 'A feature with special characters',
         };
         mockClient.get.mockResolvedValue(mockFeature);
 
@@ -196,8 +196,8 @@ describe('Fleet Management API', () => {
             email: 'downtown@example.com',
             coordinates: {
               latitude: 40.7128,
-              longitude: -74.0060
-            }
+              longitude: -74.006,
+            },
           },
           {
             id: 'loc-2',
@@ -206,8 +206,8 @@ describe('Fleet Management API', () => {
             city: 'Los Angeles',
             state: 'CA',
             country: 'USA',
-            postal_code: '90045'
-          }
+            postal_code: '90045',
+          },
         ];
         mockClient.get.mockResolvedValue(mockLocations);
 
@@ -236,9 +236,9 @@ describe('Fleet Management API', () => {
             description: 'Oil change required',
             status: 'pending',
             priority: 'medium',
-            cost: 50.00,
+            cost: 50.0,
             scheduled_date: '2024-04-05',
-            mechanic: 'John Smith'
+            mechanic: 'John Smith',
           },
           {
             id: 'repair-2',
@@ -246,10 +246,10 @@ describe('Fleet Management API', () => {
             description: 'Brake inspection',
             status: 'in_progress',
             priority: 'high',
-            cost: 150.00,
+            cost: 150.0,
             scheduled_date: '2024-04-03',
-            mechanic: 'Jane Doe'
-          }
+            mechanic: 'Jane Doe',
+          },
         ];
         mockClient.get.mockResolvedValue(mockRepairOrders);
 
@@ -263,7 +263,7 @@ describe('Fleet Management API', () => {
         const params = {
           status: 'pending',
           priority: 'high',
-          vehicle_id: 'veh-123'
+          vehicle_id: 'veh-123',
         };
         const mockRepairOrders: RepairOrder[] = [
           {
@@ -271,14 +271,16 @@ describe('Fleet Management API', () => {
             vehicle_id: 'veh-123',
             description: 'Emergency repair',
             status: 'pending',
-            priority: 'urgent'
-          }
+            priority: 'urgent',
+          },
         ];
         mockClient.get.mockResolvedValue(mockRepairOrders);
 
         const result = await listRepairOrders(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/fleets/repair-orders?status=pending&priority=high&vehicle_id=veh-123');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/fleets/repair-orders?status=pending&priority=high&vehicle_id=veh-123',
+        );
         expect(result).toEqual(mockRepairOrders);
       });
 
@@ -295,14 +297,16 @@ describe('Fleet Management API', () => {
       it('should handle params with special characters', async () => {
         const params = {
           description: 'tire & brake work',
-          mechanic: 'John O\'Connor'
+          mechanic: "John O'Connor",
         };
         const mockRepairOrders: RepairOrder[] = [];
         mockClient.get.mockResolvedValue(mockRepairOrders);
 
         const result = await listRepairOrders(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/fleets/repair-orders?description=tire+%26+brake+work&mechanic=John+O%27Connor');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/fleets/repair-orders?description=tire+%26+brake+work&mechanic=John+O%27Connor',
+        );
         expect(result).toEqual(mockRepairOrders);
       });
 

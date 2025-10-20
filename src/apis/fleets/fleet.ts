@@ -121,8 +121,10 @@ export const listVehicles = async (params?: Record<string, any>): Promise<Vehicl
 export const getVehicle = async (vehicleId: string): Promise<Vehicle> =>
   client.get<Vehicle>(`/fleets/vehicles/${vehicleId}`);
 
-export const updateVehicle = async (vehicleId: string, payload: Partial<Vehicle>): Promise<Vehicle> =>
-  client.put<Vehicle>(`/fleets/vehicles/${vehicleId}`, payload);
+export const updateVehicle = async (
+  vehicleId: string,
+  payload: Partial<Vehicle>,
+): Promise<Vehicle> => client.put<Vehicle>(`/fleets/vehicles/${vehicleId}`, payload);
 
 export const reserveVehicle = async (vehicleId: string, payload: any): Promise<any> =>
   client.post(`/fleets/vehicles/${vehicleId}/reserve`, payload);
@@ -159,23 +161,30 @@ export const getVehicleBrand = async (brandId: string): Promise<VehicleBrand> =>
 export const listVehicleDamages = async (vehicleId: string): Promise<VehicleDamage[]> =>
   client.get<VehicleDamage[]>(`/fleets/damages?vehicle_id=${vehicleId}`);
 
-export const createVehicleDamage = async (payload: Partial<VehicleDamage>): Promise<VehicleDamage> =>
-  client.post<VehicleDamage>('/fleets/damages', payload);
+export const createVehicleDamage = async (
+  payload: Partial<VehicleDamage>,
+): Promise<VehicleDamage> => client.post<VehicleDamage>('/fleets/damages', payload);
 
 export const getVehicleDamage = async (damageId: string): Promise<VehicleDamage> =>
   client.get<VehicleDamage>(`/fleets/damages/${damageId}`);
 
-export const updateVehicleDamage = async (damageId: string, payload: Partial<VehicleDamage>): Promise<VehicleDamage> =>
-  client.put<VehicleDamage>(`/fleets/damages/${damageId}`, payload);
+export const updateVehicleDamage = async (
+  damageId: string,
+  payload: Partial<VehicleDamage>,
+): Promise<VehicleDamage> => client.put<VehicleDamage>(`/fleets/damages/${damageId}`, payload);
 
 // Blocked periods
 export const listBlockedPeriods = async (vehicleId: string): Promise<BlockedPeriod[]> =>
   client.get<BlockedPeriod[]>(`/fleets/blocked-periods?vehicle_id=${vehicleId}`);
 
-export const createBlockedPeriod = async (payload: Partial<BlockedPeriod>): Promise<BlockedPeriod> =>
-  client.post<BlockedPeriod>('/fleets/blocked-periods', payload);
+export const createBlockedPeriod = async (
+  payload: Partial<BlockedPeriod>,
+): Promise<BlockedPeriod> => client.post<BlockedPeriod>('/fleets/blocked-periods', payload);
 
-export const updateBlockedPeriod = async (periodId: string, payload: Partial<BlockedPeriod>): Promise<BlockedPeriod> =>
+export const updateBlockedPeriod = async (
+  periodId: string,
+  payload: Partial<BlockedPeriod>,
+): Promise<BlockedPeriod> =>
   client.put<BlockedPeriod>(`/fleets/blocked-periods/${periodId}`, payload);
 
 export const deleteBlockedPeriod = async (periodId: string): Promise<void> =>
@@ -185,14 +194,18 @@ export const deleteBlockedPeriod = async (periodId: string): Promise<void> =>
 export const listRelocations = async (): Promise<VehicleRelocation[]> =>
   client.get<VehicleRelocation[]>('/fleets/relocations');
 
-export const createRelocation = async (payload: Partial<VehicleRelocation>): Promise<VehicleRelocation> =>
-  client.post<VehicleRelocation>('/fleets/relocations', payload);
+export const createRelocation = async (
+  payload: Partial<VehicleRelocation>,
+): Promise<VehicleRelocation> => client.post<VehicleRelocation>('/fleets/relocations', payload);
 
 export const deleteRelocation = async (relocationId: string): Promise<void> =>
   client.delete<void>(`/fleets/relocations/${relocationId}`);
 
 // Telematics
-export const getVehicleOBDHistory = async (vehicleId: string, params?: Record<string, any>): Promise<TelematicsData[]> => {
+export const getVehicleOBDHistory = async (
+  vehicleId: string,
+  params?: Record<string, any>,
+): Promise<TelematicsData[]> => {
   const query = params ? `?${new URLSearchParams(params).toString()}` : '';
   return client.get<TelematicsData[]>(`/fleets/telematics/vehicles/${vehicleId}/obd${query}`);
 };
@@ -205,7 +218,10 @@ export const getAllOBDHistory = async (params?: Record<string, any>): Promise<Te
 export const getVehicleAlerts = async (vehicleId: string): Promise<VehicleAlert[]> =>
   client.get<VehicleAlert[]>(`/fleets/telematics/vehicles/${vehicleId}/alerts`);
 
-export const getVehicleTrips = async (vehicleId: string, params?: Record<string, any>): Promise<VehicleTrip[]> => {
+export const getVehicleTrips = async (
+  vehicleId: string,
+  params?: Record<string, any>,
+): Promise<VehicleTrip[]> => {
   const query = params ? `?${new URLSearchParams(params).toString()}` : '';
   return client.get<VehicleTrip[]>(`/fleets/telematics/vehicles/${vehicleId}/trips${query}`);
 };
@@ -218,7 +234,7 @@ export default {
   reserveVehicle,
   cancelReservation,
   getMaintenanceHistory,
-  
+
   // Models & Types
   listVehicleModels,
   getVehicleModel,
@@ -226,24 +242,24 @@ export default {
   getVehicleType,
   listVehicleBrands,
   getVehicleBrand,
-  
+
   // Damages
   listVehicleDamages,
   createVehicleDamage,
   getVehicleDamage,
   updateVehicleDamage,
-  
+
   // Blocked Periods
   listBlockedPeriods,
   createBlockedPeriod,
   updateBlockedPeriod,
   deleteBlockedPeriod,
-  
+
   // Relocations
   listRelocations,
   createRelocation,
   deleteRelocation,
-  
+
   // Telematics
   getVehicleOBDHistory,
   getAllOBDHistory,

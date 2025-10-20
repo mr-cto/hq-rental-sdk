@@ -56,15 +56,16 @@ export const createRateType = async (payload: Partial<RateType>): Promise<RateTy
 export const getRateType = async (rateTypeId: string): Promise<RateType> =>
   client.get<RateType>(`/car-rental/rate-types/${rateTypeId}`);
 
-export const updateRateType = async (rateTypeId: string, payload: Partial<RateType>): Promise<RateType> =>
-  client.put<RateType>(`/car-rental/rate-types/${rateTypeId}`, payload);
+export const updateRateType = async (
+  rateTypeId: string,
+  payload: Partial<RateType>,
+): Promise<RateType> => client.put<RateType>(`/car-rental/rate-types/${rateTypeId}`, payload);
 
 export const deleteRateType = async (rateTypeId: string): Promise<void> =>
   client.delete<void>(`/car-rental/rate-types/${rateTypeId}`);
 
 // Rates
-export const listRates = async (): Promise<Rate[]> =>
-  client.get<Rate[]>('/car-rental/rates');
+export const listRates = async (): Promise<Rate[]> => client.get<Rate[]>('/car-rental/rates');
 
 export const createRate = async (payload: Partial<Rate>): Promise<Rate> =>
   client.post<Rate>('/car-rental/rates', payload);
@@ -101,7 +102,9 @@ export const deleteSeason = async (seasonId: string): Promise<void> =>
   client.delete<void>(`/car-rental/seasons/${seasonId}`);
 
 // Security Deposits
-export const listSecurityDeposits = async (params?: Record<string, any>): Promise<SecurityDeposit[]> => {
+export const listSecurityDeposits = async (
+  params?: Record<string, any>,
+): Promise<SecurityDeposit[]> => {
   const query = params ? `?${new URLSearchParams(params).toString()}` : '';
   return client.get<SecurityDeposit[]>(`/car-rental/security-deposits${query}`);
 };
@@ -116,7 +119,7 @@ export default {
   getRateType,
   updateRateType,
   deleteRateType,
-  
+
   // Rates
   listRates,
   createRate,
@@ -124,14 +127,14 @@ export default {
   updateRate,
   deleteRate,
   listRatesV2,
-  
+
   // Seasons
   listSeasons,
   createSeason,
   getSeason,
   updateSeason,
   deleteSeason,
-  
+
   // Security Deposits
   listSecurityDeposits,
   getSecurityDeposit,

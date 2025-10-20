@@ -18,13 +18,23 @@ export interface VehicleDamage {
 export const listVehicleDamages = async (vehicleId: string): Promise<VehicleDamage[]> =>
   client.get<VehicleDamage[]>(`/fleets/vehicles/${vehicleId}/damages`);
 
-export const createVehicleDamage = async (vehicleId: string, payload: Partial<VehicleDamage>): Promise<VehicleDamage> =>
+export const createVehicleDamage = async (
+  vehicleId: string,
+  payload: Partial<VehicleDamage>,
+): Promise<VehicleDamage> =>
   client.post<VehicleDamage>(`/fleets/vehicles/${vehicleId}/damages`, payload);
 
-export const getVehicleDamage = async (vehicleId: string, damageId: string): Promise<VehicleDamage> =>
+export const getVehicleDamage = async (
+  vehicleId: string,
+  damageId: string,
+): Promise<VehicleDamage> =>
   client.get<VehicleDamage>(`/fleets/vehicles/${vehicleId}/damages/${damageId}`);
 
-export const updateVehicleDamage = async (vehicleId: string, damageId: string, payload: Partial<VehicleDamage>): Promise<VehicleDamage> =>
+export const updateVehicleDamage = async (
+  vehicleId: string,
+  damageId: string,
+  payload: Partial<VehicleDamage>,
+): Promise<VehicleDamage> =>
   client.put<VehicleDamage>(`/fleets/vehicles/${vehicleId}/damages/${damageId}`, payload);
 
 export default {

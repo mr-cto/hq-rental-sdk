@@ -25,8 +25,8 @@ describe('Pricing API', () => {
             name: 'Standard Rate',
             description: 'Standard hourly rate',
             multiplier: 1.0,
-            is_default: true
-          }
+            is_default: true,
+          },
         ];
         mockClient.get.mockResolvedValue(mockRateTypes);
 
@@ -50,11 +50,11 @@ describe('Pricing API', () => {
         const payload: Partial<RateType> = {
           name: 'Premium Rate',
           description: 'Premium service rate',
-          multiplier: 1.5
+          multiplier: 1.5,
         };
         const mockRateType: RateType = {
-          ...payload as RateType,
-          id: 'rate-type-new'
+          ...(payload as RateType),
+          id: 'rate-type-new',
         };
         mockClient.post.mockResolvedValue(mockRateType);
 
@@ -67,7 +67,7 @@ describe('Pricing API', () => {
       it('should handle minimal rate type payload', async () => {
         const payload: Partial<RateType> = {
           name: 'Basic Rate',
-          multiplier: 1.0
+          multiplier: 1.0,
         };
         mockClient.post.mockResolvedValue({ id: 'rate-type-basic', ...payload });
 
@@ -83,7 +83,7 @@ describe('Pricing API', () => {
           id: 'rate-type-1',
           name: 'Discount Rate',
           multiplier: 0.8,
-          is_default: false
+          is_default: false,
         };
         mockClient.get.mockResolvedValue(mockRateType);
 
@@ -106,11 +106,11 @@ describe('Pricing API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<RateType> = {
           name: 'Updated Rate',
-          multiplier: 1.2
+          multiplier: 1.2,
         };
         const mockRateType: RateType = {
-          ...payload as RateType,
-          id: 'rate-type-1'
+          ...(payload as RateType),
+          id: 'rate-type-1',
         };
         mockClient.put.mockResolvedValue(mockRateType);
 
@@ -141,12 +141,12 @@ describe('Pricing API', () => {
             name: 'Economy Rate',
             vehicle_class_id: 'class-economy',
             rate_type_id: 'rate-type-1',
-            base_rate: 25.00,
-            hourly_rate: 15.00,
+            base_rate: 25.0,
+            hourly_rate: 15.0,
             daily_rate: 89.99,
-            weekly_rate: 450.00,
-            effective_from: '2024-01-01'
-          }
+            weekly_rate: 450.0,
+            effective_from: '2024-01-01',
+          },
         ];
         mockClient.get.mockResolvedValue(mockRates);
 
@@ -163,13 +163,13 @@ describe('Pricing API', () => {
           name: 'Luxury Rate',
           vehicle_class_id: 'class-luxury',
           rate_type_id: 'rate-type-premium',
-          base_rate: 75.00,
+          base_rate: 75.0,
           daily_rate: 199.99,
-          effective_from: '2024-04-01'
+          effective_from: '2024-04-01',
         };
         const mockRate: Rate = {
-          ...payload as Rate,
-          id: 'rate-new'
+          ...(payload as Rate),
+          id: 'rate-new',
         };
         mockClient.post.mockResolvedValue(mockRate);
 
@@ -186,8 +186,8 @@ describe('Pricing API', () => {
           id: 'rate-1',
           name: 'SUV Rate',
           rate_type_id: 'rate-type-1',
-          base_rate: 50.00,
-          effective_from: '2024-01-01'
+          base_rate: 50.0,
+          effective_from: '2024-01-01',
         };
         mockClient.get.mockResolvedValue(mockRate);
 
@@ -202,7 +202,7 @@ describe('Pricing API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<Rate> = {
           daily_rate: 109.99,
-          weekly_rate: 550.00
+          weekly_rate: 550.0,
         };
         mockClient.put.mockResolvedValue({ id: 'rate-1', ...payload });
 
@@ -229,9 +229,9 @@ describe('Pricing API', () => {
             id: 'rate-v2-1',
             name: 'V2 Rate',
             rate_type_id: 'rate-type-1',
-            base_rate: 30.00,
-            effective_from: '2024-01-01'
-          }
+            base_rate: 30.0,
+            effective_from: '2024-01-01',
+          },
         ];
         mockClient.get.mockResolvedValue(mockRates);
 
@@ -247,7 +247,9 @@ describe('Pricing API', () => {
 
         await pricingAPI.listRatesV2(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/rates/v2?vehicle_class=economy&active=true');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/rates/v2?vehicle_class=economy&active=true',
+        );
       });
 
       it('should handle empty params object', async () => {
@@ -270,8 +272,8 @@ describe('Pricing API', () => {
             start_date: '2024-06-01',
             end_date: '2024-08-31',
             multiplier: 1.3,
-            description: 'Peak summer season pricing'
-          }
+            description: 'Peak summer season pricing',
+          },
         ];
         mockClient.get.mockResolvedValue(mockSeasons);
 
@@ -289,11 +291,11 @@ describe('Pricing API', () => {
           start_date: '2024-12-01',
           end_date: '2024-02-28',
           multiplier: 0.8,
-          description: 'Discounted winter rates'
+          description: 'Discounted winter rates',
         };
         const mockSeason: Season = {
-          ...payload as Season,
-          id: 'season-new'
+          ...(payload as Season),
+          id: 'season-new',
         };
         mockClient.post.mockResolvedValue(mockSeason);
 
@@ -311,7 +313,7 @@ describe('Pricing API', () => {
           name: 'Spring',
           start_date: '2024-03-01',
           end_date: '2024-05-31',
-          multiplier: 1.1
+          multiplier: 1.1,
         };
         mockClient.get.mockResolvedValue(mockSeason);
 
@@ -326,7 +328,7 @@ describe('Pricing API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<Season> = {
           multiplier: 1.15,
-          description: 'Updated spring pricing'
+          description: 'Updated spring pricing',
         };
         mockClient.put.mockResolvedValue({ id: 'season-1', ...payload });
 
@@ -355,11 +357,11 @@ describe('Pricing API', () => {
             id: 'deposit-1',
             customer_id: 'cust-1',
             reservation_id: 'res-1',
-            amount: 500.00,
+            amount: 500.0,
             status: 'held',
             payment_method: 'credit_card',
-            held_date: '2024-01-01T10:00:00Z'
-          }
+            held_date: '2024-01-01T10:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockDeposits);
 
@@ -375,7 +377,9 @@ describe('Pricing API', () => {
 
         await pricingAPI.listSecurityDeposits(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/security-deposits?customer_id=cust-1&status=held');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/security-deposits?customer_id=cust-1&status=held',
+        );
       });
 
       it('should handle empty deposits list', async () => {
@@ -392,11 +396,11 @@ describe('Pricing API', () => {
         const mockDeposit: SecurityDeposit = {
           id: 'deposit-1',
           customer_id: 'cust-1',
-          amount: 300.00,
+          amount: 300.0,
           status: 'released',
           held_date: '2024-01-01T10:00:00Z',
           released_date: '2024-01-07T15:30:00Z',
-          notes: 'Deposit released after vehicle inspection'
+          notes: 'Deposit released after vehicle inspection',
         };
         mockClient.get.mockResolvedValue(mockDeposit);
 
@@ -411,7 +415,9 @@ describe('Pricing API', () => {
 
         await pricingAPI.getSecurityDeposit('deposit@special');
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/security-deposits/deposit@special');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/security-deposits/deposit@special',
+        );
       });
     });
   });
@@ -419,14 +425,14 @@ describe('Pricing API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/pricing').default;
-      
+
       // Rate Types
       expect(defaultExport.listRateTypes).toBeDefined();
       expect(defaultExport.createRateType).toBeDefined();
       expect(defaultExport.getRateType).toBeDefined();
       expect(defaultExport.updateRateType).toBeDefined();
       expect(defaultExport.deleteRateType).toBeDefined();
-      
+
       // Rates
       expect(defaultExport.listRates).toBeDefined();
       expect(defaultExport.createRate).toBeDefined();
@@ -434,14 +440,14 @@ describe('Pricing API', () => {
       expect(defaultExport.updateRate).toBeDefined();
       expect(defaultExport.deleteRate).toBeDefined();
       expect(defaultExport.listRatesV2).toBeDefined();
-      
+
       // Seasons
       expect(defaultExport.listSeasons).toBeDefined();
       expect(defaultExport.createSeason).toBeDefined();
       expect(defaultExport.getSeason).toBeDefined();
       expect(defaultExport.updateSeason).toBeDefined();
       expect(defaultExport.deleteSeason).toBeDefined();
-      
+
       // Security Deposits
       expect(defaultExport.listSecurityDeposits).toBeDefined();
       expect(defaultExport.getSecurityDeposit).toBeDefined();
@@ -449,26 +455,26 @@ describe('Pricing API', () => {
 
     it('should have all functions be the same as named exports', () => {
       const defaultExport = require('../../../src/apis/car-rental/pricing').default;
-      
+
       expect(defaultExport.listRateTypes).toBe(pricingAPI.listRateTypes);
       expect(defaultExport.createRateType).toBe(pricingAPI.createRateType);
       expect(defaultExport.getRateType).toBe(pricingAPI.getRateType);
       expect(defaultExport.updateRateType).toBe(pricingAPI.updateRateType);
       expect(defaultExport.deleteRateType).toBe(pricingAPI.deleteRateType);
-      
+
       expect(defaultExport.listRates).toBe(pricingAPI.listRates);
       expect(defaultExport.createRate).toBe(pricingAPI.createRate);
       expect(defaultExport.getRate).toBe(pricingAPI.getRate);
       expect(defaultExport.updateRate).toBe(pricingAPI.updateRate);
       expect(defaultExport.deleteRate).toBe(pricingAPI.deleteRate);
       expect(defaultExport.listRatesV2).toBe(pricingAPI.listRatesV2);
-      
+
       expect(defaultExport.listSeasons).toBe(pricingAPI.listSeasons);
       expect(defaultExport.createSeason).toBe(pricingAPI.createSeason);
       expect(defaultExport.getSeason).toBe(pricingAPI.getSeason);
       expect(defaultExport.updateSeason).toBe(pricingAPI.updateSeason);
       expect(defaultExport.deleteSeason).toBe(pricingAPI.deleteSeason);
-      
+
       expect(defaultExport.listSecurityDeposits).toBe(pricingAPI.listSecurityDeposits);
       expect(defaultExport.getSecurityDeposit).toBe(pricingAPI.getSecurityDeposit);
     });
@@ -484,9 +490,15 @@ describe('Pricing API', () => {
 
       await expect(pricingAPI.listRateTypes()).rejects.toThrow('Rate type operation failed');
       await expect(pricingAPI.createRateType({})).rejects.toThrow('Rate type operation failed');
-      await expect(pricingAPI.getRateType('rate-type-1')).rejects.toThrow('Rate type operation failed');
-      await expect(pricingAPI.updateRateType('rate-type-1', {})).rejects.toThrow('Rate type operation failed');
-      await expect(pricingAPI.deleteRateType('rate-type-1')).rejects.toThrow('Rate type operation failed');
+      await expect(pricingAPI.getRateType('rate-type-1')).rejects.toThrow(
+        'Rate type operation failed',
+      );
+      await expect(pricingAPI.updateRateType('rate-type-1', {})).rejects.toThrow(
+        'Rate type operation failed',
+      );
+      await expect(pricingAPI.deleteRateType('rate-type-1')).rejects.toThrow(
+        'Rate type operation failed',
+      );
     });
 
     it('should propagate errors from rate operations', async () => {
@@ -514,7 +526,9 @@ describe('Pricing API', () => {
       await expect(pricingAPI.listSeasons()).rejects.toThrow('Season operation failed');
       await expect(pricingAPI.createSeason({})).rejects.toThrow('Season operation failed');
       await expect(pricingAPI.getSeason('season-1')).rejects.toThrow('Season operation failed');
-      await expect(pricingAPI.updateSeason('season-1', {})).rejects.toThrow('Season operation failed');
+      await expect(pricingAPI.updateSeason('season-1', {})).rejects.toThrow(
+        'Season operation failed',
+      );
       await expect(pricingAPI.deleteSeason('season-1')).rejects.toThrow('Season operation failed');
     });
 
@@ -522,8 +536,12 @@ describe('Pricing API', () => {
       const error = new Error('Security deposit operation failed');
       mockClient.get.mockRejectedValue(error);
 
-      await expect(pricingAPI.listSecurityDeposits()).rejects.toThrow('Security deposit operation failed');
-      await expect(pricingAPI.getSecurityDeposit('deposit-1')).rejects.toThrow('Security deposit operation failed');
+      await expect(pricingAPI.listSecurityDeposits()).rejects.toThrow(
+        'Security deposit operation failed',
+      );
+      await expect(pricingAPI.getSecurityDeposit('deposit-1')).rejects.toThrow(
+        'Security deposit operation failed',
+      );
     });
   });
 });

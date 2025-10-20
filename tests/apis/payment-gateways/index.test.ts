@@ -1,5 +1,11 @@
 import * as paymentGatewaysAPI from '../../../src/apis/payment-gateways';
-import type { PaymentMethod, CreditCard, PaymentTransaction, StripeLocation, ConnectionToken } from '../../../src/apis/payment-gateways';
+import type {
+  PaymentMethod,
+  CreditCard,
+  PaymentTransaction,
+  StripeLocation,
+  ConnectionToken,
+} from '../../../src/apis/payment-gateways';
 
 // Mock the client module
 jest.mock('../../../src/client', () => ({
@@ -29,8 +35,8 @@ describe('Payment Gateways API', () => {
             expiry_year: 2025,
             cardholder_name: 'John Doe',
             is_default: true,
-            created_at: '2024-01-01T00:00:00Z'
-          }
+            created_at: '2024-01-01T00:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockCards);
 
@@ -45,7 +51,9 @@ describe('Payment Gateways API', () => {
 
         await paymentGatewaysAPI.listCustomerCreditCards('cust@special');
 
-        expect(mockClient.get).toHaveBeenCalledWith('/payment-gateways/customers/cust@special/cards');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/payment-gateways/customers/cust@special/cards',
+        );
       });
 
       it('should handle empty cards list', async () => {
@@ -83,8 +91,8 @@ describe('Payment Gateways API', () => {
             name: 'Credit Card',
             type: 'credit_card',
             is_active: true,
-            settings: { currency: 'USD' }
-          }
+            settings: { currency: 'USD' },
+          },
         ];
         mockClient.get.mockResolvedValue(mockMethods);
 
@@ -110,7 +118,7 @@ describe('Payment Gateways API', () => {
           name: 'Credit Card',
           type: 'credit_card',
           is_active: true,
-          settings: { currency: 'USD' }
+          settings: { currency: 'USD' },
         };
         mockClient.get.mockResolvedValue(mockMethod);
 
@@ -152,12 +160,12 @@ describe('Payment Gateways API', () => {
         const mockTransaction: PaymentTransaction = {
           id: 'trans-1',
           uuid: 'uuid-123',
-          amount: 100.00,
+          amount: 100.0,
           currency: 'USD',
           status: 'completed',
           payment_method: 'credit_card',
           created_at: '2024-01-01T00:00:00Z',
-          processed_at: '2024-01-01T00:05:00Z'
+          processed_at: '2024-01-01T00:05:00Z',
         };
         mockClient.get.mockResolvedValue(mockTransaction);
 
@@ -174,12 +182,12 @@ describe('Payment Gateways API', () => {
           {
             id: 'trans-1',
             uuid: 'uuid-123',
-            amount: 100.00,
+            amount: 100.0,
             currency: 'USD',
             status: 'completed',
             payment_method: 'credit_card',
-            created_at: '2024-01-01T00:00:00Z'
-          }
+            created_at: '2024-01-01T00:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockTransactions);
 
@@ -195,25 +203,27 @@ describe('Payment Gateways API', () => {
 
         await paymentGatewaysAPI.listPaymentTransactions(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/payment-gateways/transactions?status=completed&customer_id=cust-1');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/payment-gateways/transactions?status=completed&customer_id=cust-1',
+        );
       });
     });
 
     describe('createPaymentTransaction', () => {
       it('should call client.post with correct URL and payload', async () => {
         const payload = {
-          amount: 150.00,
+          amount: 150.0,
           currency: 'USD',
           payment_method: 'credit_card',
           customer_id: 'cust-1',
-          metadata: { rental_id: 'rental-1' }
+          metadata: { rental_id: 'rental-1' },
         };
         const mockTransaction: PaymentTransaction = {
           ...payload,
           id: 'trans-new',
           uuid: 'uuid-new',
           status: 'pending',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockTransaction);
 
@@ -226,39 +236,45 @@ describe('Payment Gateways API', () => {
 
     describe('refundPaymentTransaction', () => {
       it('should call client.post with correct URL and payload', async () => {
-        const payload = { amount: 50.00, reason: 'Partial refund' };
+        const payload = { amount: 50.0, reason: 'Partial refund' };
         const mockRefund: PaymentTransaction = {
           id: 'trans-refund',
           uuid: 'uuid-refund',
-          amount: -50.00,
+          amount: -50.0,
           currency: 'USD',
           status: 'completed',
           payment_method: 'credit_card',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockRefund);
 
         const result = await paymentGatewaysAPI.refundPaymentTransaction('uuid-123', payload);
 
-        expect(mockClient.post).toHaveBeenCalledWith('/payment-gateways/transactions/uuid-123/refund', payload);
+        expect(mockClient.post).toHaveBeenCalledWith(
+          '/payment-gateways/transactions/uuid-123/refund',
+          payload,
+        );
         expect(result).toEqual(mockRefund);
       });
 
       it('should handle refund without payload', async () => {
-        const mockRefund: PaymentTransaction = { 
-          id: 'trans-refund-full', 
+        const mockRefund: PaymentTransaction = {
+          id: 'trans-refund-full',
           uuid: 'uuid-refund-full',
-          amount: -100.00,
+          amount: -100.0,
           currency: 'USD',
           status: 'completed',
           payment_method: 'credit_card',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockRefund);
 
         const result = await paymentGatewaysAPI.refundPaymentTransaction('uuid-123');
 
-        expect(mockClient.post).toHaveBeenCalledWith('/payment-gateways/transactions/uuid-123/refund', undefined);
+        expect(mockClient.post).toHaveBeenCalledWith(
+          '/payment-gateways/transactions/uuid-123/refund',
+          undefined,
+        );
         expect(result).toEqual(mockRefund);
       });
     });
@@ -272,14 +288,19 @@ describe('Payment Gateways API', () => {
             id: 'loc-1',
             display_name: 'Main Office',
             address: { line1: '123 Main St', city: 'Anytown', state: 'ST', postal_code: '12345' },
-            gateway_id: 'gateway-1'
+            gateway_id: 'gateway-1',
           },
           {
             id: 'loc-2',
             display_name: 'Branch Office',
-            address: { line1: '456 Branch Ave', city: 'Branchtown', state: 'ST', postal_code: '67890' },
-            gateway_id: 'gateway-1'
-          }
+            address: {
+              line1: '456 Branch Ave',
+              city: 'Branchtown',
+              state: 'ST',
+              postal_code: '67890',
+            },
+            gateway_id: 'gateway-1',
+          },
         ];
         mockClient.get.mockResolvedValue(mockLocations);
 
@@ -294,13 +315,15 @@ describe('Payment Gateways API', () => {
       it('should call client.get with correct URL', async () => {
         const mockToken: ConnectionToken = {
           token: 'tok_123456789',
-          expires_at: '2024-01-01T01:00:00Z'
+          expires_at: '2024-01-01T01:00:00Z',
         };
         mockClient.get.mockResolvedValue(mockToken);
 
         const result = await paymentGatewaysAPI.getConnectionToken('loc-1');
 
-        expect(mockClient.get).toHaveBeenCalledWith('/payment-gateways/stripe/locations/loc-1/connection-token');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/payment-gateways/stripe/locations/loc-1/connection-token',
+        );
         expect(result).toEqual(mockToken);
       });
     });
@@ -309,13 +332,15 @@ describe('Payment Gateways API', () => {
       it('should call client.get with correct URL', async () => {
         const mockToken: ConnectionToken = {
           token: 'tok_terminal_123456789',
-          expires_at: '2024-01-01T01:00:00Z'
+          expires_at: '2024-01-01T01:00:00Z',
         };
         mockClient.get.mockResolvedValue(mockToken);
 
         const result = await paymentGatewaysAPI.getStripeTerminalConnectionToken();
 
-        expect(mockClient.get).toHaveBeenCalledWith('/payment-gateways/stripe/terminal/connection-token');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/payment-gateways/stripe/terminal/connection-token',
+        );
         expect(result).toEqual(mockToken);
       });
     });
@@ -324,7 +349,7 @@ describe('Payment Gateways API', () => {
   describe('Default Export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/payment-gateways').default;
-      
+
       expect(defaultExport).toHaveProperty('listCustomerCreditCards');
       expect(defaultExport).toHaveProperty('deletePaymentGateway');
       expect(defaultExport).toHaveProperty('listPaymentMethods');
@@ -348,19 +373,45 @@ describe('Payment Gateways API', () => {
       mockClient.post.mockRejectedValue(error);
       mockClient.delete.mockRejectedValue(error);
 
-      await expect(paymentGatewaysAPI.listCustomerCreditCards('cust-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.deletePaymentGateway('gateway-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.listPaymentMethods()).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.getPaymentMethod('method-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.getPaymentMethodButton('method-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.getPaymentMethodForm('method-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.getPaymentTransaction('uuid-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.listPaymentTransactions()).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.createPaymentTransaction({})).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.refundPaymentTransaction('uuid-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.listStripeLocations('gateway-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.getConnectionToken('loc-1')).rejects.toThrow('Payment gateway operation failed');
-      await expect(paymentGatewaysAPI.getStripeTerminalConnectionToken()).rejects.toThrow('Payment gateway operation failed');
+      await expect(paymentGatewaysAPI.listCustomerCreditCards('cust-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.deletePaymentGateway('gateway-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.listPaymentMethods()).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.getPaymentMethod('method-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.getPaymentMethodButton('method-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.getPaymentMethodForm('method-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.getPaymentTransaction('uuid-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.listPaymentTransactions()).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.createPaymentTransaction({})).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.refundPaymentTransaction('uuid-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.listStripeLocations('gateway-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.getConnectionToken('loc-1')).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
+      await expect(paymentGatewaysAPI.getStripeTerminalConnectionToken()).rejects.toThrow(
+        'Payment gateway operation failed',
+      );
     });
   });
 });

@@ -22,7 +22,7 @@ describe('Comments API', () => {
         const itemId = 'item-123';
         const mockComments = [
           { id: '1', item_id: itemId, content: 'Great item!', created_at: '2024-01-01' },
-          { id: '2', item_id: itemId, content: 'Needs maintenance', created_at: '2024-01-02' }
+          { id: '2', item_id: itemId, content: 'Needs maintenance', created_at: '2024-01-02' },
         ];
         mockClient.get.mockResolvedValue(mockComments);
 
@@ -34,14 +34,14 @@ describe('Comments API', () => {
 
       it('should handle special characters in item ID', async () => {
         const itemId = 'item-with/special%20chars';
-        const mockComments = [
-          { id: '1', item_id: itemId, content: 'Comment with special chars' }
-        ];
+        const mockComments = [{ id: '1', item_id: itemId, content: 'Comment with special chars' }];
         mockClient.get.mockResolvedValue(mockComments);
 
         const result = await commentsAPI.listItemComments(itemId);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/comments?item_id=item-with/special%20chars');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/comments?item_id=item-with/special%20chars',
+        );
         expect(result).toEqual(mockComments);
       });
 
@@ -52,7 +52,9 @@ describe('Comments API', () => {
 
         const result = await commentsAPI.listItemComments(itemId);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/comments?item_id=item-no-comments');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/comments?item_id=item-no-comments',
+        );
         expect(result).toEqual(mockComments);
       });
     });
@@ -65,7 +67,7 @@ describe('Comments API', () => {
           id: 'comment-new',
           item_id: itemId,
           content,
-          created_at: '2024-01-01'
+          created_at: '2024-01-01',
         };
         mockClient.post.mockResolvedValue(mockComment);
 
@@ -73,7 +75,7 @@ describe('Comments API', () => {
 
         expect(mockClient.post).toHaveBeenCalledWith('/car-rental/comments', {
           item_id: itemId,
-          content
+          content,
         });
         expect(result).toEqual(mockComment);
       });
@@ -84,7 +86,7 @@ describe('Comments API', () => {
         const mockComment = {
           id: 'comment-empty',
           item_id: itemId,
-          content: ''
+          content: '',
         };
         mockClient.post.mockResolvedValue(mockComment);
 
@@ -92,18 +94,19 @@ describe('Comments API', () => {
 
         expect(mockClient.post).toHaveBeenCalledWith('/car-rental/comments', {
           item_id: itemId,
-          content: ''
+          content: '',
         });
         expect(result).toEqual(mockComment);
       });
 
       it('should handle long content', async () => {
         const itemId = 'item-long';
-        const content = 'This is a very long comment that spans multiple lines and contains lots of details about the item and its condition.';
+        const content =
+          'This is a very long comment that spans multiple lines and contains lots of details about the item and its condition.';
         const mockComment = {
           id: 'comment-long',
           item_id: itemId,
-          content
+          content,
         };
         mockClient.post.mockResolvedValue(mockComment);
 
@@ -111,7 +114,7 @@ describe('Comments API', () => {
 
         expect(mockClient.post).toHaveBeenCalledWith('/car-rental/comments', {
           item_id: itemId,
-          content
+          content,
         });
         expect(result).toEqual(mockComment);
       });
@@ -124,14 +127,14 @@ describe('Comments API', () => {
         const mockComment = {
           id: commentId,
           content,
-          updated_at: '2024-01-02'
+          updated_at: '2024-01-02',
         };
         mockClient.put.mockResolvedValue(mockComment);
 
         const result = await commentsAPI.updateItemComment(commentId, content);
 
         expect(mockClient.put).toHaveBeenCalledWith(`/car-rental/comments/${commentId}`, {
-          content
+          content,
         });
         expect(result).toEqual(mockComment);
       });
@@ -141,14 +144,14 @@ describe('Comments API', () => {
         const content = 'Updated content';
         const mockComment = {
           id: commentId,
-          content
+          content,
         };
         mockClient.put.mockResolvedValue(mockComment);
 
         const result = await commentsAPI.updateItemComment(commentId, content);
 
         expect(mockClient.put).toHaveBeenCalledWith(`/car-rental/comments/${commentId}`, {
-          content
+          content,
         });
         expect(result).toEqual(mockComment);
       });
@@ -158,14 +161,14 @@ describe('Comments API', () => {
         const content = '';
         const mockComment = {
           id: commentId,
-          content: ''
+          content: '',
         };
         mockClient.put.mockResolvedValue(mockComment);
 
         const result = await commentsAPI.updateItemComment(commentId, content);
 
         expect(mockClient.put).toHaveBeenCalledWith(`/car-rental/comments/${commentId}`, {
-          content: ''
+          content: '',
         });
         expect(result).toEqual(mockComment);
       });
@@ -200,26 +203,30 @@ describe('Comments API', () => {
         const reservationId = 'reservation-123';
         const mockComments = [
           { id: '1', reservation_id: reservationId, content: 'Reservation looks good' },
-          { id: '2', reservation_id: reservationId, content: 'Customer requested changes' }
+          { id: '2', reservation_id: reservationId, content: 'Customer requested changes' },
         ];
         mockClient.get.mockResolvedValue(mockComments);
 
         const result = await commentsAPI.getReservationComments(reservationId);
 
-        expect(mockClient.get).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments`);
+        expect(mockClient.get).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments`,
+        );
         expect(result).toEqual(mockComments);
       });
 
       it('should handle special characters in reservation ID', async () => {
         const reservationId = 'reservation-with/special%20chars';
         const mockComments = [
-          { id: '1', reservation_id: reservationId, content: 'Special reservation comment' }
+          { id: '1', reservation_id: reservationId, content: 'Special reservation comment' },
         ];
         mockClient.get.mockResolvedValue(mockComments);
 
         const result = await commentsAPI.getReservationComments(reservationId);
 
-        expect(mockClient.get).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments`);
+        expect(mockClient.get).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments`,
+        );
         expect(result).toEqual(mockComments);
       });
 
@@ -230,7 +237,9 @@ describe('Comments API', () => {
 
         const result = await commentsAPI.getReservationComments(reservationId);
 
-        expect(mockClient.get).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments`);
+        expect(mockClient.get).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments`,
+        );
         expect(result).toEqual(mockComments);
       });
     });
@@ -242,15 +251,18 @@ describe('Comments API', () => {
         const mockComment = {
           id: 'comment-reservation',
           reservation_id: reservationId,
-          content: comments
+          content: comments,
         };
         mockClient.put.mockResolvedValue(mockComment);
 
         const result = await commentsAPI.updateReservationComments(reservationId, comments);
 
-        expect(mockClient.put).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments`, {
-          comments
-        });
+        expect(mockClient.put).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments`,
+          {
+            comments,
+          },
+        );
         expect(result).toEqual(mockComment);
       });
 
@@ -260,15 +272,18 @@ describe('Comments API', () => {
         const mockComment = {
           id: 'comment-empty',
           reservation_id: reservationId,
-          content: ''
+          content: '',
         };
         mockClient.put.mockResolvedValue(mockComment);
 
         const result = await commentsAPI.updateReservationComments(reservationId, comments);
 
-        expect(mockClient.put).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments`, {
-          comments: ''
-        });
+        expect(mockClient.put).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments`,
+          {
+            comments: '',
+          },
+        );
         expect(result).toEqual(mockComment);
       });
 
@@ -278,15 +293,18 @@ describe('Comments API', () => {
         const mockComment = {
           id: 'comment-special',
           reservation_id: reservationId,
-          content: comments
+          content: comments,
         };
         mockClient.put.mockResolvedValue(mockComment);
 
         const result = await commentsAPI.updateReservationComments(reservationId, comments);
 
-        expect(mockClient.put).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments`, {
-          comments
-        });
+        expect(mockClient.put).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments`,
+          {
+            comments,
+          },
+        );
         expect(result).toEqual(mockComment);
       });
     });
@@ -299,7 +317,9 @@ describe('Comments API', () => {
 
         const result = await commentsAPI.deleteReservationComment(reservationId, commentId);
 
-        expect(mockClient.delete).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments/${commentId}`);
+        expect(mockClient.delete).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments/${commentId}`,
+        );
         expect(result).toBeUndefined();
       });
 
@@ -310,7 +330,9 @@ describe('Comments API', () => {
 
         const result = await commentsAPI.deleteReservationComment(reservationId, commentId);
 
-        expect(mockClient.delete).toHaveBeenCalledWith(`/car-rental/reservations/${reservationId}/comments/${commentId}`);
+        expect(mockClient.delete).toHaveBeenCalledWith(
+          `/car-rental/reservations/${reservationId}/comments/${commentId}`,
+        );
         expect(result).toBeUndefined();
       });
     });
@@ -333,8 +355,12 @@ describe('Comments API', () => {
       expect(commentsAPI.default.updateItemComment).toBe(commentsAPI.updateItemComment);
       expect(commentsAPI.default.deleteItemComment).toBe(commentsAPI.deleteItemComment);
       expect(commentsAPI.default.getReservationComments).toBe(commentsAPI.getReservationComments);
-      expect(commentsAPI.default.updateReservationComments).toBe(commentsAPI.updateReservationComments);
-      expect(commentsAPI.default.deleteReservationComment).toBe(commentsAPI.deleteReservationComment);
+      expect(commentsAPI.default.updateReservationComments).toBe(
+        commentsAPI.updateReservationComments,
+      );
+      expect(commentsAPI.default.deleteReservationComment).toBe(
+        commentsAPI.deleteReservationComment,
+      );
     });
   });
 
@@ -350,14 +376,18 @@ describe('Comments API', () => {
       const error = new Error('Creation error');
       mockClient.post.mockRejectedValue(error);
 
-      await expect(commentsAPI.createItemComment('item-id', 'content')).rejects.toThrow('Creation error');
+      await expect(commentsAPI.createItemComment('item-id', 'content')).rejects.toThrow(
+        'Creation error',
+      );
     });
 
     it('should propagate errors from updateItemComment', async () => {
       const error = new Error('Update error');
       mockClient.put.mockRejectedValue(error);
 
-      await expect(commentsAPI.updateItemComment('comment-id', 'content')).rejects.toThrow('Update error');
+      await expect(commentsAPI.updateItemComment('comment-id', 'content')).rejects.toThrow(
+        'Update error',
+      );
     });
 
     it('should propagate errors from deleteItemComment', async () => {
@@ -371,21 +401,27 @@ describe('Comments API', () => {
       const error = new Error('Reservation comments error');
       mockClient.get.mockRejectedValue(error);
 
-      await expect(commentsAPI.getReservationComments('reservation-id')).rejects.toThrow('Reservation comments error');
+      await expect(commentsAPI.getReservationComments('reservation-id')).rejects.toThrow(
+        'Reservation comments error',
+      );
     });
 
     it('should propagate errors from updateReservationComments', async () => {
       const error = new Error('Reservation update error');
       mockClient.put.mockRejectedValue(error);
 
-      await expect(commentsAPI.updateReservationComments('reservation-id', 'comments')).rejects.toThrow('Reservation update error');
+      await expect(
+        commentsAPI.updateReservationComments('reservation-id', 'comments'),
+      ).rejects.toThrow('Reservation update error');
     });
 
     it('should propagate errors from deleteReservationComment', async () => {
       const error = new Error('Reservation comment delete error');
       mockClient.delete.mockRejectedValue(error);
 
-      await expect(commentsAPI.deleteReservationComment('reservation-id', 'comment-id')).rejects.toThrow('Reservation comment delete error');
+      await expect(
+        commentsAPI.deleteReservationComment('reservation-id', 'comment-id'),
+      ).rejects.toThrow('Reservation comment delete error');
     });
   });
 });

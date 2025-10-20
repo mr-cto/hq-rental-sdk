@@ -16,16 +16,32 @@ export interface Payment {
 export const listReservationPayments = async (reservationId: string): Promise<Payment[]> =>
   client.get<Payment[]>(`/car-rental/reservations/${reservationId}/payments`);
 
-export const createReservationPayment = async (reservationId: string, payload: Partial<Payment>): Promise<Payment> =>
+export const createReservationPayment = async (
+  reservationId: string,
+  payload: Partial<Payment>,
+): Promise<Payment> =>
   client.post<Payment>(`/car-rental/reservations/${reservationId}/payments`, payload);
 
-export const updateReservationPayment = async (reservationId: string, paymentId: string, payload: Partial<Payment>): Promise<Payment> =>
+export const updateReservationPayment = async (
+  reservationId: string,
+  paymentId: string,
+  payload: Partial<Payment>,
+): Promise<Payment> =>
   client.put<Payment>(`/car-rental/reservations/${reservationId}/payments/${paymentId}`, payload);
 
-export const refundSecurityDeposit = async (reservationId: string, payload: { amount: number; reason?: string }): Promise<Payment> =>
-  client.post<Payment>(`/car-rental/reservations/${reservationId}/refund-security-deposit`, payload);
+export const refundSecurityDeposit = async (
+  reservationId: string,
+  payload: { amount: number; reason?: string },
+): Promise<Payment> =>
+  client.post<Payment>(
+    `/car-rental/reservations/${reservationId}/refund-security-deposit`,
+    payload,
+  );
 
-export const chargeCustomerCard = async (reservationId: string, payload: { amount: number; description?: string }): Promise<Payment> =>
+export const chargeCustomerCard = async (
+  reservationId: string,
+  payload: { amount: number; description?: string },
+): Promise<Payment> =>
   client.post<Payment>(`/car-rental/reservations/${reservationId}/charge-card`, payload);
 
 export default {

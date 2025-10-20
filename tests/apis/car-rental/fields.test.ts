@@ -21,7 +21,7 @@ describe('Fields API', () => {
       const itemType = 'customer';
       const mockFields = [
         { id: '1', name: 'First Name', type: 'text', required: true },
-        { id: '2', name: 'Last Name', type: 'text', required: true }
+        { id: '2', name: 'Last Name', type: 'text', required: true },
       ];
       mockClient.get.mockResolvedValue(mockFields);
 
@@ -34,13 +34,21 @@ describe('Fields API', () => {
     it('should handle special characters in item type', async () => {
       const itemType = 'rental/vehicle%20type';
       const mockFields = [
-        { id: '3', name: 'Vehicle Type', type: 'select', required: false, options: ['car', 'truck'] }
+        {
+          id: '3',
+          name: 'Vehicle Type',
+          type: 'select',
+          required: false,
+          options: ['car', 'truck'],
+        },
       ];
       mockClient.get.mockResolvedValue(mockFields);
 
       const result = await fieldsAPI.listFieldsByItemType(itemType);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/fields?item_type=rental/vehicle%20type');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/fields?item_type=rental/vehicle%20type',
+      );
       expect(result).toEqual(mockFields);
     });
 
@@ -63,7 +71,7 @@ describe('Fields API', () => {
         id: fieldId,
         name: 'Email',
         type: 'email',
-        required: true
+        required: true,
       };
       mockClient.get.mockResolvedValue(mockField);
 
@@ -79,7 +87,7 @@ describe('Fields API', () => {
         id: fieldId,
         name: 'Special Field',
         type: 'text',
-        required: false
+        required: false,
       };
       mockClient.get.mockResolvedValue(mockField);
 
@@ -97,7 +105,7 @@ describe('Fields API', () => {
         type: 'select',
         required: true,
         options: ['option1', 'option2', 'option3'],
-        item_type: 'vehicle'
+        item_type: 'vehicle',
       };
       mockClient.get.mockResolvedValue(mockField);
 
@@ -115,7 +123,7 @@ describe('Fields API', () => {
         id: 'email-field',
         name: 'Email Address',
         type: fieldType,
-        required: true
+        required: true,
       };
       mockClient.get.mockResolvedValue(mockField);
 
@@ -131,7 +139,7 @@ describe('Fields API', () => {
         id: 'custom-field',
         name: 'Custom Special Field',
         type: fieldType,
-        required: false
+        required: false,
       };
       mockClient.get.mockResolvedValue(mockField);
 
@@ -148,7 +156,7 @@ describe('Fields API', () => {
         name: 'Multiple Selection',
         type: fieldType,
         required: false,
-        options: ['value1', 'value2', 'value3']
+        options: ['value1', 'value2', 'value3'],
       };
       mockClient.get.mockResolvedValue(mockField);
 
@@ -165,7 +173,7 @@ describe('Fields API', () => {
         { id: '1', name: 'First Name', type: 'text', required: true },
         { id: '2', name: 'Last Name', type: 'text', required: true },
         { id: '3', name: 'Email', type: 'email', required: true },
-        { id: '4', name: 'Phone', type: 'tel', required: false }
+        { id: '4', name: 'Phone', type: 'tel', required: false },
       ];
       mockClient.get.mockResolvedValue(mockFields);
 
@@ -193,8 +201,8 @@ describe('Fields API', () => {
           type: 'select',
           required: true,
           options: ['individual', 'business'],
-          item_type: 'customer'
-        }
+          item_type: 'customer',
+        },
       ];
       mockClient.get.mockResolvedValue(mockFields);
 
@@ -240,7 +248,9 @@ describe('Fields API', () => {
       const error = new Error('Field type not found');
       mockClient.get.mockRejectedValue(error);
 
-      await expect(fieldsAPI.getFieldByType('invalid-type')).rejects.toThrow('Field type not found');
+      await expect(fieldsAPI.getFieldByType('invalid-type')).rejects.toThrow(
+        'Field type not found',
+      );
     });
 
     it('should propagate errors from listCustomerFields', async () => {

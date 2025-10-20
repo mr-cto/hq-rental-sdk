@@ -1,50 +1,32 @@
-import client from '../../client';
+// Import functions from sub-modules
+import { listContactCategories, getContactCategory } from './contact-categories';
+import {
+  listContactsByCategoryId,
+  createContact,
+  getContact,
+  updateContact,
+  mergeContacts,
+} from './contacts';
 
-export interface ContactCategory {
-  id: string;
-  name: string;
-  description?: string;
-  fields?: string[];
-}
+// Re-export types
+export type { ContactCategory } from './contact-categories';
+export type { Contact } from './contacts';
 
-export interface Contact {
-  id: string;
-  category_id: string;
-  name: string;
-  email?: string;
-  phone?: string;
-  company?: string;
-  address?: string;
-  notes?: string;
-  created_at: string;
-}
+// Export functions directly
+export { listContactCategories, getContactCategory };
+export {
+  listContactsByCategoryId as listContactsInCategory,
+  createContact,
+  getContact,
+  updateContact,
+  mergeContacts,
+};
 
-// Contacts
-export const listContactCategories = async (): Promise<ContactCategory[]> =>
-  client.get<ContactCategory[]>('/contacts/categories');
-
-export const getContactCategory = async (categoryId: string): Promise<ContactCategory> =>
-  client.get<ContactCategory>(`/contacts/categories/${categoryId}`);
-
-export const listContactsInCategory = async (categoryId: string): Promise<Contact[]> =>
-  client.get<Contact[]>(`/contacts/categories/${categoryId}/contacts`);
-
-export const createContact = async (payload: Partial<Contact>): Promise<Contact> =>
-  client.post<Contact>('/contacts', payload);
-
-export const getContact = async (contactId: string): Promise<Contact> =>
-  client.get<Contact>(`/contacts/${contactId}`);
-
-export const updateContact = async (contactId: string, payload: Partial<Contact>): Promise<Contact> =>
-  client.put<Contact>(`/contacts/${contactId}`, payload);
-
-export const mergeContacts = async (primaryContactId: string, secondaryContactId: string): Promise<Contact> =>
-  client.post<Contact>(`/contacts/${primaryContactId}/merge`, { secondary_contact_id: secondaryContactId });
-
+// Default export with all functions
 export default {
   listContactCategories,
   getContactCategory,
-  listContactsInCategory,
+  listContactsInCategory: listContactsByCategoryId,
   createContact,
   getContact,
   updateContact,

@@ -18,18 +18,29 @@ export interface VehicleRelocation {
 }
 
 // Vehicle Relocations
-export const listVehicleRelocations = async (params?: { vehicle_id?: string; status?: string; from_date?: string; to_date?: string }): Promise<VehicleRelocation[]> => {
-  const query = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : '';
+export const listVehicleRelocations = async (params?: {
+  vehicle_id?: string;
+  status?: string;
+  from_date?: string;
+  to_date?: string;
+}): Promise<VehicleRelocation[]> => {
+  const query = params
+    ? `?${new URLSearchParams(params as Record<string, string>).toString()}`
+    : '';
   return client.get<VehicleRelocation[]>(`/fleets/relocations${query}`);
 };
 
-export const createVehicleRelocation = async (payload: Partial<VehicleRelocation>): Promise<VehicleRelocation> =>
-  client.post<VehicleRelocation>('/fleets/relocations', payload);
+export const createVehicleRelocation = async (
+  payload: Partial<VehicleRelocation>,
+): Promise<VehicleRelocation> => client.post<VehicleRelocation>('/fleets/relocations', payload);
 
 export const getVehicleRelocation = async (id: string): Promise<VehicleRelocation> =>
   client.get<VehicleRelocation>(`/fleets/relocations/${id}`);
 
-export const updateVehicleRelocation = async (id: string, payload: Partial<VehicleRelocation>): Promise<VehicleRelocation> =>
+export const updateVehicleRelocation = async (
+  id: string,
+  payload: Partial<VehicleRelocation>,
+): Promise<VehicleRelocation> =>
   client.put<VehicleRelocation>(`/fleets/relocations/${id}`, payload);
 
 export const cancelVehicleRelocation = async (id: string): Promise<VehicleRelocation> =>

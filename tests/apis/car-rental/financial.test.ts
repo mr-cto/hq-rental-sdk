@@ -1,5 +1,11 @@
 import * as financialAPI from '../../../src/apis/car-rental/financial';
-import type { CustomerCredit, Fine, Package, PackageItem, Quote } from '../../../src/apis/car-rental/financial';
+import type {
+  CustomerCredit,
+  Fine,
+  Package,
+  PackageItem,
+  Quote,
+} from '../../../src/apis/car-rental/financial';
 
 // Mock the client module
 jest.mock('../../../src/client', () => ({
@@ -23,18 +29,20 @@ describe('Financial API', () => {
           {
             id: 'credit-1',
             customer_id: 'cust-1',
-            amount: 100.50,
+            amount: 100.5,
             description: 'Refund for cancelled booking',
             transaction_type: 'credit',
             created_at: '2024-01-01T00:00:00Z',
-            expires_at: '2024-12-31T23:59:59Z'
-          }
+            expires_at: '2024-12-31T23:59:59Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockCredits);
 
         const result = await financialAPI.listCustomerCredits('cust-1');
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/customer-credits?customer_id=cust-1');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/customer-credits?customer_id=cust-1',
+        );
         expect(result).toEqual(mockCredits);
       });
 
@@ -43,7 +51,9 @@ describe('Financial API', () => {
 
         await financialAPI.listCustomerCredits('cust@123');
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/customer-credits?customer_id=cust@123');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/customer-credits?customer_id=cust@123',
+        );
       });
 
       it('should handle empty credits list', async () => {
@@ -59,14 +69,14 @@ describe('Financial API', () => {
       it('should call client.post with correct URL and payload', async () => {
         const payload: Partial<CustomerCredit> = {
           customer_id: 'cust-1',
-          amount: 50.00,
+          amount: 50.0,
           transaction_type: 'credit',
-          description: 'Loyalty bonus'
+          description: 'Loyalty bonus',
         };
         const mockCredit: CustomerCredit = {
-          ...payload as CustomerCredit,
+          ...(payload as CustomerCredit),
           id: 'credit-new',
-          created_at: '2024-01-01T00:00:00Z'
+          created_at: '2024-01-01T00:00:00Z',
         };
         mockClient.post.mockResolvedValue(mockCredit);
 
@@ -79,8 +89,8 @@ describe('Financial API', () => {
       it('should handle minimal credit payload', async () => {
         const payload: Partial<CustomerCredit> = {
           customer_id: 'cust-1',
-          amount: 25.00,
-          transaction_type: 'debit'
+          amount: 25.0,
+          transaction_type: 'debit',
         };
         mockClient.post.mockResolvedValue({ id: 'credit-minimal', ...payload });
 
@@ -93,22 +103,25 @@ describe('Financial API', () => {
     describe('updateCustomerCredit', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<CustomerCredit> = {
-          amount: 75.00,
-          description: 'Updated amount'
+          amount: 75.0,
+          description: 'Updated amount',
         };
         const mockCredit: CustomerCredit = {
           id: 'credit-1',
           customer_id: 'cust-1',
-          amount: 100.00,
+          amount: 100.0,
           transaction_type: 'credit',
           created_at: '2024-01-01T00:00:00Z',
-          ...payload
+          ...payload,
         };
         mockClient.put.mockResolvedValue(mockCredit);
 
         const result = await financialAPI.updateCustomerCredit('credit-1', payload);
 
-        expect(mockClient.put).toHaveBeenCalledWith('/car-rental/customer-credits/credit-1', payload);
+        expect(mockClient.put).toHaveBeenCalledWith(
+          '/car-rental/customer-credits/credit-1',
+          payload,
+        );
         expect(result).toEqual(mockCredit);
       });
 
@@ -135,7 +148,9 @@ describe('Financial API', () => {
 
         await financialAPI.deleteCustomerCredit('credit@special');
 
-        expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/customer-credits/credit@special');
+        expect(mockClient.delete).toHaveBeenCalledWith(
+          '/car-rental/customer-credits/credit@special',
+        );
       });
     });
   });
@@ -151,11 +166,11 @@ describe('Financial API', () => {
             vehicle_id: 'veh-1',
             type: 'damage',
             description: 'Scratch on door',
-            amount: 150.00,
+            amount: 150.0,
             status: 'pending',
             issued_date: '2024-01-01',
-            due_date: '2024-01-15'
-          }
+            due_date: '2024-01-15',
+          },
         ];
         mockClient.get.mockResolvedValue(mockFines);
 
@@ -171,7 +186,9 @@ describe('Financial API', () => {
 
         await financialAPI.listFines(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/fines?customer_id=cust-1&status=pending');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/fines?customer_id=cust-1&status=pending',
+        );
       });
 
       it('should handle empty params object', async () => {
@@ -190,13 +207,13 @@ describe('Financial API', () => {
           vehicle_id: 'veh-1',
           type: 'late_return',
           description: 'Vehicle returned 2 hours late',
-          amount: 50.00,
+          amount: 50.0,
           status: 'pending',
-          issued_date: '2024-01-01'
+          issued_date: '2024-01-01',
         };
         const mockFine: Fine = {
-          ...payload as Fine,
-          id: 'fine-new'
+          ...(payload as Fine),
+          id: 'fine-new',
         };
         mockClient.post.mockResolvedValue(mockFine);
 
@@ -213,10 +230,10 @@ describe('Financial API', () => {
           id: 'fine-1',
           type: 'damage',
           description: 'Scratch',
-          amount: 100.00,
+          amount: 100.0,
           status: 'paid',
           issued_date: '2024-01-01',
-          paid_date: '2024-01-05'
+          paid_date: '2024-01-05',
         };
         mockClient.get.mockResolvedValue(mockFine);
 
@@ -231,7 +248,7 @@ describe('Financial API', () => {
       it('should call client.put with correct URL and payload', async () => {
         const payload: Partial<Fine> = {
           status: 'paid',
-          paid_date: '2024-01-05'
+          paid_date: '2024-01-05',
         };
         mockClient.put.mockResolvedValue({ id: 'fine-1', ...payload });
 
@@ -261,8 +278,8 @@ describe('Financial API', () => {
             package_id: 'pkg-1',
             item_type: 'insurance',
             item_id: 'ins-1',
-            quantity: 1
-          }
+            quantity: 1,
+          },
         ];
         mockClient.get.mockResolvedValue(mockItems);
 
@@ -280,7 +297,7 @@ describe('Financial API', () => {
           package_id: 'pkg-1',
           item_type: 'addon',
           item_id: 'addon-1',
-          quantity: 2
+          quantity: 2,
         };
         mockClient.get.mockResolvedValue(mockItem);
 
@@ -300,8 +317,8 @@ describe('Financial API', () => {
             description: 'Full insurance and GPS',
             price: 99.99,
             includes: ['insurance', 'gps', 'roadside'],
-            duration: 7
-          }
+            duration: 7,
+          },
         ];
         mockClient.get.mockResolvedValue(mockPackages);
 
@@ -318,7 +335,7 @@ describe('Financial API', () => {
           id: 'pkg-1',
           name: 'Basic Package',
           price: 49.99,
-          includes: ['basic_insurance']
+          includes: ['basic_insurance'],
         };
         mockClient.get.mockResolvedValue(mockPackage);
 
@@ -343,8 +360,8 @@ describe('Financial API', () => {
             total_amount: 299.99,
             status: 'active',
             expires_at: '2024-03-31T23:59:59Z',
-            created_at: '2024-03-01T10:00:00Z'
-          }
+            created_at: '2024-03-01T10:00:00Z',
+          },
         ];
         mockClient.get.mockResolvedValue(mockQuotes);
 
@@ -360,7 +377,9 @@ describe('Financial API', () => {
 
         await financialAPI.listQuotes(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith('/car-rental/quotes?customer_id=cust-1&status=active');
+        expect(mockClient.get).toHaveBeenCalledWith(
+          '/car-rental/quotes?customer_id=cust-1&status=active',
+        );
       });
     });
 
@@ -373,7 +392,7 @@ describe('Financial API', () => {
           total_amount: 199.99,
           status: 'expired',
           expires_at: '2024-03-15T23:59:59Z',
-          created_at: '2024-03-01T10:00:00Z'
+          created_at: '2024-03-01T10:00:00Z',
         };
         mockClient.get.mockResolvedValue(mockQuote);
 
@@ -396,26 +415,26 @@ describe('Financial API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/financial').default;
-      
+
       // Customer Credits
       expect(defaultExport.listCustomerCredits).toBeDefined();
       expect(defaultExport.createCustomerCredit).toBeDefined();
       expect(defaultExport.updateCustomerCredit).toBeDefined();
       expect(defaultExport.deleteCustomerCredit).toBeDefined();
-      
+
       // Fines
       expect(defaultExport.listFines).toBeDefined();
       expect(defaultExport.createFine).toBeDefined();
       expect(defaultExport.getFine).toBeDefined();
       expect(defaultExport.updateFine).toBeDefined();
       expect(defaultExport.deleteFine).toBeDefined();
-      
+
       // Packages
       expect(defaultExport.listPackageItems).toBeDefined();
       expect(defaultExport.getPackageItem).toBeDefined();
       expect(defaultExport.listPackages).toBeDefined();
       expect(defaultExport.getPackage).toBeDefined();
-      
+
       // Quotes
       expect(defaultExport.listQuotes).toBeDefined();
       expect(defaultExport.getQuote).toBeDefined();
@@ -423,23 +442,23 @@ describe('Financial API', () => {
 
     it('should have all functions be the same as named exports', () => {
       const defaultExport = require('../../../src/apis/car-rental/financial').default;
-      
+
       expect(defaultExport.listCustomerCredits).toBe(financialAPI.listCustomerCredits);
       expect(defaultExport.createCustomerCredit).toBe(financialAPI.createCustomerCredit);
       expect(defaultExport.updateCustomerCredit).toBe(financialAPI.updateCustomerCredit);
       expect(defaultExport.deleteCustomerCredit).toBe(financialAPI.deleteCustomerCredit);
-      
+
       expect(defaultExport.listFines).toBe(financialAPI.listFines);
       expect(defaultExport.createFine).toBe(financialAPI.createFine);
       expect(defaultExport.getFine).toBe(financialAPI.getFine);
       expect(defaultExport.updateFine).toBe(financialAPI.updateFine);
       expect(defaultExport.deleteFine).toBe(financialAPI.deleteFine);
-      
+
       expect(defaultExport.listPackageItems).toBe(financialAPI.listPackageItems);
       expect(defaultExport.getPackageItem).toBe(financialAPI.getPackageItem);
       expect(defaultExport.listPackages).toBe(financialAPI.listPackages);
       expect(defaultExport.getPackage).toBe(financialAPI.getPackage);
-      
+
       expect(defaultExport.listQuotes).toBe(financialAPI.listQuotes);
       expect(defaultExport.getQuote).toBe(financialAPI.getQuote);
     });
@@ -453,10 +472,18 @@ describe('Financial API', () => {
       mockClient.put.mockRejectedValue(error);
       mockClient.delete.mockRejectedValue(error);
 
-      await expect(financialAPI.listCustomerCredits('cust-1')).rejects.toThrow('Credit operation failed');
-      await expect(financialAPI.createCustomerCredit({})).rejects.toThrow('Credit operation failed');
-      await expect(financialAPI.updateCustomerCredit('credit-1', {})).rejects.toThrow('Credit operation failed');
-      await expect(financialAPI.deleteCustomerCredit('credit-1')).rejects.toThrow('Credit operation failed');
+      await expect(financialAPI.listCustomerCredits('cust-1')).rejects.toThrow(
+        'Credit operation failed',
+      );
+      await expect(financialAPI.createCustomerCredit({})).rejects.toThrow(
+        'Credit operation failed',
+      );
+      await expect(financialAPI.updateCustomerCredit('credit-1', {})).rejects.toThrow(
+        'Credit operation failed',
+      );
+      await expect(financialAPI.deleteCustomerCredit('credit-1')).rejects.toThrow(
+        'Credit operation failed',
+      );
     });
 
     it('should propagate errors from fine operations', async () => {
@@ -478,7 +505,9 @@ describe('Financial API', () => {
       mockClient.get.mockRejectedValue(error);
 
       await expect(financialAPI.listPackageItems()).rejects.toThrow('Package operation failed');
-      await expect(financialAPI.getPackageItem('item-1')).rejects.toThrow('Package operation failed');
+      await expect(financialAPI.getPackageItem('item-1')).rejects.toThrow(
+        'Package operation failed',
+      );
       await expect(financialAPI.listPackages()).rejects.toThrow('Package operation failed');
       await expect(financialAPI.getPackage('pkg-1')).rejects.toThrow('Package operation failed');
     });

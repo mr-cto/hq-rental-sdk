@@ -14,8 +14,13 @@ export interface DailyManifest {
 }
 
 // Daily Manifest
-export const getDailyManifest = async (params?: { date?: string; location?: string }): Promise<DailyManifest> => {
-  const query = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : '';
+export const getDailyManifest = async (params?: {
+  date?: string;
+  location?: string;
+}): Promise<DailyManifest> => {
+  const query = params
+    ? `?${new URLSearchParams(params as Record<string, string>).toString()}`
+    : '';
   return client.get<DailyManifest>(`/car-rental/daily-manifest${query}`);
 };
 

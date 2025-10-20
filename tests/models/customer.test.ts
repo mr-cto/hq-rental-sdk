@@ -10,7 +10,7 @@ describe('Customer Models', () => {
         phone: '+1234567890',
         address: '123 Main St',
         validateEmail: () => true,
-        validatePhone: () => true
+        validatePhone: () => true,
       };
 
       expect(customer.id).toBe('1');
@@ -28,7 +28,7 @@ describe('Customer Models', () => {
         name: 'Jane Doe',
         email: 'jane@example.com',
         validateEmail: () => true,
-        validatePhone: () => true
+        validatePhone: () => true,
       };
 
       expect(customer.phone).toBeUndefined();
@@ -39,7 +39,13 @@ describe('Customer Models', () => {
   describe('CustomerModel Class', () => {
     describe('constructor', () => {
       it('should create instance with all properties', () => {
-        const customer = new CustomerModel('1', 'John Doe', 'john@example.com', '+1234567890', '123 Main St');
+        const customer = new CustomerModel(
+          '1',
+          'John Doe',
+          'john@example.com',
+          '+1234567890',
+          '123 Main St',
+        );
 
         expect(customer.id).toBe('1');
         expect(customer.name).toBe('John Doe');
@@ -76,7 +82,7 @@ describe('Customer Models', () => {
           'user.name@domain.co.uk',
           'user+tag@example.org',
           'user123@test.io',
-          'first.last@subdomain.domain.com'
+          'first.last@subdomain.domain.com',
         ];
 
         validEmails.forEach(email => {
@@ -92,7 +98,7 @@ describe('Customer Models', () => {
           'user@',
           'user@.com',
           '',
-          'user name@example.com'
+          'user name@example.com',
         ];
 
         invalidEmails.forEach(email => {
@@ -105,7 +111,11 @@ describe('Customer Models', () => {
         const customer1 = new CustomerModel('1', 'Test', 'a@b.c');
         expect(customer1.validateEmail()).toBe(true);
 
-        const customer2 = new CustomerModel('2', 'Test', 'very-long-email-address-that-might-cause-issues@very-long-domain-name-that-should-still-work.com');
+        const customer2 = new CustomerModel(
+          '2',
+          'Test',
+          'very-long-email-address-that-might-cause-issues@very-long-domain-name-that-should-still-work.com',
+        );
         expect(customer2.validateEmail()).toBe(true);
       });
     });
@@ -117,7 +127,7 @@ describe('Customer Models', () => {
           '+123456789012345', // Max length (15 digits)
           '+12345678901',
           '+987654321',
-          '1234567890'
+          '1234567890',
         ];
 
         validPhones.forEach(phone => {
@@ -132,7 +142,7 @@ describe('Customer Models', () => {
           '0123456789', // Starts with 0
           '+abc123456789', // Contains letters
           '++1234567890', // Double plus
-          '+123-456-7890' // Contains dashes
+          '+123-456-7890', // Contains dashes
         ];
 
         invalidPhones.forEach(phone => {
@@ -154,7 +164,13 @@ describe('Customer Models', () => {
 
     describe('Customer interface implementation', () => {
       it('should implement Customer interface correctly', () => {
-        const customer = new CustomerModel('1', 'Test User', 'test@example.com', '+1234567890', '123 Main St');
+        const customer = new CustomerModel(
+          '1',
+          'Test User',
+          'test@example.com',
+          '+1234567890',
+          '123 Main St',
+        );
 
         // Should satisfy Customer interface
         const customerInterface: Customer = customer;
@@ -225,8 +241,8 @@ describe('Customer Models', () => {
 
   describe('Edge Cases and Error Handling', () => {
     it('should handle special characters in names', () => {
-      const customer = new CustomerModel('1', "O'Brien-Smith Jr.", 'test@example.com');
-      expect(customer.name).toBe("O'Brien-Smith Jr.");
+      const customer = new CustomerModel('1', `O'Brien-Smith Jr.`, 'test@example.com');
+      expect(customer.name).toBe(`O'Brien-Smith Jr.`);
     });
 
     it('should handle unicode characters', () => {
@@ -238,7 +254,7 @@ describe('Customer Models', () => {
       const longName = 'A'.repeat(1000);
       const longEmail = 'test@' + 'a'.repeat(100) + '.com';
       const customer = new CustomerModel('1', longName, longEmail);
-      
+
       expect(customer.name).toBe(longName);
       expect(customer.email).toBe(longEmail);
     });

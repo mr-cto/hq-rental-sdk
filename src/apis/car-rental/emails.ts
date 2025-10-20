@@ -28,12 +28,14 @@ export const sendReservationConfirmation = async (reservationId: string): Promis
 export const sendReservationContract = async (reservationId: string): Promise<void> =>
   client.post<void>(`/car-rental/reservations/${reservationId}/emails/contract`);
 
-export const listReservationEmailTemplates = async (reservationId: string): Promise<EmailTemplate[]> =>
+export const listReservationEmailTemplates = async (
+  reservationId: string,
+): Promise<EmailTemplate[]> =>
   client.get<EmailTemplate[]>(`/car-rental/reservations/${reservationId}/emails/templates`);
 
 export const triggerReservationEmailTemplate = async (
   reservationId: string,
-  request: EmailTriggerRequest
+  request: EmailTriggerRequest,
 ): Promise<void> =>
   client.post<void>(`/car-rental/reservations/${reservationId}/emails/trigger`, request);
 
