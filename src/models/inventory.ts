@@ -6,8 +6,20 @@ export interface InventoryItem {
 }
 
 export function validateInventoryItem(item: InventoryItem): boolean {
-    if (!item.id || !item.type || item.quantity < 0) {
+    // Check if required fields exist and are not empty/whitespace-only
+    if (!item.id || !item.type || typeof item.quantity !== 'number') {
         return false;
     }
+    
+    // Check for whitespace-only strings
+    if (item.id.trim() === '' || item.type.trim() === '') {
+        return false;
+    }
+    
+    // Check quantity constraints
+    if (item.quantity < 0) {
+        return false;
+    }
+    
     return true;
 }

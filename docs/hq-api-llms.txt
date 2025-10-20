@@ -1,0 +1,183 @@
+# HQ Rental Software
+
+## Docs
+- [Authorization](https://api-docs.hqrentalsoftware.com/doc-624611.md): 
+- [Introduction](https://api-docs.hqrentalsoftware.com/doc-624613.md): 
+- Guides > Booking Engine [Reservation Creation Flow](https://api-docs.hqrentalsoftware.com/doc-866060.md): 
+- Guides > Booking Engine [Reservation Update Flow](https://api-docs.hqrentalsoftware.com/doc-866065.md): 
+- Guides > Toll Integration [Toll Integration Flow](https://api-docs.hqrentalsoftware.com/doc-864944.md): 
+
+## API Docs
+- Car Rental > Comments [Show a list of all the comments for an item](https://api-docs.hqrentalsoftware.com/api-14010441.md): Get a JSON representation of comments
+- Car Rental > Comments [Creates a new comment](https://api-docs.hqrentalsoftware.com/api-14010442.md): 
+- Car Rental > Comments [Updates a comment](https://api-docs.hqrentalsoftware.com/api-14010443.md): 
+- Car Rental > Comments [Delete comment](https://api-docs.hqrentalsoftware.com/api-14010444.md): 
+- Car Rental > Comments [Get Reservation comments](https://api-docs.hqrentalsoftware.com/api-14123754.md): 
+- Car Rental > Comments [Update Reservation comments](https://api-docs.hqrentalsoftware.com/api-14123755.md): 
+- Car Rental > Comments [Deletes a comment](https://api-docs.hqrentalsoftware.com/api-14123756.md): 
+- Car Rental > Currencies [Returns all the currencies](https://api-docs.hqrentalsoftware.com/api-14010445.md): 
+- Car Rental > Emails [Show a list of all email templates](https://api-docs.hqrentalsoftware.com/api-14010446.md): 
+- Car Rental > Emails [Trigger an email template](https://api-docs.hqrentalsoftware.com/api-14010447.md): 
+- Car Rental > Emails [Send reservation confirmation email by id](https://api-docs.hqrentalsoftware.com/api-14010448.md): 
+- Car Rental > Emails [Send reservation contract email by id](https://api-docs.hqrentalsoftware.com/api-14010449.md): 
+- Car Rental > Emails [Show a list of all applicable email templates for a reservation](https://api-docs.hqrentalsoftware.com/api-14010450.md): 
+- Car Rental > Emails [Trigger an email template for a reservation](https://api-docs.hqrentalsoftware.com/api-14010451.md): 
+- Car Rental > Emails [Store a quote and sends an email](https://api-docs.hqrentalsoftware.com/api-14010452.md): 
+- Car Rental > Addresses [Shows a list of addresses](https://api-docs.hqrentalsoftware.com/api-14010453.md): 
+- Car Rental > Addresses [Create address](https://api-docs.hqrentalsoftware.com/api-14010454.md): 
+- Car Rental > Addresses [Finds address by id](https://api-docs.hqrentalsoftware.com/api-14010455.md): Returns a single address
+- Car Rental > Addresses [Updates address by id](https://api-docs.hqrentalsoftware.com/api-14010456.md): 
+- Car Rental > Addresses [Delete address](https://api-docs.hqrentalsoftware.com/api-14010457.md): 
+- Car Rental > Fields [Show a list of all fields for specific item_type](https://api-docs.hqrentalsoftware.com/api-14010458.md): Get a JSON representation of fields for specific item type
+- Car Rental > Fields [Show details of specific field](https://api-docs.hqrentalsoftware.com/api-14010459.md): Get a JSON representation of one field
+- Car Rental > Fields [Show details of specific field](https://api-docs.hqrentalsoftware.com/api-14010460.md): Get a JSON representation of one field
+- Car Rental > Fields [Show a list of all fields applicable for the customers in the reservations process](https://api-docs.hqrentalsoftware.com/api-14010461.md): 
+- Car Rental > Blocked Days [List all blocked days](https://api-docs.hqrentalsoftware.com/api-14010462.md): 
+- Car Rental > Customer Credits [List all credit transactions](https://api-docs.hqrentalsoftware.com/api-14010463.md): Lists all credit transactions for the customer specified by this customer ID
+- Car Rental > Customer Credits [Create a customer credit](https://api-docs.hqrentalsoftware.com/api-14010464.md): Creates a customer credit transaction for a customer
+- Car Rental > Customer Credits [Delete a credit transaction](https://api-docs.hqrentalsoftware.com/api-14010465.md): Deletes a customer credit transaction for a customer
+- Car Rental > Customer Credits [Update a customer credit](https://api-docs.hqrentalsoftware.com/api-14010466.md): Updates a customer credit transaction for a customer
+- Car Rental > Daily Manifest [shows mine dashboard](https://api-docs.hqrentalsoftware.com/api-14010467.md): 
+- Car Rental > Fines [List all fines](https://api-docs.hqrentalsoftware.com/api-14010468.md): 
+- Car Rental > Fines [Create a fine](https://api-docs.hqrentalsoftware.com/api-14010469.md): 
+- Car Rental > Fines [Retrieve a fine](https://api-docs.hqrentalsoftware.com/api-14010470.md): Returns a single fine
+- Car Rental > Fines [Update a fine](https://api-docs.hqrentalsoftware.com/api-14010471.md): 
+- Car Rental > Fines [Deletes a fine](https://api-docs.hqrentalsoftware.com/api-14010472.md): 
+- Car Rental > Packages [Shows a list of available package items](https://api-docs.hqrentalsoftware.com/api-14010473.md): 
+- Car Rental > Packages [find a package item](https://api-docs.hqrentalsoftware.com/api-14010474.md): Returns a single package item
+- Car Rental > Packages [Shows a list of available packages](https://api-docs.hqrentalsoftware.com/api-14010475.md): 
+- Car Rental > Packages [find a package](https://api-docs.hqrentalsoftware.com/api-14010476.md): Returns a single package
+- Car Rental > Quotes [Shows a list of the reservation quotes in the system](https://api-docs.hqrentalsoftware.com/api-14010477.md): 
+- Car Rental > Quotes [Find a quote that matches the given ID](https://api-docs.hqrentalsoftware.com/api-14010478.md): 
+- Car Rental > Rate Types [List all rate types](https://api-docs.hqrentalsoftware.com/api-14010479.md): 
+- Car Rental > Rate Types [Updates a rate type](https://api-docs.hqrentalsoftware.com/api-14010480.md): 
+- Car Rental > Rate Types [Creates a rate type](https://api-docs.hqrentalsoftware.com/api-14010481.md): 
+- Car Rental > Rate Types [Find a specific rate type](https://api-docs.hqrentalsoftware.com/api-14010482.md): Returns a single rate type
+- Car Rental > Rate Types [Deletes a rate type](https://api-docs.hqrentalsoftware.com/api-14010483.md): 
+- Car Rental > Rates [List all rates](https://api-docs.hqrentalsoftware.com/api-14010484.md): 
+- Car Rental > Rates [Updates a rate](https://api-docs.hqrentalsoftware.com/api-14010485.md): 
+- Car Rental > Rates [Creates a rate](https://api-docs.hqrentalsoftware.com/api-14010486.md): 
+- Car Rental > Rates [Find a specific rate](https://api-docs.hqrentalsoftware.com/api-14010487.md): Returns a single rate
+- Car Rental > Rates [Deletes a rates](https://api-docs.hqrentalsoftware.com/api-14010488.md): 
+- Car Rental > Rates [List all rates v2](https://api-docs.hqrentalsoftware.com/api-14278647.md): 
+- Car Rental > Reservation Attempts [Shows a list of reservation attempts](https://api-docs.hqrentalsoftware.com/api-14010489.md): 
+- Car Rental > Reservation Attempts [Find the reservation attempts based on a given email](https://api-docs.hqrentalsoftware.com/api-14010490.md): Returns an array of attempts
+- Car Rental > Extensions [Show a list of all the extensions for a reservation](https://api-docs.hqrentalsoftware.com/api-14010491.md): 
+- Car Rental > Extensions [Creates an extension for one reservation](https://api-docs.hqrentalsoftware.com/api-14010492.md): 
+- Car Rental > Extensions [Deletes an extension](https://api-docs.hqrentalsoftware.com/api-14010493.md): 
+- Car Rental > External Charges [Show a list of all the external charges for a reservation](https://api-docs.hqrentalsoftware.com/api-14010494.md): 
+- Car Rental > External Charges [Creates an external charge for one reservation](https://api-docs.hqrentalsoftware.com/api-14010495.md): 
+- Car Rental > External Charges [Deletes an external charge for one reservation](https://api-docs.hqrentalsoftware.com/api-14010496.md): 
+- Car Rental > Adjustments [Show a list of all the adjustments made to a reservation](https://api-docs.hqrentalsoftware.com/api-14010497.md): 
+- Car Rental > Adjustments [Creates an adjustment for one reservation](https://api-docs.hqrentalsoftware.com/api-14010498.md): 
+- Car Rental > Adjustments [Deletes and adjustment for one reservation](https://api-docs.hqrentalsoftware.com/api-14010499.md): 
+- Car Rental > Payments [Show a list of all the payments for a reservation](https://api-docs.hqrentalsoftware.com/api-14010500.md): 
+- Car Rental > Payments [Creates a payment for one reservation](https://api-docs.hqrentalsoftware.com/api-14010501.md): 
+- Car Rental > Payments [Updates a payment for one reservation](https://api-docs.hqrentalsoftware.com/api-14010502.md): 
+- Car Rental > Payments [Initiate a refund of security deposit](https://api-docs.hqrentalsoftware.com/api-14010503.md): 
+- Car Rental > Payments [Charges a credit card from customer's reservation](https://api-docs.hqrentalsoftware.com/api-14010504.md): 
+- Car Rental > Refunds [Show a list of all the refunds for a reservation](https://api-docs.hqrentalsoftware.com/api-14010505.md): 
+- Car Rental > Refunds [Creates a refund for a reservation](https://api-docs.hqrentalsoftware.com/api-14010506.md): 
+- Car Rental > Refunds [Updates a refund for a reservation](https://api-docs.hqrentalsoftware.com/api-14010507.md): 
+- Car Rental > Refunds [Deletes a refund for a reservation](https://api-docs.hqrentalsoftware.com/api-14010508.md): 
+- Car Rental > Reservations [Updates the status of a reservation to Open](https://api-docs.hqrentalsoftware.com/api-14010509.md): 
+- Car Rental > Reservations [Updates the status of a reservation to Cancel](https://api-docs.hqrentalsoftware.com/api-14010510.md): 
+- Car Rental > Reservations [Updates the status of a reservation to Pending](https://api-docs.hqrentalsoftware.com/api-14010511.md): 
+- Car Rental > Reservations [Updates the status of a reservation to Quote](https://api-docs.hqrentalsoftware.com/api-14010512.md): 
+- Car Rental > Reservations [Updates the status of a reservation to No Show](https://api-docs.hqrentalsoftware.com/api-14010513.md): 
+- Car Rental > Reservations [Returns the details and validations required for the dates step](https://api-docs.hqrentalsoftware.com/api-14010514.md): 
+- Car Rental > Reservations [Validates the dates and return a list of available classes for that period with the respective prices for each vehicle class](https://api-docs.hqrentalsoftware.com/api-14010515.md): 
+- Car Rental > Reservations [Updates the vehicle class of a reservation (Only Existing Bookings)](https://api-docs.hqrentalsoftware.com/api-14010516.md): 
+- Car Rental > Reservations [Returns a list of applicable additional charges based on the selection of dates, brand and vehicle class](https://api-docs.hqrentalsoftware.com/api-14010517.md): 
+- Car Rental > Reservations [Returns the price for the selection of charges and vehicle class](https://api-docs.hqrentalsoftware.com/api-14010518.md): 
+- Car Rental > Reservations [Creates or updates a customer in the system](https://api-docs.hqrentalsoftware.com/api-14010519.md): 
+- Car Rental > Reservations [Confirms and create the reservation in the system](https://api-docs.hqrentalsoftware.com/api-14010520.md): 
+- Car Rental > Reservations [Updates a reservation](https://api-docs.hqrentalsoftware.com/api-14010521.md): 
+- Car Rental > Reservations [shows a list of reservations](https://api-docs.hqrentalsoftware.com/api-14010522.md): 
+- Car Rental > Reservations [show rental agreement of specific reservation](https://api-docs.hqrentalsoftware.com/api-14010523.md): 
+- Car Rental > Reservations [Set date of sign](https://api-docs.hqrentalsoftware.com/api-14010524.md): 
+- Car Rental > Reservations [Find a specific reservation](https://api-docs.hqrentalsoftware.com/api-14010525.md): Returns a single reservation
+- Car Rental > Reservations [Assign vehicle](https://api-docs.hqrentalsoftware.com/api-14010526.md): Assign a vehicle to a reservation
+- Car Rental > Reservations [Detach vehicle](https://api-docs.hqrentalsoftware.com/api-14010527.md): Detach a vehicle from a reservation
+- Car Rental > Reservations [Available Vehicles](https://api-docs.hqrentalsoftware.com/api-14010528.md): Get available vehicles for a reservation
+- Car Rental > Reservations [Upload primary driver signature](https://api-docs.hqrentalsoftware.com/api-14010529.md): Upload primary driver signature for a reservation
+- Car Rental > Reservations [Returns the available cars for a given location and reservation date range](https://api-docs.hqrentalsoftware.com/api-14010530.md): 
+- Car Rental > Vehicle Replacements [Shows all vehicle replacements from a reservation](https://api-docs.hqrentalsoftware.com/api-14010531.md): 
+- Car Rental > Vehicle Replacements [Creates a reservation vehicle replacement](https://api-docs.hqrentalsoftware.com/api-14010532.md): 
+- Car Rental > Vehicle Replacements [Updates a reservation vehicle replacement](https://api-docs.hqrentalsoftware.com/api-14010533.md): 
+- Car Rental > Vehicle Replacements [Deletes vehicle replacements from a reservation](https://api-docs.hqrentalsoftware.com/api-14010534.md): 
+- Car Rental > Reservation Agents [Shows a list of available agents](https://api-docs.hqrentalsoftware.com/api-14010535.md): 
+- Car Rental > Reservation Agents [Assign primary agent](https://api-docs.hqrentalsoftware.com/api-14010536.md): 
+- Car Rental > Reservation Agents [Assign return agent](https://api-docs.hqrentalsoftware.com/api-14010537.md): 
+- Car Rental > Seasons [Shows a list of available seasons](https://api-docs.hqrentalsoftware.com/api-14010538.md): 
+- Car Rental > Seasons [Creates a season](https://api-docs.hqrentalsoftware.com/api-14010539.md): 
+- Car Rental > Seasons [Find a specific season](https://api-docs.hqrentalsoftware.com/api-14010540.md): Returns a single season
+- Car Rental > Seasons [Updates a season](https://api-docs.hqrentalsoftware.com/api-14010541.md): 
+- Car Rental > Seasons [Deletes a season](https://api-docs.hqrentalsoftware.com/api-14010542.md): 
+- Car Rental > Security Deposits [Shows a list of security deposits](https://api-docs.hqrentalsoftware.com/api-14010543.md): 
+- Car Rental > Security Deposits [Shows an specific security deposit](https://api-docs.hqrentalsoftware.com/api-14010544.md): 
+- Car Rental > Webhooks [Register a webhook](https://api-docs.hqrentalsoftware.com/api-14010545.md): 
+- Filters [Returns an example of the allowed filters to the API](https://api-docs.hqrentalsoftware.com/api-14010546.md): 
+- Preferences [Show a list of all preferences per module](https://api-docs.hqrentalsoftware.com/api-14010547.md): 
+- Contacts [List all contact categories](https://api-docs.hqrentalsoftware.com/api-14010548.md): Get a JSON representation of all contact categories
+- Contacts [List a specific contact category](https://api-docs.hqrentalsoftware.com/api-14010549.md): Get a JSON representation of one contact category
+- Contacts [List all contacts of a specific contact category](https://api-docs.hqrentalsoftware.com/api-14421593.md): Get a JSON representation of items for specific contact category.
+- Contacts [Create a new contact in the application.](https://api-docs.hqrentalsoftware.com/api-14421594.md): 
+- Contacts [List a specific contact](https://api-docs.hqrentalsoftware.com/api-14421595.md): Get a JSON representation of one contact.
+- Contacts [Update a contact in the application.](https://api-docs.hqrentalsoftware.com/api-14421596.md): 
+- Contacts [Merge contacts](https://api-docs.hqrentalsoftware.com/api-14421597.md): 
+- Fleets > Additional Charges [Shows a list of the additional charges](https://api-docs.hqrentalsoftware.com/api-14010553.md): 
+- Fleets > Additional Charges [Returns a single additional charge](https://api-docs.hqrentalsoftware.com/api-14010554.md): 
+- Fleets > Features [Shows a list of features](https://api-docs.hqrentalsoftware.com/api-14010555.md): 
+- Fleets > Features [Returns a single feature](https://api-docs.hqrentalsoftware.com/api-14010556.md): 
+- Fleets > Locations [Shows a list of locations](https://api-docs.hqrentalsoftware.com/api-14010557.md): 
+- Fleets > Blocked Periods [Shows a list of blocked periods for a vehicle](https://api-docs.hqrentalsoftware.com/api-14010558.md): 
+- Fleets > Blocked Periods [Create a blocked period for a vehicle](https://api-docs.hqrentalsoftware.com/api-14010559.md): 
+- Fleets > Blocked Periods [Update a blocked period for a vehicle](https://api-docs.hqrentalsoftware.com/api-14010560.md): 
+- Fleets > Blocked Periods [Deletes a blocked period](https://api-docs.hqrentalsoftware.com/api-14010561.md): 
+- Fleets > Branches [Shows a list of Vehicle Brands](https://api-docs.hqrentalsoftware.com/api-14010562.md): 
+- Fleets > Branches [Returns a single vehicle brand](https://api-docs.hqrentalsoftware.com/api-14010563.md): 
+- Fleets > Damages [Shows a list of vehicle damages](https://api-docs.hqrentalsoftware.com/api-14010564.md): 
+- Fleets > Damages [Create a damage for a vehicle](https://api-docs.hqrentalsoftware.com/api-14010565.md): 
+- Fleets > Damages [Show the details of a specific vehicle damage](https://api-docs.hqrentalsoftware.com/api-14010566.md): 
+- Fleets > Damages [Update a damage for a vehicle](https://api-docs.hqrentalsoftware.com/api-14010567.md): 
+- Fleets > Vehicles > Models [Shows a list of Vehicle Models](https://api-docs.hqrentalsoftware.com/api-14010573.md): 
+- Fleets > Vehicles > Models [Returns a single vehicle model](https://api-docs.hqrentalsoftware.com/api-14010574.md): 
+- Fleets > Vehicles > Types [Shows a list of Vehicle Types](https://api-docs.hqrentalsoftware.com/api-14010575.md): 
+- Fleets > Vehicles > Types [Returns a single vehicle type](https://api-docs.hqrentalsoftware.com/api-14010576.md): 
+- Fleets > Vehicles [Shows maintenance history records for a vehicle](https://api-docs.hqrentalsoftware.com/api-20661100.md): 
+- Fleets > Vehicles [Shows a list of vehicles](https://api-docs.hqrentalsoftware.com/api-14010568.md): 
+- Fleets > Vehicles [Show the details of a specific vehicle](https://api-docs.hqrentalsoftware.com/api-14010569.md): 
+- Fleets > Vehicles [Update Vehicle](https://api-docs.hqrentalsoftware.com/api-14010570.md): 
+- Fleets > Vehicles [Reserve vehicle](https://api-docs.hqrentalsoftware.com/api-14010571.md): 
+- Fleets > Vehicles [Cancel Reserve](https://api-docs.hqrentalsoftware.com/api-14010572.md): 
+- Fleets > Relocations [Shows a list of relocations](https://api-docs.hqrentalsoftware.com/api-14010577.md): 
+- Fleets > Relocations [Create a relocation for a vehicle](https://api-docs.hqrentalsoftware.com/api-14010578.md): 
+- Fleets > Relocations [Deletes a relocation](https://api-docs.hqrentalsoftware.com/api-14010579.md): 
+- Fleets > Telematics [Shows a list of the OBD history records of the vehicle](https://api-docs.hqrentalsoftware.com/api-15368157.md): 
+- Fleets > Telematics [Shows a list of the OBD history records for all vehicles, receives a parameter with the last ID retrieved and it returns all the records after that one](https://api-docs.hqrentalsoftware.com/api-16033838.md): 
+- Fleets > Telematics [Shows a list of the vehicle alerts](https://api-docs.hqrentalsoftware.com/api-19292447.md): 
+- Fleets > Telematics [Shows a list of vehicle trips for the specified vehicle](https://api-docs.hqrentalsoftware.com/api-15368158.md): 
+- Fleets [Shows the list of repair orders](https://api-docs.hqrentalsoftware.com/api-19292446.md): Shows the applicable repair orders with filtered and paginated
+- Payment Gateways [Shows a list of credit cards for one customer](https://api-docs.hqrentalsoftware.com/api-14010580.md): 
+- Payment Gateways [Delete payment gateway](https://api-docs.hqrentalsoftware.com/api-14010581.md): 
+- Payment Gateways [Shows a list of payment methods](https://api-docs.hqrentalsoftware.com/api-14010582.md): 
+- Payment Gateways [Finds payment method by ID](https://api-docs.hqrentalsoftware.com/api-14010583.md): Returns a single payment method
+- Payment Gateways [Returns payment method button](https://api-docs.hqrentalsoftware.com/api-14010584.md): 
+- Payment Gateways [Returns payment method form](https://api-docs.hqrentalsoftware.com/api-14010585.md): 
+- Payment Gateways [Finds payment transaction by UUID](https://api-docs.hqrentalsoftware.com/api-14010586.md): Returns a single payment transaction
+- Payment Gateways [shows a list of payment transactions](https://api-docs.hqrentalsoftware.com/api-14010587.md): 
+- Payment Gateways [Create payment transaction](https://api-docs.hqrentalsoftware.com/api-14010588.md): 
+- Payment Gateways [Refunds a payment transaction](https://api-docs.hqrentalsoftware.com/api-14010589.md): 
+- Payment Gateways [Shows a list of stripe locations per gateway](https://api-docs.hqrentalsoftware.com/api-14010590.md): 
+- Payment Gateways [Returns a connection token for a given location](https://api-docs.hqrentalsoftware.com/api-14010591.md): 
+- Payment Gateways [Returns a connection token for stripe terminal](https://api-docs.hqrentalsoftware.com/api-14010592.md): 
+- Sheets [Show a list of all items for specific sheet](https://api-docs.hqrentalsoftware.com/api-14959273.md): Get a JSON representation of items for specific sheet
+- Sheets [Show details of sheet item](https://api-docs.hqrentalsoftware.com/api-14959274.md): Get a JSON representation of one sheet item
+- Sheets [Update sheet item in the application](https://api-docs.hqrentalsoftware.com/api-14959275.md): 
+- Sheets [Create a new sheet item in the application](https://api-docs.hqrentalsoftware.com/api-14959276.md): 
+- Sheets [Show a list of all sheets](https://api-docs.hqrentalsoftware.com/api-14959277.md): Get a JSON representation of all sheets
+- Sheets [Show a list of all sheets](https://api-docs.hqrentalsoftware.com/api-14959278.md): Get a JSON representation of all sheets
+- Files [Shows a list of files](https://api-docs.hqrentalsoftware.com/api-14010550.md): 
+- Files [upload file](https://api-docs.hqrentalsoftware.com/api-14010551.md): 
+- Files [Delete file](https://api-docs.hqrentalsoftware.com/api-14010552.md): 

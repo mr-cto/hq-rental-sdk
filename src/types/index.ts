@@ -131,6 +131,52 @@ export type Quote = {
   created_at: string;
 };
 
+export type Adjustment = {
+  id: string;
+  reservation_id: string;
+  type: 'discount' | 'fee' | 'tax' | 'other';
+  description: string;
+  amount: number;
+  created_at: string;
+};
+
+export type Refund = {
+  id: string;
+  reservation_id: string;
+  amount: number;
+  reason: string;
+  status: 'pending' | 'processed' | 'failed';
+  refund_date?: string;
+  processed_date?: string;
+};
+
+export type VehicleReplacement = {
+  id: string;
+  reservation_id: string;
+  original_vehicle_id: string;
+  replacement_vehicle_id: string;
+  reason: string;
+  additional_cost?: number;
+  replaced_at: string;
+};
+
+export type ReservationAgent = {
+  id: string;
+  name: string;
+  email: string;
+  role: 'pickup' | 'return' | 'both';
+  location_id?: string;
+};
+
+export type ExternalCharge = {
+  id: string;
+  reservation_id: string;
+  description: string;
+  amount: number;
+  charge_date: string;
+  category?: string;
+};
+
 // API Response wrapper types
 export type ApiResponse<T> = {
   data: T;
