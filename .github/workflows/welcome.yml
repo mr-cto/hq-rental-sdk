@@ -1,0 +1,158 @@
+name: Welcome Bot
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  welcome-new-contributor:
+    if: github.event_name == 'issues' || github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check if first contribution
+      uses: actions/github-script@v7
+      id: check-contributor
+      with:
+        script: |
+          const { owner, repo } = context.repo;
+          const author = context.payload.sender.login;
+          
+          // Check if this is the user's first contribution
+          const issues = await github.rest.search.issuesAndPullRequests({
+            q: `repo:${owner}/${repo} author:${author} is:closed`
+          });
+          
+          const isFirstContribution = issues.data.total_count === 0;
+          console.log(`First contribution for ${author}: ${isFirstContribution}`);
+          
+          return isFirstContribution;
+          
+    - name: Welcome new issue contributor
+      if: github.event_name == 'issues' && steps.check-contributor.outputs.result == 'true'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const welcomeMessage = `## 👋 Welcome to HQ Rental SDK!
+          
+          Thank you for opening your first issue! We're excited to have you as part of our community.
+          
+          ### What happens next?
+          - 🏷️ Your issue will be automatically labeled and triaged
+          - 👀 A maintainer will review it within 24-48 hours
+          - 💬 Feel free to provide any additional context or ask questions
+          
+          ### New to the project?
+          - 📚 Check out our [Contributing Guide](https://github.com/mr-cto/hq-rental-sdk/blob/main/.github/CONTRIBUTING.md)
+          - 🎯 Look for issues labeled \`good first issue\` if you'd like to contribute code
+          - 💡 Join our discussions for questions and ideas
+          
+          ### Quality Standards
+          This project maintains **100% test coverage** and high quality standards. All contributions are welcome, and we'll help guide you through our development process!
+          
+          Thanks again for your interest in improving the HQ Rental SDK! 🚀`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: welcomeMessage
+          });
+          
+    - name: Welcome new PR contributor
+      if: github.event_name == 'pull_request' && steps.check-contributor.outputs.result == 'true'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const welcomeMessage = `## 🎉 Welcome to your first contribution!
+          
+          Thank you for opening your first pull request! This is awesome! 🚀
+          
+          ### Automated Checks
+          Your PR will automatically run through our quality checks:
+          - ✅ **Tests**: All tests must pass
+          - 📊 **Coverage**: 100% test coverage must be maintained  
+          - 🎨 **Linting**: Code style and formatting checks
+          - 🔧 **Build**: TypeScript compilation verification
+          - 🏷️ **Labeling**: Automatic categorization based on changes
+          
+          ### Review Process
+          - 👀 A maintainer will review your PR within 24-48 hours
+          - 💬 We may ask questions or suggest improvements
+          - 🤝 We're here to help guide you through the process!
+          
+          ### Need Help?
+          - 📚 Check our [Contributing Guide](https://github.com/mr-cto/hq-rental-sdk/blob/main/.github/CONTRIBUTING.md)
+          - 💡 Ask questions in the PR comments
+          - 🔍 Look at our \`llms.txt\` file for architectural patterns
+          
+          Thanks for contributing to the HQ Rental SDK! We can't wait to see what you've built! 🙌`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.payload.pull_request.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: welcomeMessage
+          });
+
+  thank-reviewer:
+    if: github.event_name == 'pull_request_review' && github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Thank reviewer
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const reviewer = context.payload.review.user.login;
+          const prAuthor = context.payload.pull_request.user.login;
+          
+          // Don't thank self-approvals
+          if (reviewer === prAuthor) return;
+          
+          const thankYouMessage = `Thank you @${reviewer} for the review! 🙏 Your feedback helps maintain our code quality standards.`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.payload.pull_request.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: thankYouMessage
+          });
+
+  celebrate-merge:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    
+    steps:
+    - name: Celebrate successful merge
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const author = context.payload.pull_request.user.login;
+          const prNumber = context.payload.pull_request.number;
+          const prTitle = context.payload.pull_request.title;
+          
+          const celebrationMessage = `## 🎉 Contribution Merged!
+          
+          Congratulations @${author}! Your PR #${prNumber} "${prTitle}" has been successfully merged!
+          
+          ### Impact
+          Your contribution helps make the HQ Rental SDK better for everyone! 🚀
+          
+          ### What's Next?
+          - 🏷️ This will be included in the next release
+          - 📝 Check out other issues to contribute more
+          - 🌟 Consider starring the repository if you haven't already
+          
+          Thank you for being part of our community! 🙌`;
+          
+          await github.rest.issues.createComment({
+            issue_number: prNumber,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: celebrationMessage
+          });

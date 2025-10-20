@@ -1,0 +1,140 @@
+name: Stale Management
+
+on:
+  schedule:
+    # Run daily at 1 AM UTC
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Mark/Close Stale Issues and PRs
+      uses: actions/stale@v8
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        
+        # Stale issue settings
+        days-before-stale: 30
+        days-before-close: 7
+        stale-issue-message: |
+          👋 This issue has been automatically marked as stale because it has not had recent activity.
+          
+          **What happens next?**
+          - This issue will be closed in 7 days if no further activity occurs
+          - Add a comment to remove the stale label and keep it open
+          - If you're still working on this, just let us know!
+          
+          **Need help?**
+          - Check our [Contributing Guide](https://github.com/mr-cto/hq-rental-sdk/blob/main/.github/CONTRIBUTING.md)
+          - Ask questions in the comments
+          - Look for related issues or PRs
+          
+          Thank you for your contributions to HQ Rental SDK! 🚀
+        close-issue-message: |
+          🔒 This issue has been automatically closed due to inactivity.
+          
+          **Don't worry!** If this issue is still relevant:
+          - Feel free to reopen it with updated information
+          - Reference this issue in a new one
+          - Continue the discussion
+          
+          Thank you for your interest in the HQ Rental SDK! 🙏
+        stale-issue-label: 'stale'
+        
+        # Stale PR settings  
+        stale-pr-message: |
+          👋 This pull request has been automatically marked as stale because it has not had recent activity.
+          
+          **What happens next?**
+          - This PR will be closed in 7 days if no further activity occurs
+          - Push new commits or add comments to remove the stale label
+          - We're here to help if you need assistance!
+          
+          **Need help finishing this PR?**
+          - Check our [Contributing Guide](https://github.com/mr-cto/hq-rental-sdk/blob/main/.github/CONTRIBUTING.md)
+          - Ask questions in the PR comments
+          - Request a review if you think it's ready
+          
+          **Quality Reminders:**
+          - ✅ All tests must pass
+          - 📊 100% test coverage must be maintained
+          - 🎨 Code formatting and linting must pass
+          
+          Thank you for your contribution! 🚀
+        close-pr-message: |
+          🔒 This pull request has been automatically closed due to inactivity.
+          
+          **Your work isn't lost!** If you'd like to continue:
+          - Reopen this PR if you're ready to finish it
+          - Create a new PR with your changes
+          - Ask for help if you're stuck
+          
+          We appreciate your contribution to the HQ Rental SDK! 🙏
+        stale-pr-label: 'stale'
+        
+        # Labels to ignore
+        exempt-issue-labels: 'pinned,security,urgent,in-progress,good first issue'
+        exempt-pr-labels: 'pinned,security,urgent,in-progress,work-in-progress'
+        
+        # Don't mark as stale if these labels are present
+        exempt-all-labels: true
+        
+        # Operations per run (rate limiting)
+        operations-per-run: 50
+        
+        # Enable debug logging
+        debug-only: false
+        
+        # Remove stale label when there's activity
+        remove-stale-when-updated: true
+        
+        # Ignore drafts
+        exempt-draft-pr: true
+
+  report-stale-activity:
+    runs-on: ubuntu-latest
+    needs: stale
+    
+    steps:
+    - name: Report stale activity
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // Get recently closed stale issues/PRs for reporting
+          const { owner, repo } = context.repo;
+          const oneWeekAgo = new Date();
+          oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+          
+          const staleIssues = await github.rest.search.issuesAndPullRequests({
+            q: `repo:${owner}/${repo} is:closed closed:>${oneWeekAgo.toISOString()} label:stale`
+          });
+          
+          if (staleIssues.data.total_count > 0) {
+            const issueList = staleIssues.data.items.map(item => 
+              `- #${item.number}: ${item.title}`
+            ).join('\n');
+            
+            // Create a summary issue for tracking
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title: `📊 Weekly Stale Issue Report - ${new Date().toISOString().split('T')[0]}`,
+              body: `## Stale Issues Closed This Week
+          
+          ${staleIssues.data.total_count} stale issues/PRs were automatically closed:
+          
+          ${issueList}
+          
+          ### Action Items
+          - [ ] Review if any should be reopened
+          - [ ] Identify patterns in stale issues
+          - [ ] Consider improving documentation for common questions
+          
+          **Generated automatically on**: ${new Date().toISOString()}
+          `,
+              labels: ['maintenance', 'stale-report']
+            });
+          }

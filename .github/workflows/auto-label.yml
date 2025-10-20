@@ -1,0 +1,165 @@
+name: Auto Label
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  label-issues:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Label bug reports
+      if: contains(github.event.issue.title, '[BUG]') || contains(github.event.issue.body, 'Bug Description')
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.addLabels({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: ['bug', 'needs-triage']
+          });
+          
+    - name: Label feature requests
+      if: contains(github.event.issue.title, '[FEATURE]') || contains(github.event.issue.body, 'Feature Description')
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.addLabels({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: ['enhancement', 'needs-review']
+          });
+          
+    - name: Label documentation issues
+      if: contains(github.event.issue.title, '[DOCS]') || contains(github.event.issue.body, 'Documentation Issue')
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.addLabels({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: ['documentation', 'good first issue']
+          });
+
+  label-prs:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Auto-label based on files changed
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const pr = context.payload.pull_request;
+          const files = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: pr.number
+          });
+          
+          const labels = [];
+          const changedFiles = files.data.map(file => file.filename);
+          
+          // API changes
+          if (changedFiles.some(file => file.startsWith('src/apis/'))) {
+            labels.push('api-changes');
+          }
+          
+          // Test changes
+          if (changedFiles.some(file => file.startsWith('tests/'))) {
+            labels.push('tests');
+          }
+          
+          // Documentation changes
+          if (changedFiles.some(file => file.endsWith('.md') || file.includes('docs'))) {
+            labels.push('documentation');
+          }
+          
+          // Core changes
+          if (changedFiles.some(file => ['src/client.ts', 'src/config.ts', 'src/index.ts'].includes(file))) {
+            labels.push('core', 'needs-careful-review');
+          }
+          
+          // Breaking changes detection
+          if (pr.title.includes('BREAKING') || pr.body.includes('BREAKING CHANGE')) {
+            labels.push('breaking-change', 'needs-careful-review');
+          }
+          
+          // Feature additions
+          if (pr.title.startsWith('feat:') || pr.title.startsWith('feature:')) {
+            labels.push('enhancement');
+          }
+          
+          // Bug fixes
+          if (pr.title.startsWith('fix:') || pr.title.startsWith('bugfix:')) {
+            labels.push('bug');
+          }
+          
+          // Dependencies
+          if (changedFiles.includes('package.json') || changedFiles.includes('package-lock.json')) {
+            labels.push('dependencies');
+          }
+          
+          if (labels.length > 0) {
+            await github.rest.issues.addLabels({
+              issue_number: pr.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: labels
+            });
+          }
+
+  size-label:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Label PR size
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const pr = context.payload.pull_request;
+          const files = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: pr.number
+          });
+          
+          const totalChanges = files.data.reduce((sum, file) => sum + file.changes, 0);
+          
+          let sizeLabel;
+          if (totalChanges < 10) {
+            sizeLabel = 'size/XS';
+          } else if (totalChanges < 30) {
+            sizeLabel = 'size/S';
+          } else if (totalChanges < 100) {
+            sizeLabel = 'size/M';
+          } else if (totalChanges < 500) {
+            sizeLabel = 'size/L';
+          } else {
+            sizeLabel = 'size/XL';
+          }
+          
+          await github.rest.issues.addLabels({
+            issue_number: pr.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: [sizeLabel]
+          });
+          
+          // Add warning for very large PRs
+          if (totalChanges > 500) {
+            await github.rest.issues.createComment({
+              issue_number: pr.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `⚠️ **Large PR Warning**: This PR has ${totalChanges} changes. Consider breaking it into smaller, focused PRs for easier review and testing.`
+            });
+          }

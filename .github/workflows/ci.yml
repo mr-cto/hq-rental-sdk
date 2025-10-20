@@ -1,0 +1,148 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Test & Quality Check
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Check code formatting
+      run: npm run format:check
+      
+    - name: Run tests
+      run: npm run test:ci
+      
+    - name: Verify 100% coverage requirement
+      run: |
+        coverage=$(npm run test:coverage --silent | grep -o "Functions.*[0-9.]*%" | grep -o "[0-9.]*" | head -1)
+        if (( $(echo "$coverage < 100" | bc -l) )); then
+          echo "❌ Coverage is $coverage% - must be 100%"
+          exit 1
+        else
+          echo "✅ Coverage is $coverage% - requirement met!"
+        fi
+      
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        
+    - name: Comment coverage on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Read coverage summary
+          const coveragePath = path.join(process.cwd(), 'coverage', 'coverage-summary.json');
+          if (fs.existsSync(coveragePath)) {
+            const coverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8')).total;
+            
+            const comment = `## 📊 Test Coverage Report
+            
+            | Metric | Coverage | Status |
+            |--------|----------|--------|
+            | Functions | ${coverage.functions.pct}% (${coverage.functions.covered}/${coverage.functions.total}) | ${coverage.functions.pct === 100 ? '✅' : '❌'} |
+            | Statements | ${coverage.statements.pct}% (${coverage.statements.covered}/${coverage.statements.total}) | ${coverage.statements.pct === 100 ? '✅' : '❌'} |
+            | Branches | ${coverage.branches.pct}% (${coverage.branches.covered}/${coverage.branches.total}) | ${coverage.branches.pct === 100 ? '✅' : '❌'} |
+            | Lines | ${coverage.lines.pct}% (${coverage.lines.covered}/${coverage.lines.total}) | ${coverage.lines.pct === 100 ? '✅' : '❌'} |
+            
+            ${coverage.functions.pct === 100 && coverage.statements.pct === 100 && coverage.branches.pct === 100 && coverage.lines.pct === 100 
+              ? '🎉 **Perfect! 100% coverage maintained across all metrics!**' 
+              : '⚠️ **Coverage below 100% - please add tests to meet our quality standards.**'}
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          }
+
+  build:
+    name: Build Check
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build TypeScript
+      run: npm run build
+      
+    - name: Check build artifacts
+      run: |
+        if [ ! -d "dist" ]; then
+          echo "❌ Build failed - no dist directory created"
+          exit 1
+        fi
+        if [ ! -f "dist/index.js" ]; then
+          echo "❌ Build failed - no main entry point created"
+          exit 1
+        fi
+        echo "✅ Build successful - all artifacts created"
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run security audit
+      run: npm audit --audit-level=moderate
+      
+    - name: Run npm package vulnerability check
+      uses: actions/security-audit@v1
+      with:
+        audit-level: 'moderate'

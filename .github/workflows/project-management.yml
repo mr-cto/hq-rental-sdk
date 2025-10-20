@@ -1,0 +1,174 @@
+name: Project Management
+
+on:
+  issues:
+    types: [opened, labeled, assigned]
+  pull_request:
+    types: [opened, ready_for_review, labeled]
+
+jobs:
+  auto-assign-labels:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Auto-assign good first issues
+      if: contains(github.event.issue.labels.*.name, 'good first issue')
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // Add helpful comment for first-time contributors
+          const comment = `## 🌟 Good First Issue!
+          
+          This issue has been marked as a great starting point for new contributors!
+          
+          ### Getting Started
+          1. 📚 Read our [Contributing Guide](https://github.com/mr-cto/hq-rental-sdk/blob/main/.github/CONTRIBUTING.md)
+          2. 🍴 Fork the repository
+          3. 🔧 Set up your development environment
+          4. 💻 Work on the issue
+          5. ✅ Ensure all tests pass (we maintain 100% coverage!)
+          6. 🔄 Submit a pull request
+          
+          ### Need Help?
+          - 💬 Ask questions in the comments
+          - 📖 Check our documentation and examples
+          - 🤝 We're here to guide you through your first contribution!
+          
+          **Happy coding!** 🚀`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+          
+    - name: Prioritize security issues
+      if: contains(github.event.issue.labels.*.name, 'security')
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // Add security priority labels and assign
+          await github.rest.issues.addLabels({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: ['urgent', 'priority-high']
+          });
+          
+          // Add security notice comment
+          const securityComment = `## 🚨 Security Issue Detected
+          
+          This issue has been flagged as security-related and given high priority.
+          
+          ### Next Steps
+          - ⚡ This will be reviewed within 24 hours
+          - 🔒 Sensitive details should be reported privately if needed
+          - 📋 We'll coordinate disclosure and fixes appropriately
+          
+          Thank you for helping keep HQ Rental SDK secure! 🛡️`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: securityComment
+          });
+          
+    - name: Track breaking changes
+      if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'breaking-change')
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // Add warning for breaking changes
+          const breakingComment = `## ⚠️ Breaking Change Warning
+          
+          This PR contains breaking changes that may affect existing users.
+          
+          ### Before Merging
+          - [ ] Bump major version number
+          - [ ] Update migration guide
+          - [ ] Add deprecation notices (if applicable)
+          - [ ] Update documentation
+          - [ ] Plan release communication
+          
+          ### Review Checklist
+          - [ ] Breaking changes are necessary and justified
+          - [ ] Migration path is clear for users
+          - [ ] All tests updated for new behavior
+          - [ ] 100% test coverage maintained
+          
+          **Reviewer:** Please ensure all breaking change protocols are followed.`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.payload.pull_request.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: breakingComment
+          });
+
+  milestone-management:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    
+    steps:
+    - name: Auto-assign to current milestone
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // Get current milestones
+          const milestones = await github.rest.issues.listMilestones({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'open',
+            sort: 'due_on',
+            direction: 'asc'
+          });
+          
+          if (milestones.data.length > 0) {
+            const currentMilestone = milestones.data[0];
+            
+            // Assign bug fixes and small features to current milestone
+            const labels = context.payload.issue.labels.map(label => label.name);
+            
+            if (labels.includes('bug') || labels.includes('good first issue') || labels.includes('documentation')) {
+              await github.rest.issues.update({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                milestone: currentMilestone.number
+              });
+              
+              console.log(`Assigned issue to milestone: ${currentMilestone.title}`);
+            }
+          }
+
+  project-stats:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    
+    steps:
+    - name: Update project statistics
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // This could be expanded to update project statistics
+          // For now, just log some basic metrics
+          
+          const { owner, repo } = context.repo;
+          
+          // Get issue counts
+          const openIssues = await github.rest.search.issuesAndPullRequests({
+            q: `repo:${owner}/${repo} is:issue is:open`
+          });
+          
+          const openPRs = await github.rest.search.issuesAndPullRequests({
+            q: `repo:${owner}/${repo} is:pr is:open`
+          });
+          
+          console.log(`Project Stats:`);
+          console.log(`- Open Issues: ${openIssues.data.total_count}`);
+          console.log(`- Open PRs: ${openPRs.data.total_count}`);
+          console.log(`- New Issue: #${context.issue.number}`);
+          
+          // Could send to analytics service, update README badge, etc.

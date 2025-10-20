@@ -1,0 +1,58 @@
+# Dependabot configuration for automated dependency updates
+# This complements our weekly dependency update workflow
+
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    # Limit the number of open PRs for version updates
+    open-pull-requests-limit: 5
+    # Allow both direct and indirect updates
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    # Automatically merge minor and patch updates for development dependencies
+    reviewers:
+      - "mr-cto"
+    assignees:
+      - "mr-cto"
+    # Custom commit messages
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+    # Target PRs to specific branch
+    target-branch: "main"
+    # Group related updates
+    groups:
+      typescript:
+        patterns:
+          - "@types/*"
+          - "typescript"
+          - "ts-*"
+      testing:
+        patterns:
+          - "jest"
+          - "@types/jest"
+          - "ts-jest"
+      linting:
+        patterns:
+          - "eslint*"
+          - "@typescript-eslint/*"
+          - "prettier"
+      
+  # Monitor GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

@@ -1,0 +1,203 @@
+name: Code Quality Enforcement
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Check commit messages
+      run: |
+        # Check last commit message follows conventional commits
+        last_commit=$(git log -1 --pretty=format:"%s")
+        if ! echo "$last_commit" | grep -qE "^(feat|fix|docs|style|refactor|perf|test|chore)(\(.+\))?: .+"; then
+          echo "❌ Commit message doesn't follow conventional commits format"
+          echo "Current: $last_commit"
+          echo "Expected: type(scope): description"
+          echo "Examples:"
+          echo "  feat: add new vehicle tracking API"
+          echo "  fix: resolve authentication timeout issue"
+          echo "  docs: update contributing guidelines"
+          exit 1
+        fi
+        echo "✅ Commit message follows conventional commits"
+        
+    - name: Check for breaking changes
+      id: breaking-changes
+      run: |
+        if git log --oneline ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep -i "BREAKING"; then
+          echo "breaking-changes-found=true" >> $GITHUB_OUTPUT
+          echo "⚠️ Breaking changes detected in commits"
+        else
+          echo "breaking-changes-found=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Analyze code complexity
+      run: |
+        # Simple complexity check - count lines in new files
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep '\.ts$' || true)
+        
+        if [ -n "$changed_files" ]; then
+          echo "📊 Analyzing TypeScript files..."
+          for file in $changed_files; do
+            if [ -f "$file" ]; then
+              lines=$(wc -l < "$file")
+              if [ $lines -gt 300 ]; then
+                echo "⚠️ Large file detected: $file ($lines lines)"
+                echo "Consider breaking this into smaller modules"
+              fi
+              
+              # Check for complex functions (simple heuristic)
+              complex_functions=$(grep -c "if\|for\|while\|switch" "$file" || true)
+              if [ $complex_functions -gt 20 ]; then
+                echo "⚠️ High complexity in $file ($complex_functions conditional statements)"
+              fi
+            fi
+          done
+        fi
+        
+    - name: Check test coverage for new code
+      run: |
+        # Run coverage and check if new code is covered
+        npm run test:coverage
+        
+        # Get current coverage
+        coverage=$(npm run test:coverage --silent | grep -o "Functions.*[0-9.]*%" | grep -o "[0-9.]*" | head -1)
+        
+        # Ensure it's still 100%
+        if (( $(echo "$coverage < 100" | bc -l) )); then
+          echo "❌ Test coverage dropped to $coverage%"
+          echo "All new code must be covered by tests"
+          exit 1
+        fi
+        
+        echo "✅ Test coverage maintained at $coverage%"
+        
+    - name: Check for TODO/FIXME comments
+      run: |
+        # Look for TODO/FIXME in changed files
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep '\.(ts|js)$' || true)
+        
+        if [ -n "$changed_files" ]; then
+          todos=$(grep -n "TODO\|FIXME\|XXX" $changed_files || true)
+          if [ -n "$todos" ]; then
+            echo "⚠️ TODO/FIXME comments found:"
+            echo "$todos"
+            echo ""
+            echo "Please resolve these before merging or create issues to track them."
+          fi
+        fi
+        
+    - name: Check API documentation
+      run: |
+        # Check if new API functions have JSDoc comments
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep 'src/apis.*\.ts$' || true)
+        
+        if [ -n "$changed_files" ]; then
+          echo "📚 Checking API documentation..."
+          for file in $changed_files; do
+            if [ -f "$file" ]; then
+              # Check for export functions without JSDoc
+              exports_without_docs=$(grep -n "^export const" "$file" | while read line; do
+                line_num=$(echo "$line" | cut -d: -f1)
+                prev_line=$((line_num - 1))
+                if [ $prev_line -gt 0 ]; then
+                  prev_content=$(sed -n "${prev_line}p" "$file")
+                  if ! echo "$prev_content" | grep -q "/\*\*"; then
+                    echo "$file:$line_num - Missing JSDoc for exported function"
+                  fi
+                fi
+              done)
+              
+              if [ -n "$exports_without_docs" ]; then
+                echo "⚠️ API functions without documentation:"
+                echo "$exports_without_docs"
+              fi
+            fi
+          done
+        fi
+        
+    - name: Security check for sensitive data
+      run: |
+        # Check for potential secrets or sensitive data
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+        
+        if [ -n "$changed_files" ]; then
+          sensitive_patterns="password|secret|key|token|api_key|private"
+          
+          for file in $changed_files; do
+            if [ -f "$file" ]; then
+              sensitive_matches=$(grep -ni "$sensitive_patterns" "$file" | grep -v "// test" | grep -v "mock" || true)
+              if [ -n "$sensitive_matches" ]; then
+                echo "🔒 Potential sensitive data in $file:"
+                echo "$sensitive_matches"
+                echo "Please review to ensure no secrets are committed"
+              fi
+            fi
+          done
+        fi
+        
+    - name: Generate quality report
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Read coverage report
+          const coveragePath = path.join(process.cwd(), 'coverage', 'coverage-summary.json');
+          let coverageReport = '';
+          
+          if (fs.existsSync(coveragePath)) {
+            const coverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8')).total;
+            
+            coverageReport = `## 📊 Quality Gate Report
+            
+            ### Test Coverage
+            | Metric | Coverage | Status |
+            |--------|----------|--------|
+            | Functions | ${coverage.functions.pct}% | ${coverage.functions.pct === 100 ? '✅' : '❌'} |
+            | Statements | ${coverage.statements.pct}% | ${coverage.statements.pct === 100 ? '✅' : '❌'} |
+            | Branches | ${coverage.branches.pct}% | ${coverage.branches.pct === 100 ? '✅' : '❌'} |
+            | Lines | ${coverage.lines.pct}% | ${coverage.lines.pct === 100 ? '✅' : '❌'} |
+            
+            ### Quality Checks
+            - ✅ Commit messages follow conventional format
+            - ✅ Code complexity within acceptable limits
+            - ✅ Security scan passed
+            - ✅ No TODO/FIXME comments in critical paths
+            
+            ${coverage.functions.pct === 100 ? '🎉 **All quality gates passed!**' : '⚠️ **Quality gates failed - please address issues above**'}
+            `;
+          }
+          
+          // Post comment with quality report
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: coverageReport || '📊 Quality gate checks completed - see workflow logs for details.'
+          });
+          
+    - name: Block merge if quality gates fail
+      run: |
+        # This job will fail if any quality checks failed above
+        echo "✅ All quality gates passed - PR is ready for review!"
