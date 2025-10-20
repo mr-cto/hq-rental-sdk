@@ -19,16 +19,36 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/hq-rental-sdk.git"
+    "url": "git+https://github.com/mr-cto/hq-rental-sdk.git"
   },
+  "bugs": {
+    "url": "https://github.com/mr-cto/hq-rental-sdk/issues"
+  },
+  "homepage": "https://github.com/mr-cto/hq-rental-sdk#readme",
   "keywords": [
     "rental",
     "sdk",
     "typescript",
-    "api"
+    "api",
+    "hq-rental",
+    "rental-software",
+    "fleet-management",
+    "reservations",
+    "payments",
+    "crm"
   ],
-  "author": "Your Name",
+  "author": "mr-cto",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
   "dependencies": {
     "axios": "^0.21.1"
   },

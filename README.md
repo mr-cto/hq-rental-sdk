@@ -299,13 +299,182 @@ Tests are organized by module and cover:
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Write tests for your changes
-4. Ensure all tests pass (`npm test`)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+We welcome contributions to the HQ Rental SDK! This project maintains high quality standards with 100% test coverage, and we'd love your help in keeping it that way.
+
+### 🚀 Quick Start for Contributors
+
+1. **Fork & Clone**
+   ```bash
+   git clone https://github.com/mr-cto/hq-rental-sdk.git
+   cd hq-rental-sdk
+   npm install
+   ```
+
+2. **Run Tests**
+   ```bash
+   npm test  # Ensure everything works
+   npm run test:coverage  # Verify 100% coverage
+   ```
+
+3. **Create a Branch**
+   ```bash
+   git checkout -b feature/your-amazing-feature
+   ```
+
+### 📋 Contribution Guidelines
+
+#### Code Quality Standards
+- **✅ 100% Test Coverage**: All new code must include comprehensive tests
+- **✅ TypeScript First**: Use strict typing, avoid `any` types
+- **✅ Consistent Patterns**: Follow existing architectural patterns
+- **✅ Documentation**: Include JSDoc comments for public APIs
+
+#### What We're Looking For
+
+**🔧 API Enhancements**
+- New HQ Rental API endpoint integrations
+- Enhanced error handling and validation
+- Performance optimizations
+
+**📚 Documentation Improvements**
+- Better examples and use cases
+- API documentation enhancements
+- Tutorial content
+
+**🐛 Bug Fixes**
+- Error handling improvements
+- Edge case handling
+- Browser compatibility fixes
+
+**🧪 Testing Enhancements**
+- Additional test scenarios
+- Performance testing
+- Integration test improvements
+
+#### Contribution Process
+
+1. **📍 Check Existing Issues**
+   - Look for existing issues or feature requests
+   - Comment on issues you'd like to work on
+   - Create new issues for bugs or feature requests
+
+2. **💻 Development Workflow**
+   ```bash
+   # Create feature branch
+   git checkout -b feature/awesome-enhancement
+   
+   # Make your changes
+   # Write comprehensive tests
+   
+   # Verify everything works
+   npm test
+   npm run test:coverage
+   npm run lint  # If available
+   
+   # Commit with clear message
+   git commit -m "feat: add awesome enhancement with full test coverage"
+   ```
+
+3. **✅ Pre-Pull Request Checklist**
+   - [ ] All tests pass (`npm test`)
+   - [ ] 100% test coverage maintained
+   - [ ] TypeScript compiles without errors
+   - [ ] New APIs follow existing patterns
+   - [ ] Documentation updated (if needed)
+   - [ ] Commit messages are clear and descriptive
+
+4. **🔄 Pull Request Process**
+   - Create a descriptive PR title and description
+   - Reference any related issues
+   - Include screenshots/examples if relevant
+   - Respond to code review feedback promptly
+
+### 🏗️ Development Architecture
+
+#### Adding New API Modules
+```typescript
+// Follow this pattern in src/apis/[category]/new-module.ts
+export const newFunction = (params: Params): Promise<Response> => {
+  return client.get(`/api/endpoint/${params.id}`);
+};
+
+export default {
+  newFunction,
+  // ... other functions
+};
+```
+
+#### Writing Tests
+```typescript
+// Create corresponding test in tests/apis/[category]/new-module.test.ts
+describe('New Module API', () => {
+  it('should call client with correct parameters', () => {
+    // Test implementation following existing patterns
+  });
+});
+```
+
+#### File Structure for New Features
+```
+src/apis/[category]/
+├── new-feature.ts          # Implementation
+└── index.ts               # Update exports
+
+tests/apis/[category]/
+└── new-feature.test.ts    # Comprehensive tests
+```
+
+### 🎯 Priority Areas
+
+We're especially interested in contributions in these areas:
+
+1. **API Coverage**: New HQ Rental Software API endpoints
+2. **Error Handling**: Enhanced error scenarios and edge cases  
+3. **Developer Experience**: Better examples, documentation, and tooling
+4. **Performance**: Optimization and caching strategies
+5. **Testing**: Additional test scenarios and edge cases
+
+### 🤝 Community Guidelines
+
+- **Be Respectful**: We're all here to build something great together
+- **Be Patient**: Code reviews take time to ensure quality
+- **Be Collaborative**: Ask questions, offer help, share knowledge
+- **Be Consistent**: Follow established patterns and conventions
+
+### 📞 Getting Help
+
+- **Questions**: Open a GitHub Discussion or Issue
+- **Chat**: Join our community discussions
+- **Documentation**: Check the `llms.txt` file for architectural guidance
+- **Examples**: Look at existing modules for patterns
+
+### 🏆 Recognition
+
+Contributors who help maintain our high quality standards will be:
+- Added to our contributors list
+- Recognized in release notes
+- Invited to help with project direction
+
+### 📈 Metrics We Care About
+
+- **Test Coverage**: Must remain at 100%
+- **Code Quality**: TypeScript strict mode compliance
+- **Performance**: API response handling efficiency
+- **Documentation**: Clear examples and usage patterns
+
+### 📝 Commit Message Convention
+
+We follow conventional commits for clear project history:
+
+```bash
+feat: add new vehicle damage tracking API
+fix: resolve authentication token refresh issue  
+docs: update API examples for fleet management
+test: add edge cases for payment processing
+refactor: improve error handling consistency
+```
+
+**Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 
 ## Support
 
