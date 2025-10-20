@@ -40,9 +40,9 @@ describe('HTTP Utils', () => {
     it('should make GET request', async () => {
       const mockResponse = { data: { id: 1 }, status: 200 };
       mockAxiosInstance.request.mockResolvedValue(mockResponse);
-      
+
       const result = await http.get('/users');
-      
+
       expect(mockAxiosInstance.request).toHaveBeenCalledWith({
         method: 'GET',
         url: '/users',
@@ -55,10 +55,10 @@ describe('HTTP Utils', () => {
     it('should make POST request', async () => {
       const mockResponse = { data: { id: 1 }, status: 201 };
       mockAxiosInstance.request.mockResolvedValue(mockResponse);
-      
+
       const data = { name: 'John' };
       const result = await http.post('/users', data);
-      
+
       expect(mockAxiosInstance.request).toHaveBeenCalledWith({
         method: 'POST',
         url: '/users',
@@ -72,10 +72,10 @@ describe('HTTP Utils', () => {
     it('should make PUT request', async () => {
       const mockResponse = { data: { id: 1 }, status: 200 };
       mockAxiosInstance.request.mockResolvedValue(mockResponse);
-      
+
       const data = { name: 'Updated' };
       const result = await http.put('/users/1', data);
-      
+
       expect(mockAxiosInstance.request).toHaveBeenCalledWith({
         method: 'PUT',
         url: '/users/1',
@@ -89,9 +89,9 @@ describe('HTTP Utils', () => {
     it('should make DELETE request', async () => {
       const mockResponse = { data: null, status: 204 };
       mockAxiosInstance.request.mockResolvedValue(mockResponse);
-      
+
       const result = await http.del('/users/1');
-      
+
       expect(mockAxiosInstance.request).toHaveBeenCalledWith({
         method: 'DELETE',
         url: '/users/1',
@@ -102,10 +102,10 @@ describe('HTTP Utils', () => {
     it('should make DELETE request with config', async () => {
       const mockResponse = { data: null, status: 204 };
       mockAxiosInstance.request.mockResolvedValue(mockResponse);
-      
+
       const config = { headers: { 'X-Reason': 'cleanup' } };
       const result = await http.del('/users/1', config);
-      
+
       expect(mockAxiosInstance.request).toHaveBeenCalledWith({
         method: 'DELETE',
         url: '/users/1',
@@ -120,15 +120,15 @@ describe('HTTP Utils', () => {
       http.setToken('my-token');
       const mockResponse = { data: {}, status: 200 };
       mockAxiosInstance.request.mockResolvedValue(mockResponse);
-      
+
       await http.get('/protected');
-      
+
       expect(mockedAxios.create).toHaveBeenCalledWith(
         expect.objectContaining({
           headers: expect.objectContaining({
             Authorization: 'Bearer my-token',
           }),
-        })
+        }),
       );
     });
 
@@ -136,15 +136,15 @@ describe('HTTP Utils', () => {
       http.setToken(null);
       const mockResponse = { data: {}, status: 200 };
       mockAxiosInstance.request.mockResolvedValue(mockResponse);
-      
+
       await http.get('/public');
-      
+
       expect(mockedAxios.create).toHaveBeenCalledWith(
         expect.objectContaining({
           headers: expect.not.objectContaining({
             Authorization: expect.anything(),
           }),
-        })
+        }),
       );
     });
   });
@@ -152,7 +152,7 @@ describe('HTTP Utils', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../src/utils/http').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.get).toBe('function');
       expect(typeof defaultExport.post).toBe('function');
