@@ -11,7 +11,18 @@ describe('Fleet Blocked Periods API', () => {
 
   describe('listBlockedPeriods', () => {
     it('should call client.get with correct URL without params', async () => {
-      const mockResponse = [{ id: 'period-1', vehicle_id: 'vehicle-1', start_date: '2024-01-15', end_date: '2024-01-20', reason: 'maintenance', category: 'maintenance', created_by: 'user-1', created_at: '2024-01-01T00:00:00Z' }] as any[];
+      const mockResponse = [
+        {
+          id: 'period-1',
+          vehicle_id: 'vehicle-1',
+          start_date: '2024-01-15',
+          end_date: '2024-01-20',
+          reason: 'maintenance',
+          category: 'maintenance',
+          created_by: 'user-1',
+          created_at: '2024-01-01T00:00:00Z',
+        },
+      ] as any[];
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await blockedPeriodsAPI.listBlockedPeriods();
@@ -27,7 +38,9 @@ describe('Fleet Blocked Periods API', () => {
 
       const result = await blockedPeriodsAPI.listBlockedPeriods(params);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/fleets/blocked-periods?vehicle_id=vehicle-1&start_date=2024-01-15');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/fleets/blocked-periods?vehicle_id=vehicle-1&start_date=2024-01-15',
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -35,7 +48,13 @@ describe('Fleet Blocked Periods API', () => {
   describe('createBlockedPeriod', () => {
     it('should call client.post with correct URL and payload', async () => {
       const mockResponse = { id: 'period-1', start_date: '2024-01-15' } as any;
-      const payload = { start_date: '2024-01-15', end_date: '2024-01-20', reason: 'maintenance', category: 'maintenance' as const, created_by: 'user-1' };
+      const payload = {
+        start_date: '2024-01-15',
+        end_date: '2024-01-20',
+        reason: 'maintenance',
+        category: 'maintenance' as const,
+        created_by: 'user-1',
+      };
       mockClient.post.mockResolvedValue(mockResponse);
 
       const result = await blockedPeriodsAPI.createBlockedPeriod(payload);
@@ -83,7 +102,7 @@ describe('Fleet Blocked Periods API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/blocked-periods').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listBlockedPeriods).toBe('function');
       expect(typeof defaultExport.createBlockedPeriod).toBe('function');

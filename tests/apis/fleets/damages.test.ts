@@ -24,7 +24,14 @@ describe('Fleet Damages API', () => {
   describe('createVehicleDamage', () => {
     it('should call client.post with correct URL and payload', async () => {
       const mockResponse = { id: 'damage-1', vehicle_id: 'vehicle-1' } as any;
-      const payload = { description: 'Scratched bumper', severity: 'minor' as const, damage_type: 'scratch', location: 'front_bumper', repair_status: 'pending' as const, damage_date: '2024-01-15' };
+      const payload = {
+        description: 'Scratched bumper',
+        severity: 'minor' as const,
+        damage_type: 'scratch',
+        location: 'front_bumper',
+        repair_status: 'pending' as const,
+        damage_date: '2024-01-15',
+      };
       mockClient.post.mockResolvedValue(mockResponse);
 
       const result = await damagesAPI.createVehicleDamage('vehicle-1', payload);
@@ -54,7 +61,10 @@ describe('Fleet Damages API', () => {
 
       const result = await damagesAPI.updateVehicleDamage('vehicle-1', 'damage-1', payload);
 
-      expect(mockClient.put).toHaveBeenCalledWith('/fleets/vehicles/vehicle-1/damages/damage-1', payload);
+      expect(mockClient.put).toHaveBeenCalledWith(
+        '/fleets/vehicles/vehicle-1/damages/damage-1',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -62,7 +72,7 @@ describe('Fleet Damages API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/damages').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listVehicleDamages).toBe('function');
       expect(typeof defaultExport.createVehicleDamage).toBe('function');

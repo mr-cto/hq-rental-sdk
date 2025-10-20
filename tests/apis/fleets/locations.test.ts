@@ -24,7 +24,7 @@ describe('Fleet Locations API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/locations').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listLocations).toBe('function');
     });

@@ -29,7 +29,10 @@ describe('Adjustments API', () => {
 
       const result = await adjustmentsAPI.createReservationAdjustment('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/adjustments', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/adjustments',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -40,14 +43,16 @@ describe('Adjustments API', () => {
 
       await adjustmentsAPI.deleteReservationAdjustment('res-1', 'adj-1');
 
-      expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/reservations/res-1/adjustments/adj-1');
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/adjustments/adj-1',
+      );
     });
   });
 
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/adjustments').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listReservationAdjustments).toBe('function');
       expect(typeof defaultExport.createReservationAdjustment).toBe('function');

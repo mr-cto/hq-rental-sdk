@@ -81,7 +81,7 @@ describe('Filters API', () => {
         {
           field: 'price',
           operators: ['gte', 'lte'],
-          example_values: [10.99, 100.50],
+          example_values: [10.99, 100.5],
           description: 'Numeric filter',
         },
         {

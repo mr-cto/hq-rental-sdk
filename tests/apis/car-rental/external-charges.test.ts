@@ -16,7 +16,9 @@ describe('External Charges API', () => {
 
       const result = await externalChargesAPI.listExternalCharges('res-1');
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/reservations/res-1/external-charges');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/external-charges',
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -29,7 +31,10 @@ describe('External Charges API', () => {
 
       const result = await externalChargesAPI.createExternalCharge('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/external-charges', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/external-charges',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -40,14 +45,16 @@ describe('External Charges API', () => {
 
       await externalChargesAPI.deleteExternalCharge('res-1', 'charge-1');
 
-      expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/reservations/res-1/external-charges/charge-1');
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/external-charges/charge-1',
+      );
     });
   });
 
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/external-charges').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listExternalCharges).toBe('function');
       expect(typeof defaultExport.createExternalCharge).toBe('function');

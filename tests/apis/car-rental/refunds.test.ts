@@ -29,7 +29,10 @@ describe('Refunds API', () => {
 
       const result = await refundsAPI.createReservationRefund('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/refunds', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/refunds',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -42,7 +45,10 @@ describe('Refunds API', () => {
 
       const result = await refundsAPI.updateReservationRefund('res-1', 'refund-1', payload);
 
-      expect(mockClient.put).toHaveBeenCalledWith('/car-rental/reservations/res-1/refunds/refund-1', payload);
+      expect(mockClient.put).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/refunds/refund-1',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -53,14 +59,16 @@ describe('Refunds API', () => {
 
       await refundsAPI.deleteReservationRefund('res-1', 'refund-1');
 
-      expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/reservations/res-1/refunds/refund-1');
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/refunds/refund-1',
+      );
     });
   });
 
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/refunds').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listReservationRefunds).toBe('function');
       expect(typeof defaultExport.createReservationRefund).toBe('function');

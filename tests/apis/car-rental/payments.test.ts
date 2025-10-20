@@ -29,7 +29,10 @@ describe('Payments API', () => {
 
       const result = await paymentsAPI.createReservationPayment('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/payments', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/payments',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -42,7 +45,10 @@ describe('Payments API', () => {
 
       const result = await paymentsAPI.updateReservationPayment('res-1', 'payment-1', payload);
 
-      expect(mockClient.put).toHaveBeenCalledWith('/car-rental/reservations/res-1/payments/payment-1', payload);
+      expect(mockClient.put).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/payments/payment-1',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -55,7 +61,10 @@ describe('Payments API', () => {
 
       const result = await paymentsAPI.refundSecurityDeposit('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/refund-security-deposit', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/refund-security-deposit',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -68,7 +77,10 @@ describe('Payments API', () => {
 
       const result = await paymentsAPI.chargeCustomerCard('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/charge-card', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/charge-card',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -76,7 +88,7 @@ describe('Payments API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/payments').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listReservationPayments).toBe('function');
       expect(typeof defaultExport.createReservationPayment).toBe('function');

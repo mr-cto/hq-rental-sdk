@@ -217,7 +217,7 @@ describe('SDK Main Entry Point', () => {
       ];
 
       const actualProperties = Object.keys(SDK).sort();
-      
+
       expect(actualProperties).toEqual(expect.arrayContaining(expectedProperties));
       expect(actualProperties.length).toBe(expectedProperties.length);
     });
@@ -227,10 +227,10 @@ describe('SDK Main Entry Point', () => {
     it('should allow using the SDK through different import patterns', () => {
       // Named import pattern
       expect(SDK.client).toBeDefined();
-      
+
       // Default import pattern
       expect(client).toBeDefined();
-      
+
       // Both should be the same instance
       expect(SDK.client).toBe(client);
     });

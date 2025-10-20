@@ -36,7 +36,7 @@ describe('Fleet Features API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/features').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listFeatures).toBe('function');
       expect(typeof defaultExport.getFeature).toBe('function');

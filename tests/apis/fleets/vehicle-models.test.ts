@@ -36,7 +36,7 @@ describe('Fleet Vehicle Models API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/vehicle-models').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listVehicleModels).toBe('function');
       expect(typeof defaultExport.getVehicleModel).toBe('function');

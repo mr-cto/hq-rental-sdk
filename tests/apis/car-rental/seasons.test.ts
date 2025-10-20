@@ -72,7 +72,7 @@ describe('Seasons API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/seasons').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listSeasons).toBe('function');
       expect(typeof defaultExport.createSeason).toBe('function');

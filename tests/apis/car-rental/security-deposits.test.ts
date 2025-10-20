@@ -27,7 +27,9 @@ describe('Security Deposits API', () => {
 
       const result = await securityDepositsAPI.listSecurityDeposits(params);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/security-deposits?vehicle_type_id=vt-1');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/security-deposits?vehicle_type_id=vt-1',
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -47,7 +49,7 @@ describe('Security Deposits API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/security-deposits').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listSecurityDeposits).toBe('function');
       expect(typeof defaultExport.getSecurityDeposit).toBe('function');

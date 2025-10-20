@@ -11,7 +11,17 @@ describe('Fleet Relocations API', () => {
 
   describe('listVehicleRelocations', () => {
     it('should call client.get with correct URL without params', async () => {
-      const mockResponse = [{ id: 'relocation-1', vehicle_id: 'vehicle-1', from_location: 'NYC', to_location: 'LA', start_date: '2024-01-15', status: 'pending', created_at: '2024-01-01T00:00:00Z' }] as any[];
+      const mockResponse = [
+        {
+          id: 'relocation-1',
+          vehicle_id: 'vehicle-1',
+          from_location: 'NYC',
+          to_location: 'LA',
+          start_date: '2024-01-15',
+          status: 'pending',
+          created_at: '2024-01-01T00:00:00Z',
+        },
+      ] as any[];
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await relocationsAPI.listVehicleRelocations();
@@ -27,7 +37,9 @@ describe('Fleet Relocations API', () => {
 
       const result = await relocationsAPI.listVehicleRelocations(params);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/fleets/relocations?vehicle_id=vehicle-1&status=pending');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/fleets/relocations?vehicle_id=vehicle-1&status=pending',
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -35,7 +47,13 @@ describe('Fleet Relocations API', () => {
   describe('createVehicleRelocation', () => {
     it('should call client.post with correct URL and payload', async () => {
       const mockResponse = { id: 'relocation-1', vehicle_id: 'vehicle-1' } as any;
-      const payload = { vehicle_id: 'vehicle-1', from_location: 'NYC', to_location: 'LA', start_date: '2024-01-15', status: 'pending' as const };
+      const payload = {
+        vehicle_id: 'vehicle-1',
+        from_location: 'NYC',
+        to_location: 'LA',
+        start_date: '2024-01-15',
+        status: 'pending' as const,
+      };
       mockClient.post.mockResolvedValue(mockResponse);
 
       const result = await relocationsAPI.createVehicleRelocation(payload);
@@ -85,7 +103,7 @@ describe('Fleet Relocations API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/relocations').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listVehicleRelocations).toBe('function');
       expect(typeof defaultExport.createVehicleRelocation).toBe('function');

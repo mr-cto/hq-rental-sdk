@@ -42,7 +42,10 @@ describe('Customer Credits API', () => {
 
       const result = await customerCreditsAPI.updateCustomerCredit('cust-1', 'credit-1', payload);
 
-      expect(mockClient.put).toHaveBeenCalledWith('/car-rental/customers/cust-1/credits/credit-1', payload);
+      expect(mockClient.put).toHaveBeenCalledWith(
+        '/car-rental/customers/cust-1/credits/credit-1',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -53,14 +56,16 @@ describe('Customer Credits API', () => {
 
       await customerCreditsAPI.deleteCustomerCredit('cust-1', 'credit-1');
 
-      expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/customers/cust-1/credits/credit-1');
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        '/car-rental/customers/cust-1/credits/credit-1',
+      );
     });
   });
 
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/customer-credits').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listCustomerCredits).toBe('function');
       expect(typeof defaultExport.createCustomerCredit).toBe('function');

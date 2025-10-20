@@ -11,7 +11,9 @@ describe('Fleet Additional Charges API', () => {
 
   describe('listAdditionalCharges', () => {
     it('should call client.get with correct URL', async () => {
-      const mockResponse = [{ id: 1, name: 'GPS Fee', amount: 10, type: 'daily', active: true }] as any[];
+      const mockResponse = [
+        { id: 1, name: 'GPS Fee', amount: 10, type: 'daily', active: true },
+      ] as any[];
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await additionalChargesAPI.listAdditionalCharges();
@@ -23,7 +25,13 @@ describe('Fleet Additional Charges API', () => {
 
   describe('getAdditionalCharge', () => {
     it('should call client.get with correct URL and charge ID', async () => {
-      const mockResponse = { id: 1, name: 'GPS Fee', amount: 10, type: 'daily', active: true } as any;
+      const mockResponse = {
+        id: 1,
+        name: 'GPS Fee',
+        amount: 10,
+        type: 'daily',
+        active: true,
+      } as any;
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await additionalChargesAPI.getAdditionalCharge(1);
@@ -36,7 +44,7 @@ describe('Fleet Additional Charges API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/additional-charges').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listAdditionalCharges).toBe('function');
       expect(typeof defaultExport.getAdditionalCharge).toBe('function');

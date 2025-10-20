@@ -267,7 +267,7 @@ console.log('Default headers:', DEFAULT_HEADERS);
 This SDK maintains **100% test coverage** across all metrics:
 
 - **Functions**: 100% (339/339)
-- **Statements**: 100% (1140/1140) 
+- **Statements**: 100% (1140/1140)
 - **Branches**: 100% (67/67)
 - **Lines**: 100% (824/824)
 
@@ -290,6 +290,7 @@ npm run test:watch
 ### Test Structure
 
 Tests are organized by module and cover:
+
 - ✅ All API endpoint functions
 - ✅ Error handling and edge cases
 - ✅ Type validation and TypeScript compliance
@@ -304,6 +305,7 @@ We welcome contributions to the HQ Rental SDK! This project maintains high quali
 ### 🚀 Quick Start for Contributors
 
 1. **Fork & Clone**
+
    ```bash
    git clone https://github.com/mr-cto/hq-rental-sdk.git
    cd hq-rental-sdk
@@ -311,6 +313,7 @@ We welcome contributions to the HQ Rental SDK! This project maintains high quali
    ```
 
 2. **Run Tests**
+
    ```bash
    npm test  # Ensure everything works
    npm run test:coverage  # Verify 100% coverage
@@ -324,6 +327,7 @@ We welcome contributions to the HQ Rental SDK! This project maintains high quali
 ### 📋 Contribution Guidelines
 
 #### Code Quality Standards
+
 - **✅ 100% Test Coverage**: All new code must include comprehensive tests
 - **✅ TypeScript First**: Use strict typing, avoid `any` types
 - **✅ Consistent Patterns**: Follow existing architectural patterns
@@ -332,21 +336,25 @@ We welcome contributions to the HQ Rental SDK! This project maintains high quali
 #### What We're Looking For
 
 **🔧 API Enhancements**
+
 - New HQ Rental API endpoint integrations
 - Enhanced error handling and validation
 - Performance optimizations
 
 **📚 Documentation Improvements**
+
 - Better examples and use cases
 - API documentation enhancements
 - Tutorial content
 
 **🐛 Bug Fixes**
+
 - Error handling improvements
 - Edge case handling
 - Browser compatibility fixes
 
 **🧪 Testing Enhancements**
+
 - Additional test scenarios
 - Performance testing
 - Integration test improvements
@@ -359,18 +367,19 @@ We welcome contributions to the HQ Rental SDK! This project maintains high quali
    - Create new issues for bugs or feature requests
 
 2. **💻 Development Workflow**
+
    ```bash
    # Create feature branch
    git checkout -b feature/awesome-enhancement
-   
+
    # Make your changes
    # Write comprehensive tests
-   
+
    # Verify everything works
    npm test
    npm run test:coverage
    npm run lint  # If available
-   
+
    # Commit with clear message
    git commit -m "feat: add awesome enhancement with full test coverage"
    ```
@@ -392,6 +401,7 @@ We welcome contributions to the HQ Rental SDK! This project maintains high quali
 ### 🏗️ Development Architecture
 
 #### Adding New API Modules
+
 ```typescript
 // Follow this pattern in src/apis/[category]/new-module.ts
 export const newFunction = (params: Params): Promise<Response> => {
@@ -405,6 +415,7 @@ export default {
 ```
 
 #### Writing Tests
+
 ```typescript
 // Create corresponding test in tests/apis/[category]/new-module.test.ts
 describe('New Module API', () => {
@@ -415,6 +426,7 @@ describe('New Module API', () => {
 ```
 
 #### File Structure for New Features
+
 ```
 src/apis/[category]/
 ├── new-feature.ts          # Implementation
@@ -429,7 +441,7 @@ tests/apis/[category]/
 We're especially interested in contributions in these areas:
 
 1. **API Coverage**: New HQ Rental Software API endpoints
-2. **Error Handling**: Enhanced error scenarios and edge cases  
+2. **Error Handling**: Enhanced error scenarios and edge cases
 3. **Developer Experience**: Better examples, documentation, and tooling
 4. **Performance**: Optimization and caching strategies
 5. **Testing**: Additional test scenarios and edge cases
@@ -451,6 +463,7 @@ We're especially interested in contributions in these areas:
 ### 🏆 Recognition
 
 Contributors who help maintain our high quality standards will be:
+
 - Added to our contributors list
 - Recognized in release notes
 - Invited to help with project direction
@@ -468,7 +481,7 @@ We follow conventional commits for clear project history:
 
 ```bash
 feat: add new vehicle damage tracking API
-fix: resolve authentication token refresh issue  
+fix: resolve authentication token refresh issue
 docs: update API examples for fleet management
 test: add edge cases for payment processing
 refactor: improve error handling consistency

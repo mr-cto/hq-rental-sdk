@@ -11,7 +11,15 @@ describe('Fleet Telematics API', () => {
 
   describe('listTelematicsData', () => {
     it('should call client.get with correct URL without params', async () => {
-      const mockResponse = [{ id: 'data-1', vehicle_id: 'vehicle-1', timestamp: '2024-01-15T10:00:00Z', location: { latitude: 40.7128, longitude: -74.0060 }, created_at: '2024-01-01T00:00:00Z' }] as any[];
+      const mockResponse = [
+        {
+          id: 'data-1',
+          vehicle_id: 'vehicle-1',
+          timestamp: '2024-01-15T10:00:00Z',
+          location: { latitude: 40.7128, longitude: -74.006 },
+          created_at: '2024-01-01T00:00:00Z',
+        },
+      ] as any[];
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await telematicsAPI.listTelematicsData('vehicle-1');
@@ -21,20 +29,30 @@ describe('Fleet Telematics API', () => {
     });
 
     it('should call client.get with correct URL with params', async () => {
-      const mockResponse = [{ id: 'data-1', timestamp: '2024-01-15T10:00:00Z', speed: 60 }] as any[];
+      const mockResponse = [
+        { id: 'data-1', timestamp: '2024-01-15T10:00:00Z', speed: 60 },
+      ] as any[];
       const params = { start_date: '2024-01-15', end_date: '2024-01-20', limit: 100 };
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await telematicsAPI.listTelematicsData('vehicle-1', params);
 
-      expect(mockClient.get).toHaveBeenCalledWith('/fleets/vehicles/vehicle-1/telematics?start_date=2024-01-15&end_date=2024-01-20&limit=100');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/fleets/vehicles/vehicle-1/telematics?start_date=2024-01-15&end_date=2024-01-20&limit=100',
+      );
       expect(result).toBe(mockResponse);
     });
   });
 
   describe('getLatestTelematicsData', () => {
     it('should call client.get with correct URL', async () => {
-      const mockResponse = { id: 'data-1', vehicle_id: 'vehicle-1', timestamp: '2024-01-15T10:00:00Z', location: { latitude: 40.7128, longitude: -74.0060 }, created_at: '2024-01-01T00:00:00Z' } as any;
+      const mockResponse = {
+        id: 'data-1',
+        vehicle_id: 'vehicle-1',
+        timestamp: '2024-01-15T10:00:00Z',
+        location: { latitude: 40.7128, longitude: -74.006 },
+        created_at: '2024-01-01T00:00:00Z',
+      } as any;
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await telematicsAPI.getLatestTelematicsData('vehicle-1');
@@ -46,7 +64,17 @@ describe('Fleet Telematics API', () => {
 
   describe('listTelematicsDevices', () => {
     it('should call client.get with correct URL', async () => {
-      const mockResponse = [{ id: 'device-1', vehicle_id: 'vehicle-1', device_id: 'dev-123', device_type: 'OBD', status: 'active', installed_date: '2024-01-01', created_at: '2024-01-01T00:00:00Z' }] as any[];
+      const mockResponse = [
+        {
+          id: 'device-1',
+          vehicle_id: 'vehicle-1',
+          device_id: 'dev-123',
+          device_type: 'OBD',
+          status: 'active',
+          installed_date: '2024-01-01',
+          created_at: '2024-01-01T00:00:00Z',
+        },
+      ] as any[];
       mockClient.get.mockResolvedValue(mockResponse);
 
       const result = await telematicsAPI.listTelematicsDevices();
@@ -59,7 +87,13 @@ describe('Fleet Telematics API', () => {
   describe('createTelematicsDevice', () => {
     it('should call client.post with correct URL and payload', async () => {
       const mockResponse = { id: 'device-1', vehicle_id: 'vehicle-1' } as any;
-      const payload = { vehicle_id: 'vehicle-1', device_id: 'dev-123', device_type: 'OBD', status: 'active' as const, installed_date: '2024-01-01' };
+      const payload = {
+        vehicle_id: 'vehicle-1',
+        device_id: 'dev-123',
+        device_type: 'OBD',
+        status: 'active' as const,
+        installed_date: '2024-01-01',
+      };
       mockClient.post.mockResolvedValue(mockResponse);
 
       const result = await telematicsAPI.createTelematicsDevice(payload);
@@ -107,7 +141,7 @@ describe('Fleet Telematics API', () => {
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/fleets/telematics').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listTelematicsData).toBe('function');
       expect(typeof defaultExport.getLatestTelematicsData).toBe('function');

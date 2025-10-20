@@ -16,7 +16,9 @@ describe('Vehicle Replacements API', () => {
 
       const result = await vehicleReplacementsAPI.listVehicleReplacements('res-1');
 
-      expect(mockClient.get).toHaveBeenCalledWith('/car-rental/reservations/res-1/vehicle-replacements');
+      expect(mockClient.get).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/vehicle-replacements',
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -29,7 +31,10 @@ describe('Vehicle Replacements API', () => {
 
       const result = await vehicleReplacementsAPI.createVehicleReplacement('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/vehicle-replacements', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/vehicle-replacements',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -40,9 +45,16 @@ describe('Vehicle Replacements API', () => {
       const payload = { notes: 'Updated notes' };
       mockClient.put.mockResolvedValue(mockResponse);
 
-      const result = await vehicleReplacementsAPI.updateVehicleReplacement('res-1', 'replacement-1', payload);
+      const result = await vehicleReplacementsAPI.updateVehicleReplacement(
+        'res-1',
+        'replacement-1',
+        payload,
+      );
 
-      expect(mockClient.put).toHaveBeenCalledWith('/car-rental/reservations/res-1/vehicle-replacements/replacement-1', payload);
+      expect(mockClient.put).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/vehicle-replacements/replacement-1',
+        payload,
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -53,14 +65,16 @@ describe('Vehicle Replacements API', () => {
 
       await vehicleReplacementsAPI.deleteVehicleReplacement('res-1', 'replacement-1');
 
-      expect(mockClient.delete).toHaveBeenCalledWith('/car-rental/reservations/res-1/vehicle-replacements/replacement-1');
+      expect(mockClient.delete).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/vehicle-replacements/replacement-1',
+      );
     });
   });
 
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/vehicle-replacements').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listVehicleReplacements).toBe('function');
       expect(typeof defaultExport.createVehicleReplacement).toBe('function');

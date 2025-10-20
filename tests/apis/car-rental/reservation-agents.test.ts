@@ -28,7 +28,10 @@ describe('Reservation Agents API', () => {
 
       await reservationAgentsAPI.assignPrimaryAgent('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/assign-primary-agent', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/assign-primary-agent',
+        payload,
+      );
     });
   });
 
@@ -39,14 +42,17 @@ describe('Reservation Agents API', () => {
 
       await reservationAgentsAPI.assignReturnAgent('res-1', payload);
 
-      expect(mockClient.post).toHaveBeenCalledWith('/car-rental/reservations/res-1/assign-return-agent', payload);
+      expect(mockClient.post).toHaveBeenCalledWith(
+        '/car-rental/reservations/res-1/assign-return-agent',
+        payload,
+      );
     });
   });
 
   describe('default export', () => {
     it('should export all functions in default object', () => {
       const defaultExport = require('../../../src/apis/car-rental/reservation-agents').default;
-      
+
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.listReservationAgents).toBe('function');
       expect(typeof defaultExport.assignPrimaryAgent).toBe('function');
